@@ -1,6 +1,12 @@
 # My Wallet
- Wallet money management app for SE114.L21 project
+ Wallet money management app for SE114.L21 project  
+ 
+ **Nguyễn Hữu An Nhiên - 19520207**
+ 
+ **Lê Khải Hoàn - đ biết**
+ 
+ **Trần Thanh Hiền - đ biết luôn.**
 
- Ngôn ngữ: Kotlin
+ Ngôn ngữ: Kotlin  
  Coding Convention: [theo hướng dẫn này](https://kotlinlang.org/docs/coding-conventions.html)
  
