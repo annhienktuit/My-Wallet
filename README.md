@@ -8,5 +8,5 @@
  **Trần Thanh Hiền - đ biết luôn.**
 
  Ngôn ngữ: Kotlin  
- Coding Convention: [theo hướng dẫn này](https://kotlinlang.org/docs/coding-conventions.html)
+ Coding Convention: [theo hướng dẫn này](https://developer.android.com/kotlin/style-guide)
  
