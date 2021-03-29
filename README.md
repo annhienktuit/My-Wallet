@@ -6,7 +6,8 @@
  **Lê Khải Hoàn - 19520087**
  
  **Trần Thanh Hiền - đ biết luôn.**
-
+ 
+ **Bao Pham -vo coi thu.**
  Ngôn ngữ: Kotlin  
  Coding Convention: [theo hướng dẫn này](https://developer.android.com/kotlin/style-guide)
  
