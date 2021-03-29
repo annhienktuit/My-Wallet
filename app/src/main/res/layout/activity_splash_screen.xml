@@ -15,14 +15,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.269"
-        app:srcCompat="@drawable/ic_music_rafiki" />
+        app:srcCompat="@drawable/ic_wallet" />
 
     <TextView
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ETSTSSHJdh"
-        android:textSize="24sp"
+        android:text="My Wallet"
+        android:textAllCaps="true"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
