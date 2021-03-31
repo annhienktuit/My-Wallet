@@ -8,5 +8,5 @@
  **Trần Thanh Hiền - 19520080.**
 
  Ngôn ngữ: Kotlin  
- Coding Convention: [theo hướng dẫn này](https://developer.android.com/kotlin/style-guide)
+ Coding Convention: [theo hướng dẫn này](https://hackmd.io/@annhienkt/rJu1NlfrO)
  
