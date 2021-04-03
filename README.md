@@ -5,7 +5,7 @@
  
  **Lê Khải Hoàn - 19520087**
  
- **Trần Thanh Hiền - 19520080.**
+ **Trần Thanh Hiền - 19520080**
 
  Ngôn ngữ: Kotlin  
  Coding Convention: [theo hướng dẫn này](https://hackmd.io/@annhienkt/rJu1NlfrO)
