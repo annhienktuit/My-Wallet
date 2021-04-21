@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SplashScreenActivity">
-
     <ImageView
         android:id="@+id/imageViewLogo"
         android:layout_width="269dp"
@@ -21,6 +20,7 @@
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:text="My Wallet"
         android:textAllCaps="true"
         android:textSize="30sp"
@@ -30,4 +30,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
         app:layout_constraintVertical_bias="0.277" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
