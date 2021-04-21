@@ -21,5 +21,12 @@
         android:backgroundTint="@color/white"
         app:srcCompat="@drawable/ic_add_24dp"
         app:layout_anchor="@id/bottom_app_bar" />
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </Button>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
