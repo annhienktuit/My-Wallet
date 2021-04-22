@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        style="@style/Widget.MaterialComponents.BottomAppBar"
         app:fabAlignmentMode="center">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -19,6 +20,7 @@
             android:layout_height="match_parent"
             app:menu="@menu/bottom_nav_menu"
             android:layout_marginEnd="16dp"
+            app:labelVisibilityMode="labeled"
             android:background="@android:color/transparent"
             />
 
@@ -30,7 +32,9 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_24dp"
         app:layout_anchor="@id/bottomAppBar"
-        app:backgroundTint="@color/white"/>
+        style="@style/ThemeFloatingButton"
+        app:rippleColor="@color/white"
+        app:backgroundTint="#43D149"/>
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
