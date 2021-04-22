@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navHome"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Home"
+        />
+    <item
+        android:id="@+id/navChart"
+        android:icon="@drawable/ic_baseline_insert_chart_outlined_24"
+        android:title="Chart"
+        />
+
+    <item
+        android:id="@+id/placeHolder"
+        android:title=""
+        />
+
+    <item
+        android:id="@+id/navCredit"
+        android:icon="@drawable/ic_baseline_credit_card_24"
+        android:title="Credit"
+        />
+    <item
+        android:id="@+id/navUser"
+        android:icon="@drawable/user"
+        android:title="User"
+        />
+
+</menu>
