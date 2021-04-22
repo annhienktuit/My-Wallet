@@ -14,6 +14,7 @@ import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_user.*
 
 class MainActivity : AppCompatActivity() {
     //fragment declarations
