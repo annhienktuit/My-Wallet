@@ -32,4 +32,11 @@
         app:layout_anchor="@id/bottomAppBar"
         app:backgroundTint="@color/white"/>
 
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@id/bottomAppBar"
+        app:layout_anchorGravity="top" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
