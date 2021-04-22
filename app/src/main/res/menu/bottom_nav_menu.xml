@@ -7,9 +7,9 @@
         android:title="Home"
         />
     <item
-        android:id="@+id/navChart"
+        android:id="@+id/navReport"
         android:icon="@drawable/ic_baseline_insert_chart_outlined_24"
-        android:title="Chart"
+        android:title="Report"
         />
 
     <item
@@ -18,9 +18,9 @@
         />
 
     <item
-        android:id="@+id/navCredit"
+        android:id="@+id/navPlanning"
         android:icon="@drawable/ic_baseline_credit_card_24"
-        android:title="Credit"
+        android:title="Planning"
         />
     <item
         android:id="@+id/navUser"
