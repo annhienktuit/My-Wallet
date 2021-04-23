@@ -5,20 +5,14 @@ import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
-import android.widget.Toast
 import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.edtPassword
-import kotlinx.android.synthetic.main.activity_login.edtUserName
+import kotlinx.android.synthetic.main.activity_login.edtEmail
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
@@ -37,7 +31,7 @@ class SignUpActivity : AppCompatActivity() {
             window.setStatusBarColor(Color.parseColor("#FFFFFF"))
         }
         // Innitialize information
-        createAccountInputsArray = arrayOf(edtUserName, edtPassword, edtConfirmPassword, edtFirstName, edtLastName)
+        createAccountInputsArray = arrayOf(edtEmail, edtPassword, edtConfirmPassword, edtFirstName, edtLastName)
         btnDoSignUp.setOnClickListener {
             signIn()
         }
@@ -54,7 +48,7 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun notEmpty(): Boolean = edtUserName.text.toString().trim().isNotEmpty() &&
+    private fun notEmpty(): Boolean = edtEmail.text.toString().trim().isNotEmpty() &&
             edtPassword.text.toString().trim().isNotEmpty() &&
             edtConfirmPassword.text.toString().trim().isNotEmpty()
 
@@ -79,7 +73,7 @@ class SignUpActivity : AppCompatActivity() {
     private fun signIn() {
         if (identicalPassword()) {
             // identicalPassword() returns true only  when inputs are not empty and passwords are identical
-            userEmail = edtUserName.text.toString().trim()
+            userEmail = edtEmail.text.toString().trim()
             userPassword = edtPassword.text.toString().trim()
 
             /*create a user*/
