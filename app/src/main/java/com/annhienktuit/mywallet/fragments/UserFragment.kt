@@ -9,10 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import com.annhienktuit.mywallet.LoginActivity
-import com.annhienktuit.mywallet.MainActivity
-import com.annhienktuit.mywallet.R
-import com.annhienktuit.mywallet.SignUpActivity
+import com.annhienktuit.mywallet.*
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
 import kotlinx.android.synthetic.main.fragment_user.*
 
@@ -64,6 +61,13 @@ class UserFragment : Fragment() {
             Toast.makeText(activity, "Signed Out",Toast.LENGTH_LONG).show()
             activity?.let {
                 val intent = Intent(it, MainActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
+        val btnMap = view?.findViewById<Button>(R.id.btnMap)
+        btnMap?.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it, MapActivity::class.java)
                 it.startActivity(intent)
             }
         }
