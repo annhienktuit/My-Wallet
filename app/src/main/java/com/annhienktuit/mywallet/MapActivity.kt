@@ -37,7 +37,9 @@ class MapActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),101)
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,
+                                                                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                                                                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION),101)
             return
         } else {
 
