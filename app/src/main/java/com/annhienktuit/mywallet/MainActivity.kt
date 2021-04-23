@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_user.*
 
 class MainActivity : AppCompatActivity() {
@@ -55,6 +57,15 @@ class MainActivity : AppCompatActivity() {
             }
             true //return type
         }
+        val intentGetName = intent
+        val userFullName = intentGetName.getStringExtra("Full Name")
+        if (userFullName != null) {
+            Log.i("fullname", userFullName)
+        }
+        else {
+            Log.i("fullname", "nhu cc")
+        }
+
     }
 
     private fun replaceFragment(fragment: Fragment){
