@@ -37,6 +37,7 @@ class MapActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),101)
             return
         } else {
 
@@ -47,8 +48,11 @@ class MapActivity : AppCompatActivity() {
                 Log.i("location","Latitude: ${it.latitude}" + "\nLongtitude: ${it.longitude}")
             }
             else {
-                toast("null")
+                toast("deo lay dc vi tri")
             }
+        }
+        task.addOnFailureListener {
+            toast("dit me")
         }
     }
 }
