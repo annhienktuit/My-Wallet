@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "686018601473",
+    "project_id": "my-wallet-80ed7",
+    "storage_bucket": "my-wallet-80ed7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:686018601473:android:fc8ffe088fc88e8bd89600",
+        "android_client_info": {
+          "package_name": "com.annhienktuit.mywallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "686018601473-3qmin1ik8n4ea7o1bcqmt3s06bq5ao9f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACVtTpbWF1p1xsrG4Z42qiIPLPIXIMZNY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "686018601473-3qmin1ik8n4ea7o1bcqmt3s06bq5ao9f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
