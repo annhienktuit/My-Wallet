@@ -27,6 +27,7 @@
             android:layout_marginBottom="5dp"
             android:text="Username" />
         <EditText
+            android:id="@+id/edtUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -43,6 +44,7 @@
             android:layout_marginLeft="35dp"
             android:layout_marginBottom="5dp"/>
         <EditText
+            android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -59,6 +61,7 @@
             android:layout_marginTop="15dp"
             android:text="Forgot password?"/>
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDoLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_border"
@@ -68,6 +71,7 @@
             android:text="LOGIN"
             android:textSize="20sp"/>
         <TextView
+            android:id="@+id/textViewDoSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
