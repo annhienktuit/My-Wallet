@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp">
+        android:padding="15dp">
 
         <LinearLayout
             android:id="@+id/layout_top"
@@ -52,9 +52,10 @@
 
                 <Button
                     android:id="@+id/btnNotify"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="15dp"
                     android:background="@drawable/ic_notification"
                     android:gravity="top"/>
             </LinearLayout>
@@ -74,17 +75,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="40dp"
                 android:fontFamily="@font/gotham_bold"
                 android:text="396,743,500 VND"
                 android:textColor="@color/white"
-                android:textSize="35dp" />
+                android:textSize="36dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="40dp"
                 android:fontFamily="@font/gotham"
                 android:text="Total Balance"
                 android:textColor="@color/white"
@@ -102,6 +103,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
                 android:src="@drawable/income" />
 
             <LinearLayout
@@ -113,6 +115,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
                     android:fontFamily="@font/gotham"
                     android:text="Income"
                     android:textColor="#828282" />
@@ -122,6 +125,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham_bold"
                     android:text="999,000,000"
+                    android:maxLines="1"
                     android:textColor="#2F2543"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -129,7 +133,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="5dp"
                 android:src="@drawable/outcome" />
 
             <LinearLayout
@@ -141,6 +146,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
                     android:fontFamily="@font/gotham"
                     android:text="Expense"
                     android:textColor="#828282" />
@@ -150,6 +156,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham_bold"
                     android:text="999,745,000"
+                    android:maxLines="1"
                     android:textColor="#2F2543"
                     android:textSize="18sp" />
 
@@ -165,7 +172,8 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -187,6 +195,7 @@
                     android:id="@+id/btnAddWallet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="Add Wallet"
                     android:textAllCaps="false"
                     android:textSize="14sp"
@@ -212,6 +221,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="Recent Transaction"
                 android:fontFamily="@font/gotham_bold"
                 android:textSize="18sp"
