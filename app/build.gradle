@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId "com.annhienktuit.mywallet"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -70,4 +70,5 @@ dependencies {
 
     // Also declare the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 }
