@@ -1,11 +1,12 @@
 package com.annhienktuit.mywallet
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.annhienktuit.mywallet.utils.Extensions.toast
@@ -26,7 +27,7 @@ class MapActivity : AppCompatActivity() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         btnLocation.setOnClickListener {
-            fetchLocation()
+            fetchLocation() //get location
         }
     }
     private fun fetchLocation(){
@@ -49,10 +50,11 @@ class MapActivity : AppCompatActivity() {
         task.addOnSuccessListener {
             if(it!=null){
                 textViewLocation.text = "Latitude: ${it.latitude}" + "\nLongtitude: ${it.longitude}"
-                Log.i("location","Latitude: ${it.latitude}" + "\nLongtitude: ${it.longitude}")
                 latitude = it.latitude
                 longtitude = it.longitude
-                convertLocation()
+                convertLocation() //covert latitude to address
+                openMap()
+
             }
             else {
                 toast("deo lay dc vi tri")
@@ -80,6 +82,20 @@ class MapActivity : AppCompatActivity() {
             e.printStackTrace()
             textViewLocation.setText("Can not get Address!")
         }
+    }
+
+    fun openMap(){
+//        val uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longtitude) //open google maps
+//        val uri = "https://www.google.com/maps/search/atm/@$latitude,$longtitude"
+//        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        val mapIntent: Intent = Uri.parse(
+                "geo:$latitude,$longtitude?q=atm"
+        ).let { location ->
+            // Or map point based on latitude/longitude
+            // val location: Uri = Uri.parse("geo:37.422219,-122.08364?z=14") // z param is zoom level
+            Intent(Intent.ACTION_VIEW, location)
+        }
+        startActivity(mapIntent)
     }
 }
 
