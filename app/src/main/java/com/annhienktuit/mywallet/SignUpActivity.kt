@@ -1,13 +1,30 @@
 package com.annhienktuit.mywallet
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
+import android.widget.EditText
+import android.widget.Toast
+import com.annhienktuit.mywallet.utils.Extensions.toast
+import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login.edtPassword
+import kotlinx.android.synthetic.main.activity_login.edtUserName
+import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
+    lateinit var userEmail: String
+    lateinit var userPassword: String
+    lateinit var createAccountInputsArray: Array<EditText>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -19,5 +36,64 @@ class SignUpActivity : AppCompatActivity() {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.setStatusBarColor(Color.parseColor("#FFFFFF"))
         }
+        // Innitialize information
+        createAccountInputsArray = arrayOf(edtUserName, edtPassword, edtConfirmPassword, edtFirstName, edtLastName)
+        btnDoSignUp.setOnClickListener {
+            signIn()
+        }
+        textviewDoSignIn.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
     }
+    override fun onStart() {
+        super.onStart()
+        val user: FirebaseUser? = firebaseAuth.currentUser
+        if(user !== null) {
+            startActivity(Intent(this, MainActivity::class.java))
+            toast("welcome back")
+        }
+    }
+
+    private fun notEmpty(): Boolean = edtUserName.text.toString().trim().isNotEmpty() &&
+            edtPassword.text.toString().trim().isNotEmpty() &&
+            edtConfirmPassword.text.toString().trim().isNotEmpty()
+
+    private fun identicalPassword(): Boolean {
+        var identical = false
+        if (notEmpty() &&
+            edtPassword.text.toString().trim() == edtConfirmPassword.text.toString().trim()
+        ) {
+            identical = true
+        } else if (!notEmpty()) {
+            createAccountInputsArray.forEach { input ->
+                if (input.text.toString().trim().isEmpty()) {
+                    input.error = "${input.hint} is required"
+                }
+            }
+        } else {
+            toast("passwords are not matching !")
+        }
+        return identical
+    }
+
+    private fun signIn() {
+        if (identicalPassword()) {
+            // identicalPassword() returns true only  when inputs are not empty and passwords are identical
+            userEmail = edtUserName.text.toString().trim()
+            userPassword = edtPassword.text.toString().trim()
+
+            /*create a user*/
+            firebaseAuth.createUserWithEmailAndPassword(userEmail, userPassword)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        toast("created account successfully !")
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    } else {
+                        toast("failed to Authenticate !")
+                    }
+                }
+        }
+    }
+
 }

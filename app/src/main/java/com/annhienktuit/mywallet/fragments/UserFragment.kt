@@ -8,9 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import com.annhienktuit.mywallet.LoginActivity
+import com.annhienktuit.mywallet.MainActivity
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.SignUpActivity
+import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
 import kotlinx.android.synthetic.main.fragment_user.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -55,6 +58,16 @@ class UserFragment : Fragment() {
                 it.startActivity(intent)
             }
         }
+        val btnSignOut = view?.findViewById<Button>(R.id.btnLogOut)
+        btnSignOut?.setOnClickListener {
+            firebaseAuth.signOut()
+            Toast.makeText(activity, "Signed Out",Toast.LENGTH_LONG).show()
+            activity?.let {
+                val intent = Intent(it, MainActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
+
         return view
     }
 
