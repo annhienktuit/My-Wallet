@@ -22,13 +22,20 @@ class MapActivity : AppCompatActivity() {
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     var latitude: Double = 0.0
     var longtitude: Double = 0.0
+    var queryType: String = ""
+    var isFindingBank:Boolean = false //false is atm, true is bank
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         fetchLocation() //innitialize location
-        btnLocation.setOnClickListener {
+        btnfindATM.setOnClickListener {
+            isFindingBank = false
             fetchLocationandOpenMap() //get location
+        }
+        btnfindBank.setOnClickListener { 
+            isFindingBank = true
+            fetchLocationandOpenMap()
         }
     }
 
@@ -91,8 +98,11 @@ class MapActivity : AppCompatActivity() {
 //        val uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longtitude) //open google maps
 //        val uri = "https://www.google.com/maps/search/atm/@$latitude,$longtitude"
 //        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        if(!isFindingBank) queryType = "atm"
+        else queryType = "bank"
+        toast("Finding nearby $queryType")
         val mapIntent: Intent = Uri.parse(
-                "geo:$latitude,$longtitude?q=atm ${textViewBankName.text.toString()}"
+                "geo:$latitude,$longtitude?q=$queryType ${textViewBankName.text.toString()}"
         ).let { location ->
             Intent(Intent.ACTION_VIEW, location)
         }

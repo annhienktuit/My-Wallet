@@ -12,10 +12,15 @@
         android:layout_height="wrap_content"
         android:hint="Enter Bank Name"/>
     <Button
-        android:id="@+id/btnLocation"
+        android:id="@+id/btnfindATM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Find near me ATM"/>
+    <Button
+        android:id="@+id/btnfindBank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find near me bank"/>
     <TextView
         android:id="@+id/textViewLocation"
         android:layout_width="wrap_content"
