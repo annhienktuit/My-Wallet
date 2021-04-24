@@ -13,6 +13,7 @@ import com.annhienktuit.mywallet.fragments.HomeFragment
 import com.annhienktuit.mywallet.fragments.PlanningFragment
 import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
+import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseUser
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity() {
             }
             true //return type
         }
+       
         val intentGetName = intent
         val userFullName = intentGetName.getStringExtra("Full Name")
         if (userFullName != null) {
