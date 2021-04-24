@@ -6,41 +6,69 @@
     android:orientation="vertical"
     tools:context=".fragments.ReportFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="16dp"
         android:background="@color/white"
+        android:orientation="vertical"
         >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:paddingBottom="0dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="8dp"
             >
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/walletImage"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/wallet_image"
+                android:scaleType="centerCrop"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="5dp"
+                />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_toRightOf="@+id/walletImage"
+                android:layout_marginLeft="8dp">
 
                 <TextView
+                    android:id="@+id/txtCash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/gotham"
                     android:text="Cash"
-                    />
+                    android:textColor="#828282"
+                    android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/txtMoney"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="13dp"
+                    android:fontFamily="@font/gotham_bold"
                     android:text="200.000.000đ"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    />
-
+                    android:textColor="#2F2543"
+                    android:textSize="15sp" />
             </LinearLayout>
 
-        </LinearLayout>
+            <Button
+                android:id="@+id/btnNotify"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="6dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/ic_notification"/>
+
+        </RelativeLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -51,7 +79,7 @@
 
         </com.google.android.material.tabs.TabLayout>
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </LinearLayout>
 
 
 
