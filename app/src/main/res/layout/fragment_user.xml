@@ -38,7 +38,14 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="Map"/>
+
     </LinearLayout>
+    <Button
+        android:id="@+id/btnCurrenciesExchange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:text="Currencies Exchange"/>
 
 
 </FrameLayout>

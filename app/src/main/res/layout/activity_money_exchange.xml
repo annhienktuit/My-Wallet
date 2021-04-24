@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_gravity="start"
+    tools:context=".MoneyExchangeActivity"
+    android:background="#E8E8E8">
+    <!-- Thanh phan con 1-->
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="10dp"
+        >
+
+        <LinearLayout
+            android:id="@+id/ll_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="30dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/ll_firstConversion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/et_firstConversion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:hint="From"
+                    android:inputType="number"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_secondConversion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/spinner_firstConversion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spinner_secondConversion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textViewFirstLine"
+        android:layout_width="215dp"
+        android:layout_height="49dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="219dp"
+        android:gravity="center"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textViewCurrencies"
+        android:layout_width="208dp"
+        android:layout_height="61dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="161dp"
+        android:gravity="center"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textViewResult"
+        android:layout_width="202dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="107dp"
+        android:gravity="center"
+        android:textColor="#C31212"
+        android:textSize="24sp" />
+
+
+</RelativeLayout>

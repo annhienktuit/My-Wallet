@@ -71,6 +71,13 @@ class UserFragment : Fragment() {
                 it.startActivity(intent)
             }
         }
+        val btnCurrencies = view?.findViewById<Button>(R.id.btnCurrenciesExchange)
+        btnCurrencies?.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it, MoneyExchangeActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
 
         return view
     }
