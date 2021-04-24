@@ -57,11 +57,11 @@ class MapActivity : AppCompatActivity() {
 
             }
             else {
-                toast("deo lay dc vi tri")
+                toast("Cannot get location")
             }
         }
         task.addOnFailureListener {
-            toast("dit me")
+            toast("Failed")
         }
     }
     fun convertLocation(){
