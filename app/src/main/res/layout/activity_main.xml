@@ -36,11 +36,9 @@
         app:rippleColor="@color/white"
         app:backgroundTint="#43D149"/>
 
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/containerViewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_anchor="@id/bottomAppBar"
-        app:layout_anchorGravity="top" />
+        android:layout_height="match_parent"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

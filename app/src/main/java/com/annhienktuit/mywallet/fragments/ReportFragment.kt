@@ -5,15 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.annhienktuit.mywallet.R
-import com.annhienktuit.mywallet.adapter.SelectionPagerAdapter
+import com.annhienktuit.mywallet.adapter.ReportPagerAdapter
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import kotlinx.android.synthetic.main.fragment_report.*
 
 class ReportFragment : Fragment() {
+
+    private lateinit var myView: View
+    private lateinit var myPager: ViewPager
+    private lateinit var myTab: TabLayout
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -21,24 +23,18 @@ class ReportFragment : Fragment() {
             savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
+        myView = inflater.inflate(R.layout.fragment_report, container, false)
 
-        return inflater.inflate(R.layout.fragment_report, container, false)
+        myPager = myView.findViewById(R.id.viewPager)
+        myTab = myView.findViewById(R.id.tabLayout)
+
+        var adapter = ReportPagerAdapter(childFragmentManager, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
+        myPager.adapter = adapter
+
+        myTab.setupWithViewPager(myPager)
+
+        return myView
     }
 
-
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//
-//         viewPager.adapter = SelectionPagerAdapter(childFragmentManager)
-//         tabLayout.setupWithViewPager(viewPager)
-//    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewPager.adapter = SelectionPagerAdapter(childFragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
-        tabLayout.setupWithViewPager(viewPager)
-
-    }
 }
 

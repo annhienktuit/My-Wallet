@@ -8,7 +8,7 @@ import com.annhienktuit.mywallet.fragments.currentMonthFragment
 import com.annhienktuit.mywallet.fragments.previousMonthFragment
 
 //This class manages 2 fragments previous month and current month in report fragment
-class SelectionPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentPagerAdapter(fm, behavior){
+class ReportPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAdapter(fm, behavior){
     override fun getCount(): Int {
         return 2 //we has only two child fragments in report fragment
     }
