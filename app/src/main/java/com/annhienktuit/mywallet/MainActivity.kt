@@ -6,9 +6,13 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.Window
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager.widget.ViewPager
+import com.annhienktuit.mywallet.adapter.MainPagerAdapter
 import com.annhienktuit.mywallet.fragments.HomeFragment
 import com.annhienktuit.mywallet.fragments.PlanningFragment
 import com.annhienktuit.mywallet.fragments.ReportFragment
@@ -46,18 +50,6 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(2).isEnabled = false
         //--------------------------------------------
-
-        replaceFragment(homeFragment) // Home is the first fragment displayed
-
-        bottomNavigationView.setOnNavigationItemSelectedListener{
-            when(it.itemId){
-                R.id.navHome -> replaceFragment(homeFragment)
-                R.id.navReport -> replaceFragment(reportFragment)
-                R.id.navPlanning -> replaceFragment(planningFragment)
-                R.id.navUser -> replaceFragment(userFragment)
-            }
-            true //return type
-        }
        
         val intentGetName = intent
         val userFullName = intentGetName.getStringExtra("Full Name")
@@ -68,13 +60,41 @@ class MainActivity : AppCompatActivity() {
             Log.i("fullname", "nhu cc")
         }
 
-    }
+        //Fragment transition by view pager
+        var adapter = MainPagerAdapter(supportFragmentManager, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
+        containerViewPager.adapter = adapter
 
-    private fun replaceFragment(fragment: Fragment){
-        if(fragment != null){
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainer, fragment)
-            transaction.commit()
-        }
+        //When slide or choose a specific fragment, bottom navigation view icons will change their color to corresponding fragment
+        containerViewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                when(position){
+                    0 -> bottomNavigationView.menu.findItem(R.id.navHome).isChecked = true
+                    1 -> bottomNavigationView.menu.findItem(R.id.navReport).isChecked = true
+                    2 -> bottomNavigationView.menu.findItem(R.id.navPlanning).isChecked = true
+                    3 -> bottomNavigationView.menu.findItem(R.id.navUser).isChecked = true
+                }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+        })
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(object: BottomNavigationView.OnNavigationItemSelectedListener{
+            override fun onNavigationItemSelected(item: MenuItem): Boolean {
+                when(item.itemId){
+                    R.id.navHome -> containerViewPager.currentItem = 0
+                    R.id.navReport -> containerViewPager.currentItem = 1
+                    R.id.navPlanning -> containerViewPager.currentItem = 2
+                    R.id.navUser -> containerViewPager.currentItem = 3
+                }
+                return true
+            }
+        })
     }
 }
