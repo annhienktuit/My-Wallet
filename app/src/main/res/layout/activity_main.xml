@@ -38,6 +38,7 @@
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/containerViewPager"
+        android:layout_marginBottom="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
