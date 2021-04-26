@@ -1,23 +1,27 @@
 package com.annhienktuit.mywallet.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.annhienktuit.mywallet.MainActivity
 import com.annhienktuit.mywallet.R
+import com.annhienktuit.mywallet.`object`.Wallet
+import com.annhienktuit.mywallet.adapter.WalletAdapter
+
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-
 class HomeFragment : Fragment() {
 
     private var param1: String? = null
     private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
@@ -26,24 +30,21 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         var view = inflater.inflate(R.layout.fragment_home, container, false)
+        var walletList = (activity as MainActivity?)!!.getWalletList()
+        var recyclerWallet = view.findViewById(R.id.recyclerWallet) as RecyclerView
+        recyclerWallet.adapter = WalletAdapter(walletList)
+        recyclerWallet.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerWallet.setHasFixedSize(true)
         return view
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             HomeFragment().apply {
