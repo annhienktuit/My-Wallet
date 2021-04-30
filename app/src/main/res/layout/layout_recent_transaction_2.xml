@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <TextView
+        android:id="@+id/txtNameTransaction2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Food and Beverage"
+        android:fontFamily="@font/gotham_bold"
+        android:textColor="#2F2543"
+        android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/txtDateAndName2"
+        android:layout_below="@+id/txtNameTransaction2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Today - Makan Bakso"
+        android:textColor="#828282"
+        android:fontFamily="@font/gotham"
+        android:textSize="14sp"/>
+    <TextView
+        android:id="@+id/txtMoneyChange2"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+15,000 VND"
+        android:textColor="#55A630"
+        android:fontFamily="@font/gotham_bold"
+        android:textSize="14sp"/>
+
+</RelativeLayout>

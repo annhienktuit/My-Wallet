@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FAF8FF"
     tools:context=".fragments.HomeFragment">
 
     <RelativeLayout
@@ -164,103 +165,88 @@
         </LinearLayout>
 
 
+        <RelativeLayout
+            android:id="@+id/layout_wallet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_inoutcome"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_bold"
+                android:text="Your Wallet"
+                android:layout_centerVertical="true"
+                android:textColor="#2F2543"
+                android:textSize="18sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddWallet"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Wallet"
+                android:layout_alignParentRight="true"
+                android:padding="0dp"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:icon="@drawable/ic_add_24dp" />
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerWallet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_wallet"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:id="@+id/layout_recent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recyclerWallet">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/gotham_bold"
+                android:text="Recent Transaction"
+                android:textColor="#2F2543"
+                android:textSize="18sp" />
 
             <LinearLayout
-                android:id="@+id/layout_wallet"
-                android:layout_below="@+id/layout_inoutcome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="end">
 
-                android:layout_marginTop="20dp">
-
-                <LinearLayout
+                <Button
+                    android:id="@+id/btnSeeAll"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/gotham_bold"
-                        android:text="Your Wallet"
-                        android:textColor="#2F2543"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2 Budgets, 1 Savings"
-                        android:textColor="#828282" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="end">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnAddWallet"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="top"
-                        android:text="Add Wallet"
-                        android:textAllCaps="false"
-                        android:textSize="14sp"
-                        app:icon="@drawable/ic_add_24dp" />
-                </LinearLayout>
+                    android:gravity="end"
+                    android:text="See All"
+                    android:padding="0dp"
+                    android:textAllCaps="false"
+                    android:textSize="14sp" />
             </LinearLayout>
+        </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerWallet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
-                android:layout_below="@+id/layout_wallet"
-                android:layout_marginTop="20dp" />
-
-            <LinearLayout
-                android:id="@+id/layout_recent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/recyclerWallet"
-                android:layout_marginTop="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/gotham_bold"
-                    android:text="Recent Transaction"
-                    android:textColor="#2F2543"
-                    android:textSize="18sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end">
-
-                    <Button
-                        android:id="@+id/btnSeeAll"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:text="See All"
-                        android:textAllCaps="false"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardTransaction"
+            android:layout_below="@+id/layout_recent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="1dp">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerTransaction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_recent"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="10dp" />
+        </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
 

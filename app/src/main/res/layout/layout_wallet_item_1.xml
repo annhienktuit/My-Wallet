@@ -4,7 +4,8 @@
     android:layout_height="145dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="15dp"
-    android:layout_marginRight="20dp"
+    android:layout_margin="10dp"
+    app:cardElevation="4dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
