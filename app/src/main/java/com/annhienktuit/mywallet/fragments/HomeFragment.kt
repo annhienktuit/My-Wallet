@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.MainActivity
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.Wallet
+import com.annhienktuit.mywallet.adapter.RecentTransactionAdapter
 import com.annhienktuit.mywallet.adapter.WalletAdapter
 
 
@@ -41,6 +42,11 @@ class HomeFragment : Fragment() {
         recyclerWallet.adapter = WalletAdapter(walletList)
         recyclerWallet.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         recyclerWallet.setHasFixedSize(true)
+        var transactionList = (activity as MainActivity?)!!.getTransactionList()
+        var recyclerTransaction = view.findViewById(R.id.recyclerTransaction) as RecyclerView
+        recyclerTransaction.adapter = RecentTransactionAdapter(transactionList)
+        recyclerTransaction.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        recyclerTransaction.setHasFixedSize(true)
         return view
     }
 

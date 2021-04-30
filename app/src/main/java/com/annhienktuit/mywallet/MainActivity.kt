@@ -10,6 +10,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.annhienktuit.mywallet.`object`.RecentTransaction
 import com.annhienktuit.mywallet.`object`.Wallet
 import com.annhienktuit.mywallet.adapter.MainPagerAdapter
 import com.annhienktuit.mywallet.fragments.HomeFragment
@@ -29,11 +30,13 @@ class MainActivity : AppCompatActivity() {
     private val planningFragment = PlanningFragment()
     private val userFragment = UserFragment()
     var walletList = ArrayList<Wallet>()
+    var transactionList = ArrayList<RecentTransaction>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         addWallet()
+        addTransaction()
         //hide action bar
         if (supportActionBar != null) {
             supportActionBar!!.hide();
@@ -105,9 +108,18 @@ class MainActivity : AppCompatActivity() {
         walletList.add(Wallet("Electricity", "496,124"))
         walletList.add(Wallet("Water", "122,650"))
         walletList.add(Wallet("Internet", "165,000"))
-
     }
+
+    fun addTransaction() {
+        transactionList.add(RecentTransaction("Food and Drink", "Today - Le Khai Hoan", "-20,000"))
+        transactionList.add(RecentTransaction("Shopping", "Yesterday - Tran Thanh Hien", "-179,000"))
+        transactionList.add(RecentTransaction("Game", "Yesterday - Nguyen Huu An Nhien", "+220,000"))
+    }
+
     fun getWalletList(): List<Wallet> {
         return walletList
+    }
+    fun getTransactionList(): List<RecentTransaction> {
+        return transactionList
     }
 }
