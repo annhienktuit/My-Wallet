@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.annhienktuit.InterestRateActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="16dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/btnArrowBack"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/ic_baseline_arrow_back_24"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:layout_toRightOf="@id/btnArrowBack"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:textColor="#2F2543"
+            android:fontFamily="@font/gotham_bold"
+            android:textSize="22sp"
+            android:text="Interest rate"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center"
+            android:layout_marginEnd="15dp"
+            android:textColor="#2F2543"
+            android:textStyle="bold"
+            android:fontFamily="@font/gotham"
+            android:textSize="18sp"
+            android:text="Done"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+</LinearLayout>
