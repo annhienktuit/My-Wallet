@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.annhienktuit.InterestRateActivity">
 
 
@@ -48,6 +49,72 @@
             android:text="Done"
             android:layout_alignParentRight="true"
             />
-
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:textColor="#2F2543"
+        android:fontFamily="@font/gotham"
+        android:textSize="15sp"
+        android:text="Amount of money"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tfAmountOfMoney"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/white"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        app:startIconTint="43D149"
+        app:startIconDrawable="@drawable/ic_baseline_attach_money_24"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:textColor="#2F2543"
+        android:fontFamily="@font/gotham"
+        android:textSize="15sp"
+        android:text="Interest rate"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tfInterestRate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/white"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        app:startIconTint="43D149"
+        app:startIconDrawable="@drawable/ic_baseline_calculate_24"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:textColor="#2F2543"
+        android:fontFamily="@font/gotham"
+        android:textSize="15sp"
+        android:text="Period of time"
+        />
 </LinearLayout>
