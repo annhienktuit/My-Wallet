@@ -79,6 +79,14 @@ class UserFragment : Fragment() {
             }
         }
 
+        val btnInterest = view?.findViewById<Button>(R.id.btnInterestRate)
+        btnInterest?.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it, InterestRateActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
+
         return view
     }
 
