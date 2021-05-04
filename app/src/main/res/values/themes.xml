@@ -16,4 +16,10 @@
     <style name="ThemeFloatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="tint">@color/white</item>
     </style>
+    <style name="ProgressBar1">
+        <item name="colorAccent">#4CAF50</item> <!-- Whatever color you want-->
+    </style>
+    <style name="ProgressBar2">
+        <item name="colorAccent">#DC6C49</item> <!-- Whatever color you want-->
+    </style>
 </resources>

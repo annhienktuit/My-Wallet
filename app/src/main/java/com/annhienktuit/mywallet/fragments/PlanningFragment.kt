@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.MainActivity
 import com.annhienktuit.mywallet.R
+import com.annhienktuit.mywallet.`object`.Saving
+import com.annhienktuit.mywallet.`object`.Wallet
+import com.annhienktuit.mywallet.adapter.SavingAdapter
 import com.annhienktuit.mywallet.adapter.WalletAdapter
 
 private const val ARG_PARAM1 = "param1"
@@ -19,6 +22,10 @@ class PlanningFragment : Fragment() {
 
     private var param1: String? = null
     private var param2: String? = null
+    var walletList = ArrayList<Wallet>()
+    var savingList = ArrayList<Saving>()
+    lateinit var recyclerWallet: RecyclerView
+    lateinit var recyclerSaving: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,11 +41,10 @@ class PlanningFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_planning, container, false)
-        var walletList = (activity as MainActivity?)!!.getWalletList()
-        var recyclerWallet = view.findViewById(R.id.recyclerWalletDetail) as RecyclerView
-        recyclerWallet.adapter = WalletAdapter(walletList)
-        recyclerWallet.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        recyclerWallet.setHasFixedSize(true)
+        recyclerWallet = view.findViewById(R.id.recyclerWalletDetail)
+        recyclerSaving = view.findViewById(R.id.recyclerSavings)
+        createWallets()
+        createSavings()
         return view
     }
 
@@ -52,5 +58,19 @@ class PlanningFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+    fun createWallets() {
+        walletList = (activity as MainActivity?)!!.getWalletList() as ArrayList<Wallet>
+
+        recyclerWallet.adapter = WalletAdapter(walletList)
+        recyclerWallet.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerWallet.setHasFixedSize(true)
+    }
+    fun createSavings() {
+        savingList.add(Saving("iPhone 11 Promax", "33,500,000", "11,000,000"))
+        savingList.add(Saving("House", "13,745,000,000", "0"))
+        recyclerSaving.adapter = SavingAdapter(savingList)
+        recyclerSaving.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        recyclerSaving.setHasFixedSize(true)
     }
 }
