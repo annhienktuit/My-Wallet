@@ -61,7 +61,6 @@ class PlanningFragment : Fragment() {
     }
     fun createWallets() {
         walletList = (activity as MainActivity?)!!.getWalletList() as ArrayList<Wallet>
-
         recyclerWallet.adapter = WalletAdapter(walletList)
         recyclerWallet.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         recyclerWallet.setHasFixedSize(true)
