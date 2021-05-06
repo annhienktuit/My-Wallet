@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E5E5E5"
+    tools:context=".SavingActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_saving"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Savings"
+        android:textSize="30sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/white"
+        android:fontFamily="@font/gotham_bold"/>
+    <ImageButton
+        android:id="@+id/btn_back_saving"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="30dp"
+        android:background="#00FFFFFF"
+        android:tint="@color/white"
+        android:src="@drawable/ic_back"/>
+
+    <RelativeLayout
+        android:id="@+id/layout_card_saving"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:padding="60dp"
+        android:background="@drawable/card_saving"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/nameOfSavingProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/gotham_bold"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:text="iPhone 11 Promax"/>
+        <LinearLayout
+            android:layout_below="@+id/nameOfSavingProduct"
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Balance"
+                    android:fontFamily="@font/gotham_bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="56%"
+                    android:fontFamily="@font/gotham_bold"
+                    android:textSize="16sp"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/white"/>
+                <ProgressBar
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/progressSavings"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_below="@+id/balance"
+                    android:progress="50"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/progressSavings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="13,532,000"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/gotham_bold"
+                        android:textSize="15sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" of 33,990,000 VND"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/gotham"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/recentTransaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_card_saving"
+        android:layout_marginStart="25dp"
+        android:text="Recent Transaction"
+        android:textSize="20sp"
+        android:fontFamily="@font/gotham_bold"
+        android:textColor="#2F2543"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerTransactionSaving"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/recentTransaction"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="10dp"
+        android:layout_height="0dp"
+        />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingAdd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#29B12E"
+        android:layout_margin="30dp"
+        android:src="@drawable/ic_add_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
