@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayoutInterestRate"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -36,17 +37,20 @@
             android:text="Interest rate"
             />
 
-        <TextView
+        <Button
+            android:id="@+id/doneBtn"
+            android:textAllCaps="false"
             android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"
             android:gravity="center"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="5dp"
             android:textColor="#2F2543"
             android:textStyle="bold"
-            android:fontFamily="@font/gotham"
-            android:textSize="18sp"
+            android:fontFamily="@font/gotham_bold"
+            android:textSize="17sp"
             android:text="Done"
             android:layout_alignParentRight="true"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             />
     </RelativeLayout>
 
@@ -108,86 +112,112 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:textColor="#2F2543"
-        android:fontFamily="@font/gotham"
-        android:textSize="15sp"
-        android:text="Period of time"
-        />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tfPeriodOfTime"
+    <LinearLayout
+        android:id="@+id/periodOfTimeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/white"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
-        app:startIconTint="#43D149"
-        app:startIconDrawable="@drawable/ic_baseline_timelapse_24"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:textColor="#2F2543"
+            android:fontFamily="@font/gotham"
+            android:textSize="15sp"
+            android:text="Period of time"
             />
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:textColor="#2F2543"
-        android:fontFamily="@font/gotham"
-        android:textSize="15sp"
-        android:text="Type"
-        />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_edit_calendar_24"
+            android:layout_marginTop="21dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginBottom="14dp"
+            />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tfType"
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_height="1dp"
+            android:background="#8d8d8d"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/TypeOfInterestLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/white"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:textColor="#2F2543"
+            android:fontFamily="@font/gotham"
+            android:textSize="15sp"
+            android:text="Type"
+            />
+
+        <TextView
+            android:id="@+id/TypeOfInterest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="6dp"
+            android:textColor="#2F2543"
+            android:fontFamily="@font/gotham"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:text="Simple interest"
             />
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:textColor="#2F2543"
-        android:fontFamily="@font/gotham"
-        android:textSize="15sp"
-        android:text="Type of time"
-        />
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_height="1dp"
+            android:background="#8d8d8d"/>
+    </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tfTypeOfTime"
+    <LinearLayout
+        android:id="@+id/typeOfTimeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/white"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:textColor="#2F2543"
+            android:fontFamily="@font/gotham"
+            android:textSize="15sp"
+            android:text="Type of time"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="6dp"
+            android:textColor="#2F2543"
+            android:fontFamily="@font/gotham"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:text="Weekly"
             />
-    </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_height="1dp"
+            android:background="#8d8d8d"/>
+    </LinearLayout>
 
 </LinearLayout>
