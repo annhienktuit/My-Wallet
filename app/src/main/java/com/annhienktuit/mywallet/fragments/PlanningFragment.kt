@@ -66,8 +66,8 @@ class PlanningFragment : Fragment() {
         recyclerWallet.setHasFixedSize(true)
     }
     fun createSavings() {
-        savingList.add(Saving("iPhone 11 Promax", "33,500,000", "11,000,000"))
-        savingList.add(Saving("House", "13,745,000,000", "0"))
+        savingList.add(Saving("Buy iPhone 13 ", "33,500,000", "11,000,000"))
+        savingList.add(Saving("Buy Crypto", "13,745,000,000", "0"))
         recyclerSaving.adapter = SavingAdapter(savingList)
         recyclerSaving.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerSaving.setHasFixedSize(true)

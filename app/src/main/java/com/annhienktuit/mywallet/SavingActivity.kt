@@ -25,10 +25,10 @@ class SavingActivity : AppCompatActivity() {
     }
     fun addSavingDetail() {
         savingDetailList.add(SavingDetail("Top Up", "Today - 9:18 AM","60,000"))
-        savingDetailList.add(SavingDetail("adsf", "Today - 9:18 AM","60,000"))
-        savingDetailList.add(SavingDetail("Tádfafp", "Today - 9:18 AM","60,000"))
-        savingDetailList.add(SavingDetail("Tofasdfadfp", "Today - 9:18 AM","60,000"))
-        savingDetailList.add(SavingDetail("Tădfasd", "Today - 9:18 AM","60,000"))
-        savingDetailList.add(SavingDetail("Top Up", "Today - 9:18 AM","60,000"))
+        savingDetailList.add(SavingDetail("Buy DOTS", "Today - 9:18 AM","60,000"))
+        savingDetailList.add(SavingDetail("Buy ADA", "Today - 9:18 AM","60,000"))
+        savingDetailList.add(SavingDetail("Restaurant with girls", "Today - 9:18 AM","60,000"))
+        savingDetailList.add(SavingDetail("Hotel", "Today - 9:18 AM","60,000"))
+        savingDetailList.add(SavingDetail("Tuition fee", "Today - 9:18 AM","60,000"))
     }
 }

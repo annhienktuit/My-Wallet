@@ -57,7 +57,7 @@
             android:fontFamily="@font/gotham_bold"
             android:textColor="@color/white"
             android:textSize="24sp"
-            android:text="iPhone 11 Promax"/>
+            android:text="Buy Iphone 13"/>
         <LinearLayout
             android:layout_below="@+id/nameOfSavingProduct"
             android:layout_marginTop="50dp"
