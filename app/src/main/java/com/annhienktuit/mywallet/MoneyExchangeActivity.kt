@@ -79,7 +79,7 @@ class MoneyExchangeActivity : AppCompatActivity() {
                         val (digits, notDigits) = e.toString().partition { it.isDigit() }
                         Log.i("test",digits)
                         textViewCurrencies.setText("$baseCurrency to $convertedToCurrency")
-                        textViewResult.setText((digits.toFloat()/1000000 * et_firstConversion.text.toString().toFloat()).toString())
+                        textViewResult.setText((digits.toFloat()/100000 * et_firstConversion.text.toString().toFloat()).toString())
                         Log.e("Main","$e")
                     }
                 }
