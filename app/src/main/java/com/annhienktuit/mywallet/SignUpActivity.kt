@@ -45,6 +45,7 @@ class SignUpActivity : AppCompatActivity() {
         super.onStart()
         val user: FirebaseUser? = firebaseAuth.currentUser
         if(user !== null) {
+            toast("Already Logged In")
             startActivity(Intent(this, MainActivity::class.java))
         }
     }

@@ -42,6 +42,14 @@ class LoginActivity : AppCompatActivity() {
             signIn()
         }
     }
+    override fun onStart() {
+        super.onStart()
+        val user: FirebaseUser? = firebaseAuth.currentUser
+        if(user !== null) {
+            toast("Already Logged In")
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+    }
 
     private fun notEmpty(): Boolean = signInEmail.isNotEmpty() && signInPassword.isNotEmpty()
     private fun isEmailFormat():Boolean = edtEmail.text.matches(emailPattern.toRegex())
