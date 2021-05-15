@@ -11,6 +11,10 @@ import android.widget.Button
 import android.widget.Toast
 import com.annhienktuit.mywallet.*
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_user.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -67,6 +71,7 @@ class UserFragment : Fragment() {
         val btnMap = view?.findViewById<Button>(R.id.btnMap)
         btnMap?.setOnClickListener {
             activity?.let {
+                Log.i("status", "ok")
                 val intent = Intent(it, MapActivity::class.java)
                 it.startActivity(intent)
             }
@@ -84,6 +89,15 @@ class UserFragment : Fragment() {
             activity?.let {
                 val intent = Intent(it, InterestRateActivity::class.java)
                 it.startActivity(intent)
+            }
+        }
+        val btnPush = view?.findViewById<Button>(R.id.btnPush)
+        btnPush?.setOnClickListener {
+            activity?.let {
+                val database = Firebase.database
+                val myRef = database.getReference("message")
+                myRef.setValue("Hello, World!")
+                Log.i("status", "ok")
             }
         }
 

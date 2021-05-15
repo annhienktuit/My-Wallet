@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -19,13 +18,11 @@ import com.annhienktuit.mywallet.fragments.HomeFragment
 import com.annhienktuit.mywallet.fragments.PlanningFragment
 import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
-import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_user.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
+
         if(user == null) {
             startActivity(Intent(this, SignUpActivity::class.java))
         }
@@ -72,13 +70,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         //Fragment transition by view pager
-        var adapter = MainPagerAdapter(supportFragmentManager, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
+        var adapter = MainPagerAdapter(
+            supportFragmentManager,
+            FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+        )
         containerViewPager.adapter = adapter
 
         //When slide or choose a specific fragment, bottom navigation view icons will change their color to corresponding fragment
         containerViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
 
             }
 
@@ -96,7 +101,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
+        bottomNavigationView.setOnNavigationItemSelectedListener(object :
+            BottomNavigationView.OnNavigationItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when (item.itemId) {
                     R.id.navHome -> containerViewPager.currentItem = 0
@@ -121,8 +127,20 @@ class MainActivity : AppCompatActivity() {
 
     fun addTransaction() {
         transactionList.add(RecentTransaction("Food and Drink", "Today - Le Khai Hoan", "-20,000"))
-        transactionList.add(RecentTransaction("Shopping", "Yesterday - Tran Thanh Hien", "-179,000"))
-        transactionList.add(RecentTransaction("Game", "Yesterday - Nguyen Huu An Nhien", "+220,000"))
+        transactionList.add(
+            RecentTransaction(
+                "Shopping",
+                "Yesterday - Tran Thanh Hien",
+                "-179,000"
+            )
+        )
+        transactionList.add(
+            RecentTransaction(
+                "Game",
+                "Yesterday - Nguyen Huu An Nhien",
+                "+220,000"
+            )
+        )
     }
 
     fun getWalletList(): List<Wallet> {

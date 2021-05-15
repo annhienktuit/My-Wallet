@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "686018601473",
+    "firebase_url": "https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "my-wallet-80ed7",
     "storage_bucket": "my-wallet-80ed7.appspot.com"
   },
@@ -20,7 +21,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyACVtTpbWF1p1xsrG4Z42qiIPLPIXIMZNY"
+          "current_key": "AIzaSyBqkDXEuYg_kuequlRY1fXf759Eqo-dx4I"
         }
       ],
       "services": {
