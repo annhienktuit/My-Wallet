@@ -19,7 +19,10 @@ import com.annhienktuit.mywallet.fragments.HomeFragment
 import com.annhienktuit.mywallet.fragments.PlanningFragment
 import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
+import com.annhienktuit.mywallet.utils.Extensions.toast
+import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_user.*
@@ -37,6 +40,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
+        if(user == null) {
+            startActivity(Intent(this, SignUpActivity::class.java))
+        }
         addWallet()
         addTransaction()
         //hide action bar
