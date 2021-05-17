@@ -95,11 +95,10 @@ class UserFragment : Fragment() {
                 try {
                     val database = FirebaseDatabase.getInstance(FirebaseInstance.INSTANCE_URL)
                     val myRef = database.getReference("messages")
-                    myRef.setValue((num + 1 ).toString()).addOnCompleteListener {
+                    myRef.setValue(("test1").toString()).addOnCompleteListener {
                         Log.i("pushtoFirebase","200")
                     }.addOnFailureListener {
                         Log.i("pushtoFirebase","500")
-
                     }
                 }
                 catch (e:Exception){
