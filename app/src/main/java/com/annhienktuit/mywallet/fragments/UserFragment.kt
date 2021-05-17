@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.annhienktuit.mywallet.*
+import com.annhienktuit.mywallet.utils.FirebaseInstance
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -27,6 +28,7 @@ class UserFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    val num:Int = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -91,9 +93,9 @@ class UserFragment : Fragment() {
         btnPush?.setOnClickListener {
             activity?.let {
                 try {
-                    val database = FirebaseDatabase.getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app")
+                    val database = FirebaseDatabase.getInstance(FirebaseInstance.INSTANCE_URL)
                     val myRef = database.getReference("messages")
-                    myRef.setValue("cc").addOnCompleteListener {
+                    myRef.setValue((num + 1 ).toString()).addOnCompleteListener {
                         Log.i("pushtoFirebase","200")
                     }.addOnFailureListener {
                         Log.i("pushtoFirebase","500")
