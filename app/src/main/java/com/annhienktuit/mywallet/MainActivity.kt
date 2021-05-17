@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
-
         if(user == null) {
             startActivity(Intent(this, SignUpActivity::class.java))
         }

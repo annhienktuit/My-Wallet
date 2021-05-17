@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "686018601473-dsf90sm3thl797eobivkft4q0rtnuj22.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.annhienktuit.mywallet",
+            "certificate_hash": "92130ee6add370483c948e92bfdfaf3f7e517dcf"
+          }
+        },
+        {
           "client_id": "686018601473-3qmin1ik8n4ea7o1bcqmt3s06bq5ao9f.apps.googleusercontent.com",
           "client_type": 3
         }
