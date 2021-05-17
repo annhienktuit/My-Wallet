@@ -5,6 +5,244 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E5E5E5"
+    android:padding="20dp"
     tools:context=".CardActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_back_card"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginLeft="-10dp"
+            app:iconGravity="textEnd"
+            android:insetLeft="0dp"
+            android:insetBottom="0dp"
+            android:insetRight="0dp"
+            android:insetTop="0dp"
+            app:icon="@drawable/ic_back"
+            app:iconTint="#4CAF50"
+            style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="CARD INFO"
+            android:textSize="24sp"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/gotham_bold"
+            android:textColor="#4CAF50"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cardInfo"
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imageCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/cardbackground_world"/>
+        <TextView
+            android:id="@+id/bankingName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ocramedium"
+            android:layout_alignParentRight="true"
+            android:layout_margin="15dp"
+            android:textColor="@color/white"
+            android:text="Bankname"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/validThr"
+            android:layout_below="@+id/numberCard"
+            android:layout_marginStart="120dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VALID \nTHRU"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/dateValid"
+            android:layout_below="@+id/numberCard"
+            android:layout_toRightOf="@+id/validThr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/kreditback"
+            android:layout_marginTop="5dp"
+            android:text="06/23"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+        <TextView
+            android:id="@+id/numberCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:fontFamily="@font/kreditback"
+            android:textSize="30sp"
+            android:layout_marginTop="70dp"
+            android:layout_marginStart="20dp"
+            android:text="4000 9999 5678 1234"/>
+        <TextView
+            android:id="@+id/nameCard"
+            android:layout_below="@+id/validThr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/kreditback"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:text="CARDHOLDER NAME"
+            android:layout_marginStart="20dp"/>
+
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardNameLayout"
+        android:layout_below="@+id/cardInfo"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+            <TextView
+                android:id="@+id/labelCardName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_bold"
+                android:text="Name"
+                android:textSize="18sp"
+                android:textColor="#2F2543"/>
+            <TextView
+                android:id="@+id/NameContent"
+                android:layout_below="@+id/labelCardName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham"
+                android:textColor="#2F2543"
+                android:textSize="16sp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:text="LE KHAI HOAN"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopyName"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_alignParentEnd="true"
+                app:iconGravity="textStart"
+                android:insetLeft="0dp"
+                android:insetBottom="0dp"
+                android:insetRight="0dp"
+                android:insetTop="0dp"
+                app:icon="@drawable/ic_copy"
+                app:iconTint="@color/black"
+                style="@style/Widget.MaterialComponents.Button.TextButton" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/accountNumber"
+        android:layout_below="@+id/cardNameLayout"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+            <TextView
+                android:id="@+id/labelAccountNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_bold"
+                android:text="Account Number"
+                android:textSize="18sp"
+                android:textColor="#2F2543"/>
+            <TextView
+                android:id="@+id/NoAccount"
+                android:layout_below="@+id/labelAccountNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham"
+                android:textColor="#2F2543"
+                android:textSize="16sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:text="516516516165"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopyAccountNumber"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_alignParentEnd="true"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                android:insetLeft="0dp"
+                android:insetBottom="0dp"
+                android:insetRight="0dp"
+                android:insetTop="0dp"
+                app:icon="@drawable/ic_copy"
+                app:iconTint="@color/black"
+                style="@style/Widget.MaterialComponents.Button.TextButton" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardNumber"
+        android:layout_below="@+id/accountNumber"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+            <TextView
+                android:id="@+id/labelCardNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_bold"
+                android:text="Card Number"
+                android:textSize="18sp"
+                android:textColor="#2F2543"/>
+
+            <TextView
+                android:id="@+id/NoCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/labelCardNumber"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/gotham"
+                android:text="4000999956781234"
+                android:textColor="#2F2543"
+                android:textSize="16sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopyCardNumber"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_alignParentEnd="true"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                android:insetLeft="0dp"
+                android:insetBottom="0dp"
+                android:insetRight="0dp"
+                android:insetTop="0dp"
+                app:icon="@drawable/ic_copy"
+                app:iconTint="@color/black"
+                style="@style/Widget.MaterialComponents.Button.TextButton" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

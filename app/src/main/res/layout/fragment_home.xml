@@ -117,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:fontFamily="@font/gotham"
+                    android:fontFamily="@font/gotham_bold"
                     android:text="Income"
                     android:textColor="#828282" />
 
@@ -148,7 +148,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:fontFamily="@font/gotham"
+                    android:fontFamily="@font/gotham_bold"
                     android:text="Expense"
                     android:textColor="#828282" />
 
