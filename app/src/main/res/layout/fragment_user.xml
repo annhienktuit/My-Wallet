@@ -54,5 +54,12 @@
         android:layout_marginTop="250dp"
         android:text="Interest rate"/>
 
+    <Button
+        android:id="@+id/btnPush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test push to firebase DB"
+        android:layout_marginTop="300dp"/>
+
 
 </FrameLayout>
