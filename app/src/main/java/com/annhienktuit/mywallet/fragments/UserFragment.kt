@@ -3,15 +3,15 @@ package com.annhienktuit.mywallet.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.annhienktuit.mywallet.*
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
-import kotlinx.android.synthetic.main.fragment_user.*
+import com.google.firebase.database.FirebaseDatabase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,7 +58,7 @@ class UserFragment : Fragment() {
         val btnSignOut = view?.findViewById<Button>(R.id.btnLogOut)
         btnSignOut?.setOnClickListener {
             firebaseAuth.signOut()
-            Toast.makeText(activity, "Signed Out",Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, "Signed Out", Toast.LENGTH_LONG).show()
             activity?.let {
                 val intent = Intent(it, MainActivity::class.java)
                 it.startActivity(intent)
@@ -67,6 +67,7 @@ class UserFragment : Fragment() {
         val btnMap = view?.findViewById<Button>(R.id.btnMap)
         btnMap?.setOnClickListener {
             activity?.let {
+                Log.i("status", "ok")
                 val intent = Intent(it, MapActivity::class.java)
                 it.startActivity(intent)
             }
@@ -84,6 +85,27 @@ class UserFragment : Fragment() {
             activity?.let {
                 val intent = Intent(it, InterestRateActivity::class.java)
                 it.startActivity(intent)
+            }
+        }
+        val btnPush = view?.findViewById<Button>(R.id.btnPush)
+        btnPush?.setOnClickListener {
+            activity?.let {
+                try {
+                    val database = FirebaseDatabase.getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app")
+                    val myRef = database.getReference("messages")
+                    myRef.setValue("cc").addOnCompleteListener {
+                        Log.i("pushtoFirebase","200")
+                    }.addOnFailureListener {
+                        Log.i("pushtoFirebase","500")
+
+                    }
+                }
+                catch (e:Exception){
+                    print(e)
+                }
+
+
+
             }
         }
 
