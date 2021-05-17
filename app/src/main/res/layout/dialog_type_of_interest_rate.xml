@@ -31,7 +31,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Simple interest"
-            android:checked="true"
             android:textSize="15sp"/>
 
         <RadioButton
@@ -44,6 +43,7 @@
     </RadioGroup>
 
     <Button
+        android:id="@+id/submitBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAllCaps="false"

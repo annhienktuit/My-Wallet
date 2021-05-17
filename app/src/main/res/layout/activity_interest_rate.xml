@@ -162,7 +162,7 @@
             />
 
         <TextView
-            android:id="@+id/TypeOfInterest"
+            android:id="@+id/tvTypeOfInterest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="21dp"
@@ -172,7 +172,6 @@
             android:fontFamily="@font/gotham"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:text="Simple interest"
             />
 
         <View
@@ -200,6 +199,7 @@
             />
 
         <TextView
+            android:id="@+id/tvTypeOfTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="21dp"
@@ -209,7 +209,6 @@
             android:fontFamily="@font/gotham"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:text="Weekly"
             />
 
         <View
