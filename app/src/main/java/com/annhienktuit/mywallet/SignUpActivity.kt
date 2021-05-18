@@ -10,11 +10,15 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
 import com.annhienktuit.mywallet.utils.Extensions.toast
+import com.annhienktuit.mywallet.utils.FirebaseInstance
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_login.edtPassword
 import kotlinx.android.synthetic.main.activity_login.edtEmail
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.fragment_user.*
+import java.security.MessageDigest
 
 class SignUpActivity : AppCompatActivity() {
     lateinit var userEmail: String
@@ -48,6 +52,15 @@ class SignUpActivity : AppCompatActivity() {
             toast("Already Logged In")
             startActivity(Intent(this, MainActivity::class.java))
         }
+        hash("annhienkt")
+    }
+    fun hash(pw: String): String {
+        val bytes = this.toString().toByteArray()
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        val result = digest.fold(pw, { str, it -> str + "%02x".format(it) })
+        Log.i("hash", result)
+        return result
     }
 
     private fun notEmpty(): Boolean = edtEmail.text.toString().trim().isNotEmpty() &&
@@ -91,7 +104,10 @@ class SignUpActivity : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         toast(getString(R.string.account_created))
-                        Log.i("userArray: ", createAccountInputsArray[3].text.toString())
+                        val database = FirebaseDatabase.getInstance(FirebaseInstance.INSTANCE_URL)
+                        val myRef = database.getReference("users")
+                        myRef.push().setValue(userEmail)
+                        myRef.push().setValue(userPassword)
                         val intentMain = Intent(this, MainActivity::class.java)
                         intentMain.putExtra("Full Name",createAccountInputsArray[3].text.toString() + " " +createAccountInputsArray[4].text.toString())
                         startActivity(intentMain)
