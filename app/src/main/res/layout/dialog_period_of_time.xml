@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".PeriodOfTimeDialog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -29,6 +31,7 @@
         />
 
     <LinearLayout
+        android:id="@+id/beginningDateLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -37,7 +40,7 @@
 
         <TextView
             android:layout_gravity="center"
-            android:id="@+id/TimeBegin"
+            android:id="@+id/tvBeginningDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -46,7 +49,6 @@
             android:fontFamily="@font/gotham"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:text="Today"
             />
 
         <View
@@ -69,6 +71,7 @@
         />
 
     <LinearLayout
+        android:id="@+id/endingDateLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -76,7 +79,7 @@
         android:layout_marginRight="30dp">
 
         <TextView
-            android:id="@+id/TimeEnd"
+            android:id="@+id/tvEndingDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -86,7 +89,6 @@
             android:fontFamily="@font/gotham"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:text="Today"
             />
 
         <View
@@ -104,20 +106,6 @@
         android:layout_marginRight="30dp"
         android:layout_marginTop="15dp">
 
-
-        <Button
-            android:id="@+id/cancelBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/submitBtn"
-            android:textAllCaps="false"
-            android:text="Cancel"
-            android:textSize="12sp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="15dp"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            />
-
         <Button
             android:id="@+id/submitBtn"
             android:layout_width="wrap_content"
@@ -129,7 +117,6 @@
             android:layout_marginBottom="15dp"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="15dp"
-
             />
 
     </RelativeLayout>
