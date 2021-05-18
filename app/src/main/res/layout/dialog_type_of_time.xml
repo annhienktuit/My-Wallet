@@ -37,31 +37,31 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="per 14 days"
+            android:text="Per 14 days"
             android:textSize="15sp"/>
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="per month"
+            android:text="Per month"
             android:textSize="15sp"/>
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="per 3 months"
+            android:text="Per 3 months"
             android:textSize="15sp"/>
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="per 6 months"
+            android:text="Per 6 months"
             android:textSize="15sp"/>
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="per year"
+            android:text="Per year"
             android:textSize="15sp"/>
     </RadioGroup>
 
