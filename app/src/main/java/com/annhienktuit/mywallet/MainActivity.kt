@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window: Window = window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = Color.parseColor("#4CAF50")
+            window.statusBarColor = Color.parseColor("#FFFFFF")
         }
 
         //modify the display of bottom navigation view

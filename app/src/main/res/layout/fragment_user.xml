@@ -61,5 +61,13 @@
         android:text="test push to firebase DB"
         android:layout_marginTop="300dp"/>
 
+    <EditText
+        android:id="@+id/edtfirebase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="350dp"
+        android:ems="10"
+        android:text="Test data" />
+
 
 </FrameLayout>
