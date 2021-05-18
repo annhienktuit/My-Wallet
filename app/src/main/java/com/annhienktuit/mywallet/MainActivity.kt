@@ -18,6 +18,7 @@ import com.annhienktuit.mywallet.fragments.HomeFragment
 import com.annhienktuit.mywallet.fragments.PlanningFragment
 import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
+import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseUser
@@ -59,13 +60,10 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(2).isEnabled = false
         //--------------------------------------------
-
-        val intentGetName = intent
-        val userFullName = intentGetName.getStringExtra("Full Name")
-        if (userFullName != null) {
-            Log.i("fullname", userFullName)
+        if (user !== null) {
+            toast("Hello ${user!!.email}")
         } else {
-            Log.i("fullname", "nhu cc")
+            Log.i("logged in", "false")
         }
 
         //Fragment transition by view pager
