@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E5E5E5"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
     <com.google.android.material.bottomappbar.BottomAppBar
@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         style="@style/Widget.MaterialComponents.BottomAppBar"
+        android:background="@android:color/transparent"
         app:fabAlignmentMode="center">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -39,7 +40,7 @@
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/containerViewPager"
-        android:layout_marginBottom="?attr/actionBarSize"
+        android:layout_marginBottom="59dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
