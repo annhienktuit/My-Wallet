@@ -20,6 +20,10 @@
             android:theme="@style/Theme.Design.Light.NoActionBar">
 
         </activity>
+        <activity android:name=".CardActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+
+        </activity>
         <activity android:name=".InterestRateActivity" />
         <activity android:name=".MoneyExchangeActivity" />
         <activity

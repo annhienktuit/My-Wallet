@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:elevation="8dp"
+        app:cardElevation="4dp">
+            <RelativeLayout
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/cardName"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ATM Card in Agribank"
+                    android:fontFamily="@font/gotham_bold"
+                    android:textSize="16sp"
+                    android:textColor="#2F2543"/>
+                <TextView
+                    android:id="@+id/personName"
+                    android:layout_marginStart="10dp"
+                    android:layout_below="@+id/cardName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Le Khai Hoan"
+                    android:fontFamily="@font/gotham"
+                    android:textSize="14sp"
+                    android:textColor="#2F2543"/>
+                <TextView
+                    android:id="@+id/bankName"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_below="@+id/cardName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gotham_bold"
+                    android:textSize="14sp"
+                    android:textColor="#4CAF50"
+                    android:text="Agribank"/>
+
+
+            </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

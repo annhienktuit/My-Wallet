@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.MainActivity
 import com.annhienktuit.mywallet.R
+import com.annhienktuit.mywallet.`object`.Card
 import com.annhienktuit.mywallet.`object`.Saving
 import com.annhienktuit.mywallet.`object`.Wallet
+import com.annhienktuit.mywallet.adapter.CardAdapter
 import com.annhienktuit.mywallet.adapter.SavingAdapter
 import com.annhienktuit.mywallet.adapter.WalletAdapter
 
@@ -24,8 +26,10 @@ class PlanningFragment : Fragment() {
     private var param2: String? = null
     var walletList = ArrayList<Wallet>()
     var savingList = ArrayList<Saving>()
+    var cardList = ArrayList<Card>()
     lateinit var recyclerWallet: RecyclerView
     lateinit var recyclerSaving: RecyclerView
+    lateinit var recyclerCard: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +47,10 @@ class PlanningFragment : Fragment() {
         var view = inflater.inflate(R.layout.fragment_planning, container, false)
         recyclerWallet = view.findViewById(R.id.recyclerWalletDetail)
         recyclerSaving = view.findViewById(R.id.recyclerSavings)
+        recyclerCard = view.findViewById(R.id.recyclerCards)
         createWallets()
         createSavings()
+        createCards()
         return view
     }
 
@@ -71,5 +77,13 @@ class PlanningFragment : Fragment() {
         recyclerSaving.adapter = SavingAdapter(savingList)
         recyclerSaving.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerSaving.setHasFixedSize(true)
+    }
+    fun createCards() {
+        cardList.add(Card("The ATM Vietcombank", "Le Khai Hoan", "Vietcombank"))
+        cardList.add(Card("The Visa BIDV", "Nguyen Huu An Nhien", "BIDV"))
+        cardList.add(Card("The Visa Vietcombank", "Le Khai Hoan", "Vietcombank"))
+        recyclerCard.adapter = CardAdapter(cardList)
+        recyclerCard.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        recyclerCard.setHasFixedSize(true)
     }
 }
