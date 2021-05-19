@@ -81,6 +81,8 @@ class PeriodOfTimeDialog: DialogFragment() {
                     else {
                         (activity as InterestRateActivity).tvPeriodOfTime.text = "${begin.text.toString()} - ${end.text.toString()} ($days days)"
                     }
+
+                (activity as InterestRateActivity).invisiblePeriod.text = days.toString()
             }
 
         }
