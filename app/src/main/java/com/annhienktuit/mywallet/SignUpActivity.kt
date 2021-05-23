@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.widget.EditText
 import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseInstance
+import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
@@ -23,6 +24,8 @@ import java.security.MessageDigest
 class SignUpActivity : AppCompatActivity() {
     lateinit var userEmail: String
     lateinit var userPassword: String
+    lateinit var userName: String
+    lateinit var userUID: String
     lateinit var createAccountInputsArray: Array<EditText>
     var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+" //bieu thuc regex cho email format
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,15 +102,12 @@ class SignUpActivity : AppCompatActivity() {
         if (identicalPassword()) {
             userEmail = edtEmail.text.toString().trim()
             userPassword = edtPassword.text.toString().trim()
-
+            userName = (edtFirstName.text.toString() + edtLastName.text.toString()).trim()
             firebaseAuth.createUserWithEmailAndPassword(userEmail, userPassword)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         toast(getString(R.string.account_created))
-                        val database = FirebaseDatabase.getInstance(FirebaseInstance.INSTANCE_URL)
-                        val myRef = database.getReference("users")
-                        myRef.push().setValue(userEmail)
-                        myRef.push().setValue(userPassword)
+                        pushToFireBase(userName,userEmail,userPassword)
                         val intentMain = Intent(this, MainActivity::class.java)
                         intentMain.putExtra("Full Name",createAccountInputsArray[3].text.toString() + " " +createAccountInputsArray[4].text.toString())
                         startActivity(intentMain)
@@ -117,6 +117,17 @@ class SignUpActivity : AppCompatActivity() {
                     }
                 }
         }
+    }
+
+    private fun pushToFireBase(name: String, email: String, password: String){
+        val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
+        val uid = user!!.uid
+        val database = FirebaseDatabase.getInstance(FirebaseInstance.INSTANCE_URL)
+        var myRef = database.getReference("users").child(uid).child("name").setValue(name)
+        myRef = database.getReference("users").child(uid).child("email").setValue(email)
+        myRef = database.getReference("users").child(uid).child("password").setValue(password)
+
+
     }
 
 }
