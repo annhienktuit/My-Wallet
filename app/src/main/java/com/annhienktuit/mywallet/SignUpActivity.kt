@@ -61,8 +61,10 @@ class SignUpActivity : AppCompatActivity() {
         val bytes = this.toString().toByteArray()
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
-        val result = digest.fold(pw, { str, it -> str + "%02x".format(it) })
-        Log.i("hash", result)
+        var result = digest.fold(pw, { str, it -> str + "%02x".format(it) })
+        Log.i("currentPass", pw)
+        result = result.replace("$pw","")
+        Log.i("hashedPass", result)
         return result
     }
 
@@ -122,10 +124,11 @@ class SignUpActivity : AppCompatActivity() {
     private fun pushToFireBase(name: String, email: String, password: String){
         val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
         val uid = user!!.uid
+        var hashedPassword = hash(password)
         val database = FirebaseDatabase.getInstance(FirebaseInstance.INSTANCE_URL)
         var myRef = database.getReference("users").child(uid).child("name").setValue(name)
         myRef = database.getReference("users").child(uid).child("email").setValue(email)
-        myRef = database.getReference("users").child(uid).child("password").setValue(password)
+        myRef = database.getReference("users").child(uid).child("password").setValue(hashedPassword)
 
 
     }
