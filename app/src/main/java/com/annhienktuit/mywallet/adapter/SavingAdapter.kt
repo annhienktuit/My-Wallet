@@ -1,23 +1,18 @@
 package com.annhienktuit.mywallet.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
-import com.annhienktuit.mywallet.SavingActivity
-import com.annhienktuit.mywallet.`object`.RecentTransaction
+import com.annhienktuit.mywallet.activity.SavingActivity
 import com.annhienktuit.mywallet.`object`.Saving
-import kotlinx.android.synthetic.main.layout_recent_transaction_1.view.*
-import kotlinx.android.synthetic.main.layout_recent_transaction_2.view.*
+import com.annhienktuit.mywallet.activity.MainActivity
 import kotlinx.android.synthetic.main.layout_saving_1.view.*
 import kotlinx.android.synthetic.main.layout_saving_2.view.*
-import kotlinx.android.synthetic.main.layout_wallet_item_2.view.*
 
 class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class SavingViewHolder1(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -57,6 +52,7 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
         }
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, SavingActivity::class.java)
+            intent.putExtra("position", position)
             holder.itemView.context.startActivity(intent)
         }
     }

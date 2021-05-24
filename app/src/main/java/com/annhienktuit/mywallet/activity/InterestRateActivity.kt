@@ -1,8 +1,12 @@
-package com.annhienktuit.mywallet
+package com.annhienktuit.mywallet.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.annhienktuit.mywallet.*
+import com.annhienktuit.mywallet.dialog.DoneInterestDialog
+import com.annhienktuit.mywallet.dialog.PeriodOfTimeDialog
+import com.annhienktuit.mywallet.dialog.TypeOfInterestDialog
+import com.annhienktuit.mywallet.dialog.TypeOfTimeDialog
 import kotlinx.android.synthetic.main.activity_interest_rate.*
 
 class InterestRateActivity : AppCompatActivity() {

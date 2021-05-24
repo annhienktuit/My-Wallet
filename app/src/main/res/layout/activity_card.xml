@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#E5E5E5"
     android:padding="20dp"
-    tools:context=".CardActivity">
+    tools:context=".activity.CardActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

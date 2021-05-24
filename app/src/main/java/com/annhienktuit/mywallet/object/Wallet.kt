@@ -1,4 +1,7 @@
 package com.annhienktuit.mywallet.`object`
 
 
-data class Wallet(val nameOfWallet: String, val moneyOfWallet: String)
+data class Wallet(
+    val moneyOfWallet: String? = null,
+    val nameOfWallet: String? = null
+)

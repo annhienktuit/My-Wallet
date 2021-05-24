@@ -37,14 +37,14 @@ class RecentTransactionAdapter(private val transactionList: List<RecentTransacti
         val currentItem = transactionList[position]
         if (position % 2 == 0) {
             var holder = holder as TransactionViewHolder1
-            holder.name1.text = currentItem.nameOfTransaction
-            holder.date1.text = currentItem.dateAndName
-            holder.money1.text = currentItem.moneyChange
+            holder.name1.text = currentItem.nameOfTrans
+            holder.date1.text = (currentItem.dayOfTrans + " - " + currentItem.timeOfTrans)
+            holder.money1.text = currentItem.moneyOfTrans
         } else {
             var holder = holder as TransactionViewHolder2
-            holder.name2.text = currentItem.nameOfTransaction
-            holder.date2.text = currentItem.dateAndName
-            holder.money2.text = currentItem.moneyChange
+            holder.name2.text = currentItem.nameOfTrans
+            holder.date2.text = (currentItem.dayOfTrans + " - " + currentItem.timeOfTrans)
+            holder.money2.text = currentItem.moneyOfTrans
         }
     }
 

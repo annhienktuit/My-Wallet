@@ -1,7 +1,8 @@
-package com.annhienktuit.mywallet
+package com.annhienktuit.mywallet.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.annhienktuit.mywallet.R
 import kotlinx.android.synthetic.main.activity_card.*
 
 class CardActivity : AppCompatActivity() {

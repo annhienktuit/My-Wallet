@@ -1,4 +1,4 @@
-package com.annhienktuit.mywallet
+package com.annhienktuit.mywallet.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.*
+import com.annhienktuit.mywallet.R
 import kotlinx.android.synthetic.main.activity_money_exchange.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

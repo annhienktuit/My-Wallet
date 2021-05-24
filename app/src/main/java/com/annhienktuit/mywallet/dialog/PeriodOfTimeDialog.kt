@@ -1,10 +1,11 @@
-package com.annhienktuit.mywallet
+package com.annhienktuit.mywallet.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.annhienktuit.mywallet.R
 
 class PeriodOfTimeDialog: DialogFragment() {
     override fun onCreateView(

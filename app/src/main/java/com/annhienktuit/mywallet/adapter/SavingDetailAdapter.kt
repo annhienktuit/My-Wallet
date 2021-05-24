@@ -27,8 +27,8 @@ class SavingDetailAdapter(private val savingDetailList: List<SavingDetail>) : Re
         val currentItem = savingDetailList[position]
         var holder = holder as SavingDetailViewHolder
         holder.name.text = currentItem.nameOfSaving
-        holder.money.text = currentItem.moneyOfSaving
-        holder.date.text = currentItem.dateOfSaving
+        holder.money.text = "+ " + currentItem.costOfSaving
+        holder.date.text = currentItem.dayOfSaving + " - " + currentItem.timeOfSaving
     }
 
     override fun getItemCount() = savingDetailList.size

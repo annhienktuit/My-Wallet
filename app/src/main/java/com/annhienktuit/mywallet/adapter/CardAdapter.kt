@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.annhienktuit.mywallet.CardActivity
+import com.annhienktuit.mywallet.activity.CardActivity
 import com.annhienktuit.mywallet.R
-import com.annhienktuit.mywallet.SavingActivity
 import com.annhienktuit.mywallet.`object`.Card
 import kotlinx.android.synthetic.main.layout_card_planning.view.*
 
@@ -29,7 +28,7 @@ class CardAdapter(private val cardList: List<Card>) : RecyclerView.Adapter<Recyc
         var holder = holder as CardViewHolder
         holder.card.text = currentItem.nameCard
         holder.person.text = currentItem.namePerson
-        holder.bank.text = currentItem.nameBanking
+        holder.bank.text = currentItem.bankName
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, CardActivity::class.java)
             holder.itemView.context.startActivity(intent)

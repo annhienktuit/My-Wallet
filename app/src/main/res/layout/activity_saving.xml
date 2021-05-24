@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E5E5E5"
-    tools:context=".SavingActivity">
+    tools:context=".activity.SavingActivity">
 
     <ImageView
         android:layout_width="match_parent"
@@ -53,14 +53,14 @@
             android:id="@+id/nameOfSavingProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:fontFamily="@font/gotham_bold"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:text="Buy Iphone 13"/>
         <LinearLayout
             android:layout_below="@+id/nameOfSavingProduct"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <RelativeLayout
@@ -74,14 +74,16 @@
                     android:fontFamily="@font/gotham_bold"
                     android:textSize="16sp"
                     android:textColor="@color/white"/>
+
                 <TextView
+                    android:id="@+id/percentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="56%"
-                    android:fontFamily="@font/gotham_bold"
-                    android:textSize="16sp"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/white"/>
+                    android:fontFamily="@font/gotham_bold"
+                    android:text="56%"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
                 <ProgressBar
                     android:layout_marginTop="10dp"
                     android:id="@+id/progressSavings"
@@ -95,20 +97,24 @@
                     android:layout_below="@+id/progressSavings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
+                        android:id="@+id/currentSaving"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_bold"
                         android:text="13,532,000"
                         android:textColor="@color/white"
-                        android:fontFamily="@font/gotham_bold"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
+
                     <TextView
+                        android:id="@+id/totalSaving"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham"
                         android:text=" of 33,990,000 VND"
                         android:textColor="@color/white"
-                        android:fontFamily="@font/gotham"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

@@ -1,4 +1,4 @@
-package com.annhienktuit.mywallet
+package com.annhienktuit.mywallet.activity
 
 import android.content.Intent
 import android.graphics.Color
@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
+import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -94,6 +95,7 @@ class SignUpActivity : AppCompatActivity() {
                         Log.i("userArray: ", createAccountInputsArray[3].text.toString())
                         val intentMain = Intent(this, MainActivity::class.java)
                         intentMain.putExtra("Full Name",createAccountInputsArray[3].text.toString() + " " +createAccountInputsArray[4].text.toString())
+                        intentMain.putExtra("fulname", edtLastName.text.toString() + " " + edtFirstName.text.toString())
                         startActivity(intentMain)
                         finish()
                     } else {

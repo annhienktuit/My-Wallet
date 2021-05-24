@@ -1,4 +1,4 @@
-package com.annhienktuit.mywallet
+package com.annhienktuit.mywallet.activity
 
 import android.content.Intent
 import android.graphics.Color
@@ -8,14 +8,13 @@ import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
-import com.annhienktuit.mywallet.fragments.UserFragment
+import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.edtEmail
 import kotlinx.android.synthetic.main.activity_login.edtPassword
-import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class LoginActivity : AppCompatActivity() {
     lateinit var signInEmail: String

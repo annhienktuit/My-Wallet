@@ -1,7 +1,8 @@
 package com.annhienktuit.mywallet.`object`
 
 data class SavingDetail (
-    val nameOfSaving: String,
-    val dateOfSaving: String,
-    val moneyOfSaving: String
+    val costOfSaving: String? = null,
+    val dayOfSaving: String? = null,
+    val timeOfSaving: String? = null,
+    val nameOfSaving: String? = null
 )

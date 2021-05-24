@@ -1,4 +1,4 @@
-package com.annhienktuit.mywallet
+package com.annhienktuit.mywallet.activity
 
 import android.Manifest
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices

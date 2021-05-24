@@ -1,20 +1,22 @@
 package com.annhienktuit.mywallet.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.annhienktuit.mywallet.MainActivity
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.Card
 import com.annhienktuit.mywallet.`object`.Saving
 import com.annhienktuit.mywallet.`object`.Wallet
+import com.annhienktuit.mywallet.activity.MainActivity
 import com.annhienktuit.mywallet.adapter.CardAdapter
 import com.annhienktuit.mywallet.adapter.SavingAdapter
 import com.annhienktuit.mywallet.adapter.WalletAdapter
+import kotlinx.android.synthetic.main.fragment_home.*
+
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -37,6 +39,7 @@ class PlanningFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
     }
 
     override fun onCreateView(
@@ -45,12 +48,7 @@ class PlanningFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_planning, container, false)
-        recyclerWallet = view.findViewById(R.id.recyclerWalletDetail)
-        recyclerSaving = view.findViewById(R.id.recyclerSavings)
-        recyclerCard = view.findViewById(R.id.recyclerCards)
-        createWallets()
-        createSavings()
-        createCards()
+        setData(view)
         return view
     }
 
@@ -65,23 +63,20 @@ class PlanningFragment : Fragment() {
                 }
             }
     }
-    fun createWallets() {
-        walletList = (activity as MainActivity?)!!.getWalletList() as ArrayList<Wallet>
+    fun setData(view: View) {
+        var data = (activity as MainActivity)
+        walletList = data.getWalletList()!!
+        savingList = data.getSavingList()!!
+        cardList = data.getCardList()!!
+        recyclerWallet = view.findViewById(R.id.recyclerWalletDetail)
+        recyclerSaving = view.findViewById(R.id.recyclerSavings)
+        recyclerCard = view.findViewById(R.id.recyclerCards)
         recyclerWallet.adapter = WalletAdapter(walletList)
         recyclerWallet.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         recyclerWallet.setHasFixedSize(true)
-    }
-    fun createSavings() {
-        savingList.add(Saving("Buy iPhone 13 ", "33,500,000", "11,000,000"))
-        savingList.add(Saving("Buy Crypto", "13,745,000,000", "0"))
         recyclerSaving.adapter = SavingAdapter(savingList)
         recyclerSaving.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerSaving.setHasFixedSize(true)
-    }
-    fun createCards() {
-        cardList.add(Card("The ATM Vietcombank", "Le Khai Hoan", "Vietcombank"))
-        cardList.add(Card("The Visa BIDV", "Nguyen Huu An Nhien", "BIDV"))
-        cardList.add(Card("The Visa Vietcombank", "Le Khai Hoan", "Vietcombank"))
         recyclerCard.adapter = CardAdapter(cardList)
         recyclerCard.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerCard.setHasFixedSize(true)

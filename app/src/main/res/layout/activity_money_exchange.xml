@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:layout_gravity="start"
-    tools:context=".MoneyExchangeActivity"
+    tools:context=".activity.MoneyExchangeActivity"
     android:background="#E8E8E8">
     <!-- Thanh phan con 1-->
 

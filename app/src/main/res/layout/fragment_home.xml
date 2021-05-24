@@ -74,6 +74,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textBalance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -122,6 +123,7 @@
                     android:textColor="#828282" />
 
                 <TextView
+                    android:id="@+id/textIncome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham_bold"
@@ -153,6 +155,7 @@
                     android:textColor="#828282" />
 
                 <TextView
+                    android:id="@+id/textExpense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham_bold"

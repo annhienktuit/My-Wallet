@@ -1,13 +1,23 @@
-package com.annhienktuit.mywallet
+package com.annhienktuit.mywallet.activity
 
 import android.content.Intent
 import android.graphics.Color
+import android.os.AsyncTask
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
+import com.annhienktuit.mywallet.R
+import com.annhienktuit.mywallet.`object`.*
+import com.annhienktuit.mywallet.utils.FirebaseUtils
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_splash_screen.*
 class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,4 +41,5 @@ class SplashScreenActivity : AppCompatActivity() {
         }
         textViewTitle.animate().setDuration(1500).alpha(1f)
     }
+
 }
