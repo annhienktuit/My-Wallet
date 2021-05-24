@@ -46,7 +46,7 @@ class SavingActivity : AppCompatActivity() {
         tempDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
         tempDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.GRAY))
         tempDialog.show()
-        val mCountDownTimer = object : CountDownTimer(1500, 1000) {
+        val mCountDownTimer = object : CountDownTimer(1700, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 tempDialog.setMessage("Please wait...")
             }
@@ -90,9 +90,9 @@ class SavingActivity : AppCompatActivity() {
         private var product: String? = null
         private var total: String? = null
         var pos: Int = 0
-        set(value) {
-            field = value
-        }
+            set(value) {
+                field = value
+            }
         var db = FirebaseDatabase
             .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
             .getReference("datas").child(user?.uid.toString()).child("savings")
@@ -158,5 +158,3 @@ class SavingActivity : AppCompatActivity() {
     }
 
 }
-
-

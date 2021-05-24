@@ -31,6 +31,7 @@ class CardAdapter(private val cardList: List<Card>) : RecyclerView.Adapter<Recyc
         holder.bank.text = currentItem.bankName
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, CardActivity::class.java)
+            intent.putExtra("position", position)
             holder.itemView.context.startActivity(intent)
         }
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E5E5E5"
+    android:background="#FFFFFF"
     android:padding="20dp"
     tools:context=".activity.CardActivity">
 
@@ -40,13 +40,14 @@
         android:id="@+id/cardInfo"
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
+        android:elevation="10dp"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/imageCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:src="@drawable/cardbackground_world"/>
+            android:src="@drawable/mastercard"/>
         <TextView
             android:id="@+id/bankingName"
             android:layout_width="wrap_content"
@@ -60,7 +61,8 @@
         <TextView
             android:id="@+id/validThr"
             android:layout_below="@+id/numberCard"
-            android:layout_marginStart="120dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="VALID \nTHRU"
@@ -71,19 +73,19 @@
             android:layout_toRightOf="@+id/validThr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/kreditback"
-            android:layout_marginTop="5dp"
+            android:fontFamily="@font/creditcardfont"
+            android:layout_marginTop="15dp"
             android:text="06/23"
             android:textColor="@color/white"
-            android:textSize="25sp" />
+            android:textSize="12sp" />
         <TextView
             android:id="@+id/numberCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:fontFamily="@font/kreditback"
-            android:textSize="30sp"
-            android:layout_marginTop="70dp"
+            android:fontFamily="@font/creditcard"
+            android:textSize="21sp"
+            android:layout_marginTop="95dp"
             android:layout_marginStart="20dp"
             android:text="4000 9999 5678 1234"/>
         <TextView
@@ -91,8 +93,8 @@
             android:layout_below="@+id/validThr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/kreditback"
-            android:textSize="30sp"
+            android:fontFamily="@font/creditcardfont"
+            android:textSize="20sp"
             android:textColor="@color/white"
             android:layout_marginTop="10dp"
             android:text="CARDHOLDER NAME"
@@ -103,47 +105,55 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardNameLayout"
         android:layout_below="@+id/cardInfo"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         app:cardCornerRadius="15dp"
-        app:cardElevation="4dp"
+        app:cardElevation="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/recycleview_item_radius"
+            android:elevation="10sp"
             android:padding="10dp">
+
             <TextView
                 android:id="@+id/labelCardName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gotham_bold"
                 android:text="Name"
-                android:textSize="18sp"
-                android:textColor="#2F2543"/>
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/NameContent"
-                android:layout_below="@+id/labelCardName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/gotham"
-                android:textColor="#2F2543"
-                android:textSize="16sp"
+                android:layout_below="@+id/labelCardName"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
-                android:text="LE KHAI HOAN"/>
+                android:fontFamily="@font/gotham"
+                android:text="LE KHAI HOAN"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCopyName"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="52dp"
                 android:layout_height="52dp"
                 android:layout_alignParentEnd="true"
-                app:iconGravity="textStart"
                 android:insetLeft="0dp"
-                android:insetBottom="0dp"
-                android:insetRight="0dp"
                 android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
                 app:icon="@drawable/ic_copy"
-                app:iconTint="@color/black"
-                style="@style/Widget.MaterialComponents.Button.TextButton" />
+                app:iconGravity="textStart"
+                app:iconTint="@color/black" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
@@ -151,6 +161,8 @@
         android:id="@+id/accountNumber"
         android:layout_below="@+id/cardNameLayout"
         android:layout_marginTop="20dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         app:cardCornerRadius="15dp"
         app:cardElevation="4dp"
         android:layout_width="match_parent"
@@ -158,7 +170,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:background="@drawable/recycleview_item_radius">
             <TextView
                 android:id="@+id/labelAccountNumber"
                 android:layout_width="wrap_content"
@@ -166,14 +179,14 @@
                 android:fontFamily="@font/gotham_bold"
                 android:text="Account Number"
                 android:textSize="18sp"
-                android:textColor="#2F2543"/>
+                android:textColor="#FFFFFF"/>
             <TextView
                 android:id="@+id/NoAccount"
                 android:layout_below="@+id/labelAccountNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gotham"
-                android:textColor="#2F2543"
+                android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="20dp"
@@ -199,6 +212,8 @@
         android:id="@+id/cardNumber"
         android:layout_below="@+id/accountNumber"
         android:layout_marginTop="20dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         app:cardCornerRadius="15dp"
         app:cardElevation="4dp"
         android:layout_width="match_parent"
@@ -206,7 +221,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:background="@drawable/recycleview_item_radius">
             <TextView
                 android:id="@+id/labelCardNumber"
                 android:layout_width="wrap_content"
@@ -214,7 +230,7 @@
                 android:fontFamily="@font/gotham_bold"
                 android:text="Card Number"
                 android:textSize="18sp"
-                android:textColor="#2F2543"/>
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/NoCard"
@@ -225,7 +241,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/gotham"
                 android:text="4000999956781234"
-                android:textColor="#2F2543"
+                android:textColor="#FFFFFF"
                 android:textSize="16sp" />
 
             <com.google.android.material.button.MaterialButton

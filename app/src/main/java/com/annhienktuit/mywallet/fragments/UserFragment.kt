@@ -14,6 +14,7 @@ import com.annhienktuit.mywallet.activity.*
 import com.annhienktuit.mywallet.utils.FirebaseInstance
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.fragment_user.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -96,7 +97,7 @@ class UserFragment : Fragment() {
                 try {
                     val database = FirebaseDatabase.getInstance(FirebaseInstance.INSTANCE_URL)
                     val myRef = database.getReference("messages")
-                    myRef.setValue(("test1").toString()).addOnCompleteListener {
+                    myRef.setValue((edtfirebase.text.toString()).toString()).addOnCompleteListener {
                         Log.i("pushtoFirebase","200")
                     }.addOnFailureListener {
                         Log.i("pushtoFirebase","500")
