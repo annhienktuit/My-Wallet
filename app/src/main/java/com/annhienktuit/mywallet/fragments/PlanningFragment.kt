@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
@@ -16,7 +17,12 @@ import com.annhienktuit.mywallet.activity.MainActivity
 import com.annhienktuit.mywallet.adapter.CardAdapter
 import com.annhienktuit.mywallet.adapter.SavingAdapter
 import com.annhienktuit.mywallet.adapter.WalletAdapter
+import com.annhienktuit.mywallet.dialog.AddLimitationDialog
+import com.google.android.gms.dynamic.SupportFragmentWrapper
+import com.google.android.material.button.MaterialButton
+import kotlinx.android.synthetic.main.activity_saving.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_planning.*
 
 
 private const val ARG_PARAM1 = "param1"
@@ -44,6 +50,8 @@ class PlanningFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
+        //open add limitation dialog
+
     }
 
     override fun onCreateView(
@@ -52,6 +60,15 @@ class PlanningFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_planning, container, false)
+
+        val btnAddLimitation: MaterialButton = view.findViewById(R.id.btnAddLimitation) as MaterialButton
+
+        //open add limitation dialog
+        btnAddLimitation.setOnClickListener {
+            var dialog = AddLimitationDialog()
+            dialog.show(childFragmentManager, "AddLimitationDialog")
+        }
+
         setData(view)
         return view
     }
