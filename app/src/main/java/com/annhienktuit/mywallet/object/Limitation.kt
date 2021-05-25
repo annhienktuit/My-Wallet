@@ -1,6 +1,7 @@
 package com.annhienktuit.mywallet.`object`
 
 data class Limitation(
-    var limitedMoney: Long? = null,
-    var limitedGroup: String? = null
+    var target: Long? = null,
+    var limitedGroup: String? = null,
+    var moneySpent: Long? = null
 )
