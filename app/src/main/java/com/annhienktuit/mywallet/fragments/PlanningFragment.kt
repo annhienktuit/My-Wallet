@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,14 +18,17 @@ import com.annhienktuit.mywallet.`object`.Saving
 import com.annhienktuit.mywallet.`object`.Wallet
 import com.annhienktuit.mywallet.activity.MainActivity
 import com.annhienktuit.mywallet.adapter.CardAdapter
+import com.annhienktuit.mywallet.adapter.LimitationAdapter
 import com.annhienktuit.mywallet.adapter.SavingAdapter
 import com.annhienktuit.mywallet.adapter.WalletAdapter
 import com.annhienktuit.mywallet.dialog.AddLimitationDialog
 import com.google.android.gms.dynamic.SupportFragmentWrapper
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textview.MaterialTextView
 import kotlinx.android.synthetic.main.activity_saving.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_planning.*
+import java.lang.Exception
 
 
 private const val ARG_PARAM1 = "param1"
@@ -43,6 +49,10 @@ class PlanningFragment : Fragment() {
     lateinit var recyclerCard: RecyclerView
     lateinit var recyclerLimitation: RecyclerView
 
+    lateinit var limitationAdapter: LimitationAdapter
+
+    lateinit var btnAddLimitation: MaterialButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -61,15 +71,13 @@ class PlanningFragment : Fragment() {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_planning, container, false)
 
-        val btnAddLimitation: MaterialButton = view.findViewById(R.id.btnAddLimitation) as MaterialButton
+        setData(view)
 
         //open add limitation dialog
         btnAddLimitation.setOnClickListener {
-            var dialog = AddLimitationDialog()
-            dialog.show(childFragmentManager, "AddLimitationDialog")
+            addInfo()
         }
 
-        setData(view)
         return view
     }
 
@@ -96,6 +104,10 @@ class PlanningFragment : Fragment() {
         recyclerCard = view.findViewById(R.id.recyclerCards)
         recyclerLimitation = view.findViewById(R.id.recyclerLimitation)
 
+        btnAddLimitation = view.findViewById(R.id.btnAddLimitation)
+
+        limitationAdapter = LimitationAdapter(activity as MainActivity, limitationList)
+
         recyclerWallet.adapter = WalletAdapter(walletList)
         recyclerWallet.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         recyclerWallet.setHasFixedSize(true)
@@ -108,8 +120,45 @@ class PlanningFragment : Fragment() {
         recyclerCard.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerCard.setHasFixedSize(true)
 
-        //recyclerLimitation.adapter = LimitationAdapter(limitationList)
+        recyclerLimitation.adapter = limitationAdapter
         recyclerLimitation.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerLimitation.setHasFixedSize(true)
+    }
+
+    private fun addInfo() {
+        val inflter = LayoutInflater.from(activity)
+        val v = inflter.inflate(R.layout.dialog_add_limitation,null)
+        /**set view*/
+        val group = v.findViewById<MaterialTextView>(R.id.tvGroup)
+        val target = v.findViewById<EditText>(R.id.tfTarget)
+
+        val addDialog = AlertDialog.Builder(activity as MainActivity)
+
+        addDialog.setView(v)
+        addDialog.setPositiveButton("Ok"){
+                dialog,_->
+            try{
+                val groupName = group.text.toString()
+                val targetName = target.text.toString().toLong()
+
+                limitationList.add(Limitation(targetName,groupName))
+
+                limitationAdapter.notifyDataSetChanged()
+                Toast.makeText(activity,"Adding limitation item success", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            catch(e: Exception){
+                Toast.makeText(activity,"Please fill all the fields!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        addDialog.setNegativeButton("Cancel"){
+                dialog,_->
+            dialog.dismiss()
+            Toast.makeText(activity,"Cancel", Toast.LENGTH_SHORT).show()
+
+        }
+        addDialog.create()
+        addDialog.show()
     }
 }
