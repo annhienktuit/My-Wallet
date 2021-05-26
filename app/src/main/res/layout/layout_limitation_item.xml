@@ -36,6 +36,7 @@
                     android:layout_gravity="center">
 
                     <ImageView
+                        android:id="@+id/ivGroup"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:scaleType="centerCrop"/>
@@ -79,6 +80,16 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="15sp"
                 android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivMore"
+                android:src="@drawable/ic_baseline_more_horiz_24"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="35dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                />
 
         </RelativeLayout>
 

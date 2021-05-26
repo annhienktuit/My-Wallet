@@ -5,23 +5,62 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize"
-        android:gravity="center"
-        android:layout_marginLeft="15dp"
-        android:paddingRight="100dp"
-        android:textColor="#2F2543"
-        android:fontFamily="@font/gotham_bold"
-        android:textSize="20sp"
-        android:text="Add Limitation"
-        />
-
     <LinearLayout
-        android:id="@+id/selectGroupLayout"
+        android:orientation="vertical"
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:paddingRight="100dp"
+            android:textColor="#2F2543"
+            android:fontFamily="@font/gotham_bold"
+            android:textSize="20sp"
+            android:text="Add Limitation"
+            />
+
+        <LinearLayout
+            android:id="@+id/selectGroupLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:textColor="#2F2543"
+                android:fontFamily="@font/gotham"
+                android:textSize="15sp"
+                android:text="Select group"
+                />
+
+            <TextView
+                android:id="@+id/tvGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="6dp"
+                android:textColor="#2F2543"
+                android:fontFamily="@font/gotham"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:text="test limitation item"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_height="1dp"
+                android:background="#8d8d8d"/>
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,80 +69,30 @@
             android:textColor="#2F2543"
             android:fontFamily="@font/gotham"
             android:textSize="15sp"
-            android:text="Select group"
+            android:text="Target"
             />
 
-        <TextView
-            android:id="@+id/tvGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="21dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginBottom="6dp"
-            android:textColor="#2F2543"
-            android:fontFamily="@font/gotham"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            />
-
-        <View
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_height="wrap_content"
+            app:boxBackgroundColor="@color/white"
             android:layout_marginRight="15dp"
-            android:layout_height="1dp"
-            android:background="#8d8d8d"/>
+            android:layout_marginLeft="15dp"
+            app:startIconTint="#43D149"
+            app:startIconDrawable="@drawable/ic_baseline_attach_money_24"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tfTarget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textSize="16sp"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:textColor="#2F2543"
-        android:fontFamily="@font/gotham"
-        android:textSize="15sp"
-        android:text="Target"
-        />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/white"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
-        app:startIconTint="#43D149"
-        app:startIconDrawable="@drawable/ic_baseline_attach_money_24"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tfTarget"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:textSize="16sp"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp">
-
-    <Button
-        android:id="@+id/saveBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="Save"
-        android:textSize="12sp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="15dp"
-        android:layout_alignParentEnd="true"
-
-        />
-
-    </RelativeLayout>
 
 </LinearLayout>

@@ -16,11 +16,6 @@ class AddLimitationDialog: DialogFragment() {
     ): View? {
         val rootView: View = inflater.inflate(R.layout.dialog_add_limitation, container, false)
 
-        val saveBtn: Button = rootView.findViewById(R.id.saveBtn) as Button
-
-        saveBtn.setOnClickListener {
-            dismiss()
-        }
 
         return rootView
     }
