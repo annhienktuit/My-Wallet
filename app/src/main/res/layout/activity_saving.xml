@@ -30,11 +30,11 @@
         android:fontFamily="@font/gotham_bold"/>
     <ImageButton
         android:id="@+id/btn_back_saving"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="30dp"
+        android:layout_margin="10dp"
         android:background="#00FFFFFF"
         android:tint="@color/white"
         android:src="@drawable/ic_back"/>

@@ -1,17 +1,12 @@
 package com.annhienktuit.mywallet.activity
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
@@ -26,11 +21,7 @@ import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import java.io.Serializable
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,74 +31,42 @@ class MainActivity : AppCompatActivity() {
     private val planningFragment = PlanningFragment()
     private val userFragment = UserFragment()
     val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
-    var async = AppDatabase()
+    var ref = FirebaseDatabase
+        .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        .getReference("datas")
+    //-------------------------------------------------------
+    private var walletList = ArrayList<Wallet>()
+    private var savingList = ArrayList<Saving>()
+    private var transactionList = ArrayList<RecentTransaction>()
+    private var cardList = ArrayList<Card>()
+    private var limitList = ArrayList<Limitation>()
+    //-------------------------------------------------------
+    private var name: String? = null
+    private var income: String? = null
+    private var expense: String? = null
+    private var balance: String? = null
+    //--------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        ref.keepSynced(true)
         if(user == null) {
             startActivity(Intent(this, SignUpActivity::class.java))
         }
-        else async.execute()
-        var fullName = intent.getStringExtra("fulname").toString()
-        async.fullName = fullName
-
-        var tempDialog = ProgressDialog(this@MainActivity)
-        tempDialog.setMessage("Please wait...")
-        tempDialog.setCancelable(false)
-        tempDialog.progress = 0
-        tempDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-        tempDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.GRAY))
-        tempDialog.show()
-        val mCountDownTimer = object : CountDownTimer(1700, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                tempDialog.setMessage("Please wait...")
+        getDatabase(ref, object : OnGetDataListener {
+            override fun onSuccess(dataSnapshot: DataSnapshot) {
+                setUpDatabase(dataSnapshot)
+                setUI()
             }
-            override fun onFinish() {
-                tempDialog.dismiss()
-                //Fragment transition by view pager
-                var adapter = MainPagerAdapter(
-                    supportFragmentManager,
-                    FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-                )
-                containerViewPager.adapter = adapter
+            override fun onStart() {
 
-                //When slide or choose a specific fragment, bottom navigation view icons will change their color to corresponding fragment
-                containerViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-
-                    override fun onPageScrolled(
-                        position: Int,
-                        positionOffset: Float,
-                        positionOffsetPixels: Int
-                    ) {
-
-                    }
-
-                    override fun onPageSelected(position: Int) {
-                        when (position) {
-                            0 -> bottomNavigationView.menu.findItem(R.id.navHome).isChecked = true
-                            1 -> bottomNavigationView.menu.findItem(R.id.navReport).isChecked = true
-                            2 -> bottomNavigationView.menu.findItem(R.id.navPlanning).isChecked = true
-                            3 -> bottomNavigationView.menu.findItem(R.id.navUser).isChecked = true
-                        }
-                    }
-
-                    override fun onPageScrollStateChanged(state: Int) {
-
-                    }
-                })
-
-                bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-                    when (item.itemId) {
-                        R.id.navHome -> containerViewPager.currentItem = 0
-                        R.id.navReport -> containerViewPager.currentItem = 1
-                        R.id.navPlanning -> containerViewPager.currentItem = 2
-                        R.id.navUser -> containerViewPager.currentItem = 3
-                    }
-                    true
-                }
             }
-        }
-        mCountDownTimer.start()
+            override fun onFailure() {
+            }
+        })
+
+    }
+    fun setUI() {
         //hide action bar
         if (supportActionBar != null) {
             supportActionBar!!.hide();
@@ -129,201 +88,180 @@ class MainActivity : AppCompatActivity() {
         } else {
             Log.i("logged in", "false")
         }
+        //--------------------------------------
+        var adapter = MainPagerAdapter(
+            supportFragmentManager,
+            FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+        )
+        containerViewPager.adapter = adapter
+        //When slide or choose a specific fragment, bottom navigation view icons will change their color to corresponding fragment
+        containerViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
 
-    }
+            }
 
-    class AppDatabase : AsyncTask<Void, Void, Void>() {
-        val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
-        var fullName: String? = null
-        set(value) {
-            field = value
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> bottomNavigationView.menu.findItem(R.id.navHome).isChecked = true
+                    1 -> bottomNavigationView.menu.findItem(R.id.navReport).isChecked = true
+                    2 -> bottomNavigationView.menu.findItem(R.id.navPlanning).isChecked = true
+                    3 -> bottomNavigationView.menu.findItem(R.id.navUser).isChecked = true
+                }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+        })
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navHome -> containerViewPager.currentItem = 0
+                R.id.navReport -> containerViewPager.currentItem = 1
+                R.id.navPlanning -> containerViewPager.currentItem = 2
+                R.id.navUser -> containerViewPager.currentItem = 3
+            }
+            true
         }
-        var db =  FirebaseDatabase
-            .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
-            .getReference("datas").child(user?.uid.toString())
-        var walletDb = db.child("wallets")
-        var savingDb = db.child("savings")
-        var savingDetailDb = db.child("savings").child("details")
-        var transactionDb = db.child("transactions")
-        var cardDb = db.child("cards")
-        var data : HashMap<String, String>? = null
-        var walletList = ArrayList<Wallet>()
-        var savingList = ArrayList<Saving>()
-        var transactionList = ArrayList<RecentTransaction>()
-        var cardList = ArrayList<Card>()
-        override fun onPreExecute() {
-            db.keepSynced(true)
-            var db2 = FirebaseDatabase
-                .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
-                .getReference("datas")
-            db2.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (!snapshot.hasChild(user!!.uid.toString())) {
-                        db2.child(user!!.uid.toString()).child("name").setValue(fullName)
-                        db2.child(user!!.uid.toString()).child("balance").setValue("0")
-                        db2.child(user!!.uid.toString()).child("income").setValue("0")
-                        db2.child(user!!.uid.toString()).child("expense").setValue("0")
+    }
+    fun setUpDatabase(data: DataSnapshot?) {
+        if (!data?.hasChild(user?.uid.toString())!!) {
+            val fullName = intent.getStringExtra("fulname").toString()
+            ref.child(user?.uid.toString()).child("name").setValue(fullName)
+            ref.child(user?.uid.toString()).child("balance").setValue("0")
+            ref.child(user?.uid.toString()).child("income").setValue("0")
+            ref.child(user?.uid.toString()).child("expense").setValue("0")
+        } else {
+            val db = ref.child(user?.uid.toString())
+            val walletDb = db.child("wallets")
+            val savingDb = db.child("savings")
+            val transactionDb = db.child("transactions")
+            val cardDb = db.child("cards")
+            val limitDb = db.child("limits")
+            name = data.child(user?.uid.toString()).child("name").value.toString()
+            income = data.child(user?.uid.toString()).child("income").value.toString()
+            expense = data.child(user?.uid.toString()).child("expense").value.toString()
+            balance = data.child(user?.uid.toString()).child("balance").value.toString()
+            getDatabase(walletDb, object : OnGetDataListener {
+                override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    for (data in dataSnapshot.children) {
+                        var nameWallet = data.child("nameWallet").value.toString()
+                        var balanceWallet = data.child("balanceWallet").value.toString()
+                        walletList.add(Wallet(balanceWallet, nameWallet))
                     }
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("khaihoan", "failed")
+                override fun onStart() {
+                }
+                override fun onFailure() {
+                }
+            })
+            getDatabase(savingDb, object : OnGetDataListener {
+                override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    for (data in dataSnapshot.children) {
+                        var current = data.child("current").value.toString()
+                        var price = data.child("price").value.toString()
+                        var product = data.child("product").value.toString()
+                        savingList.add(Saving(current, null, price, product))
+                    }
+                }
+                override fun onStart() {
+                }
+                override fun onFailure() {
+                }
+            })
+            getDatabase(transactionDb, object : OnGetDataListener {
+                override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    for (data in dataSnapshot.children) {
+                        var day = data.child("day").value.toString()
+                        var inorout = data.child("inorout").value.toString()
+                        var money = data.child("money").value.toString()
+                        var name = data.child("name").value.toString()
+                        var time = data.child("time").value.toString()
+                        transactionList.add(RecentTransaction(day, inorout, money, name, time))
+                    }
+                }
+                override fun onStart() {
+                }
+                override fun onFailure() {
+                }
+            })
+            getDatabase(cardDb, object : OnGetDataListener {
+                override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    for (data in dataSnapshot.children) {
+                        var accNum = data.child("accountNumber").value.toString()
+                        var bankName = data.child("bankName").value.toString()
+                        var cardNum = data.child("cardNumber").value.toString()
+                        var date = data.child("expiredDate").value.toString()
+                        var name = data.child("name").value.toString()
+                        var namePerson = data.child("namePerson").value.toString()
+                        cardList.add(Card(accNum, bankName, cardNum, date, name, namePerson))
+                    }
+                }
+                override fun onStart() {
+                }
+                override fun onFailure() {
+                }
+            })
+            getDatabase(limitDb, object : OnGetDataListener {
+                override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    for (data in dataSnapshot.children) {
+                        var nameLimit = data.child("nameLimit").value.toString()
+                        var costLimit = data.child("costLimit").value.toString()
+                        var cost = costLimit.toLong()
+                        limitList.add(Limitation(cost, nameLimit))
+                    }
+                }
+                override fun onStart() {
+                }
+                override fun onFailure() {
                 }
             })
         }
-        override fun doInBackground(vararg params: Void?): Void? {
-            try {
-                db.addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        data = snapshot.value as HashMap<String, String>?
-                        Log.d("khaidoin", "success" + data)
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.d("khaihoan", "failed")
-                    }
-                })
-                Thread.sleep(1500)
-                walletDb.addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        for (data in snapshot.children) {
-                            var model = walletDb.child(data.key.toString())
-                            model.addValueEventListener(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    var tmp1 = snapshot.child("nameWallet").value.toString()
-                                    var tmp2 = snapshot.child("balanceWallet").value.toString()
-                                    walletList.add(Wallet(tmp2, tmp1))
-                                }
-                                override fun onCancelled(error: DatabaseError) {
-                                    Log.d("khaihoan", "failed")
-                                }
-                            })
-                        }
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.d("khaihoan", "failed")
-                    }
-                })
-                savingDb.addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        for (data in snapshot.children) {
-                            var model = savingDb.child(data.key.toString())
-                            model.addValueEventListener(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    var tmp1 = snapshot.child("current").value.toString()
-                                    var tmp2 = snapshot.child("price").value.toString()
-                                    var tmp3 = snapshot.child("product").value.toString()
-                                    var tmp4 = ArrayList<SavingDetail>()
-                                    savingDetailDb.addValueEventListener(object : ValueEventListener {
-                                        override fun onDataChange(snapshot: DataSnapshot) {
-                                            var t1 = snapshot.child("cost").value.toString()
-                                            var t2 = snapshot.child("day").value.toString()
-                                            var t3 = snapshot.child("time").value.toString()
-                                            var t4 = snapshot.child("transName").value.toString()
-                                            tmp4.add(SavingDetail(t1, t2, t3, t4))
-                                        }
-                                        override fun onCancelled(error: DatabaseError) {
-                                            Log.d("khaihoan", "failed")
-                                        }
-                                    })
-                                    savingList.add(Saving(tmp1,tmp4, tmp2, tmp3))
-                                }
-                                override fun onCancelled(error: DatabaseError) {
-                                    Log.d("khaihoan", "failed")
-                                }
-                            })
-                        }
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.d("khaihoan", "failed")
-                    }
-                })
-                transactionDb.addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        for (data in snapshot.children) {
-                            var model = transactionDb.child(data.key.toString())
-                            model.addValueEventListener(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    var tmp1 = data.child("day").value.toString()
-                                    var tmp2 = data.child("inorout").value.toString()
-                                    var tmp3 = data.child("money").value.toString()
-                                    var tmp4 = data.child("name").value.toString()
-                                    var tmp5 = data.child("time").value.toString()
-                                    transactionList.add(RecentTransaction(tmp1, tmp2, tmp3, tmp4, tmp5))
-                                }
-                                override fun onCancelled(error: DatabaseError) {
-                                    Log.d("khaihoan", "failed")
-                                }
-                            })
-                        }
-
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.d("khaihoan", "failed")
-                    }
-                })
-                cardDb.addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        for (data in snapshot.children) {
-                            var model = cardDb.child(data.key.toString())
-                            model.addValueEventListener(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    var tmp1 = data.child("accountNumber").value.toString()
-                                    var tmp2 = data.child("bankName").value.toString()
-                                    var tmp3 = data.child("cardNumber").value.toString()
-                                    var tmp4 = data.child("expiredDate").value.toString()
-                                    var tmp5 = data.child("name").value.toString()
-                                    var tmp6 = data.child("namePerson").value.toString()
-                                    cardList.add(Card(tmp1, tmp2, tmp3, tmp4, tmp5, tmp6))
-                                }
-                                override fun onCancelled(error: DatabaseError) {
-                                    Log.d("khaihoan", "failed")
-                                }
-                            })
-                        }
-
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.d("khaihoan", "failed")
-                    }
-                })
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-            return null
-
-        }
-
-        fun getDatas(): HashMap<String, String>? {
-            return data
-        }
-        fun getWallets(): ArrayList<Wallet> {
-            return walletList
-        }
-        fun getSavings(): ArrayList<Saving> {
-            return savingList
-        }
-        fun getTransactions(): ArrayList<RecentTransaction> {
-            return transactionList
-        }
-        fun getCards(): ArrayList<Card> {
-            return cardList
-        }
     }
-    fun getData(): HashMap<String, String>? {
-        return async.getDatas()
+    interface OnGetDataListener {
+        fun onSuccess(dataSnapshot: DataSnapshot)
+        fun onStart()
+        fun onFailure()
+    }
+    fun getDatabase(ref: DatabaseReference, listener: OnGetDataListener?) {
+        listener?.onStart()
+        ref.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listener?.onSuccess(snapshot)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                listener?.onFailure()
+            }
+        })
+    }
+
+    fun getName(): String? {
+        return name
+    }
+    fun getIncome(): String? {
+        return income
+    }
+    fun getExpense(): String? {
+        return expense
+    }
+    fun getBalance(): String? {
+        return balance
     }
     fun getWalletList(): ArrayList<Wallet>? {
-        return async.getWallets()
+        return walletList
     }
     fun getSavingList(): ArrayList<Saving> {
-        return async.getSavings()
+        return savingList
     }
     fun getTransactionList(): ArrayList<RecentTransaction> {
-        return async.getTransactions()
+        return transactionList
     }
     fun getCardList(): ArrayList<Card> {
-        return async.getCards()
+        return cardList
     }
 }
 

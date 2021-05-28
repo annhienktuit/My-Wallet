@@ -43,12 +43,18 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
             var holder = holder as SavingViewHolder1
             holder.name1.text = currentItem.nameOfProduct
             holder.money1.text = currentItem.moneyOfProduct
-            holder.progress1.progress = 50
+            var tmp1 = currentItem.currentSaving?.toLong()
+            var tmp2 = currentItem.moneyOfProduct?.toLong()
+            var result = (tmp1!! * 100) / tmp2!!
+            holder.progress1.progress = result.toInt()
         } else {
             var holder = holder as SavingViewHolder2
             holder.name2.text = currentItem.nameOfProduct
             holder.money2.text = currentItem.moneyOfProduct
-            holder.progress2.progress = 90
+            var tmp1 = currentItem.currentSaving?.toLong()
+            var tmp2 = currentItem.moneyOfProduct?.toLong()
+            var result = (tmp1!! * 100) / tmp2!!
+            holder.progress2.progress = result.toInt()
         }
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, SavingActivity::class.java)

@@ -42,6 +42,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham_bold"
                     android:textSize="14sp"
+                    android:padding="2dp"
                     android:textColor="#2F2543"
                     android:text="32,000,000 VND"/>
                 <ProgressBar
