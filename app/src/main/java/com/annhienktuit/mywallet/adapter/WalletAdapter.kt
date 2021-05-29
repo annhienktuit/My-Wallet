@@ -10,6 +10,8 @@ import com.annhienktuit.mywallet.R.*
 import com.annhienktuit.mywallet.`object`.Wallet
 import kotlinx.android.synthetic.main.layout_wallet_item_2.view.*
 import kotlinx.android.synthetic.main.layout_wallet_item_1.view.*
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 class WalletAdapter(private val walletList: List<Wallet>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class WalletViewHolder1(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -37,11 +39,11 @@ class WalletAdapter(private val walletList: List<Wallet>) : RecyclerView.Adapter
         if (position % 2 == 0) {
             var holder = holder as WalletViewHolder1
             holder.name1.text = currentItem.nameOfWallet
-            holder.money1.text = currentItem.moneyOfWallet
+            holder.money1.text = changeToMoney(currentItem.moneyOfWallet)
         } else {
             var holder = holder as WalletViewHolder2
             holder.name2.text = currentItem.nameOfWallet
-            holder.money2.text = currentItem.moneyOfWallet
+            holder.money2.text = changeToMoney(currentItem.moneyOfWallet)
         }
     }
 
@@ -50,5 +52,11 @@ class WalletAdapter(private val walletList: List<Wallet>) : RecyclerView.Adapter
     }
 
     override fun getItemCount() = walletList.size
+    fun changeToMoney(str: String?): String {
+        val formatter: NumberFormat = DecimalFormat("#,###")
+        val myNumber = str?.toLong()
+        val formattedNumber = formatter.format(myNumber)
+        return formattedNumber
+    }
 }
 

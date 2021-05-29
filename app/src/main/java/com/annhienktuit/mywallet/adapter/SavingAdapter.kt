@@ -13,6 +13,8 @@ import com.annhienktuit.mywallet.`object`.Saving
 import com.annhienktuit.mywallet.activity.MainActivity
 import kotlinx.android.synthetic.main.layout_saving_1.view.*
 import kotlinx.android.synthetic.main.layout_saving_2.view.*
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class SavingViewHolder1(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -42,7 +44,7 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
         if (position % 2 == 0) {
             var holder = holder as SavingViewHolder1
             holder.name1.text = currentItem.nameOfProduct
-            holder.money1.text = currentItem.moneyOfProduct
+            holder.money1.text = changeToMoney(currentItem.moneyOfProduct)
             var tmp1 = currentItem.currentSaving?.toLong()
             var tmp2 = currentItem.moneyOfProduct?.toLong()
             var result = (tmp1!! * 100) / tmp2!!
@@ -50,7 +52,7 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
         } else {
             var holder = holder as SavingViewHolder2
             holder.name2.text = currentItem.nameOfProduct
-            holder.money2.text = currentItem.moneyOfProduct
+            holder.money2.text = changeToMoney(currentItem.moneyOfProduct)
             var tmp1 = currentItem.currentSaving?.toLong()
             var tmp2 = currentItem.moneyOfProduct?.toLong()
             var result = (tmp1!! * 100) / tmp2!!
@@ -68,4 +70,10 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
     }
 
     override fun getItemCount() = savingList.size
+    fun changeToMoney(str: String?): String {
+        val formatter: NumberFormat = DecimalFormat("#,###")
+        val myNumber = str?.toLong()
+        val formattedNumber = formatter.format(myNumber)
+        return formattedNumber
+    }
 }

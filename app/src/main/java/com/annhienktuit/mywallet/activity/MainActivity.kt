@@ -19,9 +19,13 @@ import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
 import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -118,6 +122,7 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
+
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navHome -> containerViewPager.currentItem = 0
@@ -128,6 +133,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
+
     fun setUpDatabase(data: DataSnapshot?) {
         if (!data?.hasChild(user?.uid.toString())!!) {
             val fullName = intent.getStringExtra("fulname").toString()
@@ -148,6 +154,7 @@ class MainActivity : AppCompatActivity() {
             balance = data.child(user?.uid.toString()).child("balance").value.toString()
             getDatabase(walletDb, object : OnGetDataListener {
                 override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    walletList.clear()
                     for (data in dataSnapshot.children) {
                         var nameWallet = data.child("nameWallet").value.toString()
                         var balanceWallet = data.child("balanceWallet").value.toString()
@@ -161,6 +168,7 @@ class MainActivity : AppCompatActivity() {
             })
             getDatabase(savingDb, object : OnGetDataListener {
                 override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    savingList.clear()
                     for (data in dataSnapshot.children) {
                         var current = data.child("current").value.toString()
                         var price = data.child("price").value.toString()
@@ -175,6 +183,7 @@ class MainActivity : AppCompatActivity() {
             })
             getDatabase(transactionDb, object : OnGetDataListener {
                 override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    transactionList.clear()
                     for (data in dataSnapshot.children) {
                         var day = data.child("day").value.toString()
                         var inorout = data.child("inorout").value.toString()
@@ -183,6 +192,7 @@ class MainActivity : AppCompatActivity() {
                         var time = data.child("time").value.toString()
                         transactionList.add(RecentTransaction(day, inorout, money, name, time))
                     }
+                    Collections.reverse(transactionList)
                 }
                 override fun onStart() {
                 }
@@ -191,6 +201,7 @@ class MainActivity : AppCompatActivity() {
             })
             getDatabase(cardDb, object : OnGetDataListener {
                 override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    cardList.clear()
                     for (data in dataSnapshot.children) {
                         var accNum = data.child("accountNumber").value.toString()
                         var bankName = data.child("bankName").value.toString()
@@ -208,6 +219,7 @@ class MainActivity : AppCompatActivity() {
             })
             getDatabase(limitDb, object : OnGetDataListener {
                 override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    limitList.clear()
                     for (data in dataSnapshot.children) {
                         var nameLimit = data.child("nameLimit").value.toString()
                         var costLimit = data.child("costLimit").value.toString()
