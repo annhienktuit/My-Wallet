@@ -75,7 +75,7 @@ class PlanningFragment : Fragment() {
 
         //open add limitation dialog
         btnAddLimitation.setOnClickListener {
-            addInfo()
+            addLimitationInfo()
         }
 
         return view
@@ -125,7 +125,7 @@ class PlanningFragment : Fragment() {
         recyclerLimitation.setHasFixedSize(true)
     }
 
-    private fun addInfo() {
+    private fun addLimitationInfo() {
         val inflter = LayoutInflater.from(activity)
         val v = inflter.inflate(R.layout.dialog_add_limitation,null)
         /**set view*/

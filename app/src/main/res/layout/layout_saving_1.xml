@@ -41,6 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham_bold"
+                    android:padding="2dp"
                     android:textSize="14sp"
                     android:textColor="#2F2543"
                     android:text="32,000,000 VND"/>

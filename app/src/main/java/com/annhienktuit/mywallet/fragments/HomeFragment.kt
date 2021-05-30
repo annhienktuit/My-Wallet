@@ -65,7 +65,10 @@ class HomeFragment : Fragment() {
     }
     fun setData(view: View) {
         var data = (activity as MainActivity)
-        var tmp = data.getData()
+        var name = data.getName()
+        var balance = data.getBalance()
+        var income = data.getIncome()
+        var expense = data.getExpense()
         walletList = data.getWalletList()!!
         transactionList = data.getTransactionList()!!
         var recyclerWallet = view.findViewById(R.id.recyclerWallet) as RecyclerView
@@ -80,12 +83,10 @@ class HomeFragment : Fragment() {
         var txtBalance = view.findViewById<TextView>(R.id.textBalance)
         var txtIncome = view.findViewById<TextView>(R.id.textIncome)
         var txtExpense = view.findViewById<TextView>(R.id.textExpense)
-        if (tmp != null) {
-            txtName.text = tmp.get("name").toString()
-            txtBalance.text = tmp.get("balance").toString() + " VND"
-            txtIncome.text = tmp.get("income").toString()
-            txtExpense.text = tmp.get("expense").toString()
-        }
+        txtName.text = name
+        txtBalance.text = balance + " VND"
+        txtIncome.text = income
+        txtExpense.text = expense
     }
 }
 
