@@ -6,6 +6,6 @@ import com.google.firebase.database.FirebaseDatabase
 class FirebaseOffline : Application() {
     override fun onCreate() {
         super.onCreate()
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        FirebaseDatabase.getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app").setPersistenceEnabled(true)
     }
 }
