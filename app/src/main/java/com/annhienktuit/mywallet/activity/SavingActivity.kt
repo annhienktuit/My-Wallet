@@ -120,8 +120,10 @@ class SavingActivity : AppCompatActivity() {
         recyclerTransactionSaving.setHasFixedSize(true)
 
         nameOfSavingProduct.text = saving?.nameOfProduct.toString()
-        totalSaving.text = "of " + changeToMoney(saving?.moneyOfProduct.toString()) + " VND"
-        currentSaving.text = changeToMoney(saving?.currentSaving.toString()) + " "
+        if (saving?.moneyOfProduct.toString() != null && saving?.currentSaving.toString() != null) {
+            totalSaving.text = "of " + changeToMoney(saving?.moneyOfProduct.toString()) + " VND"
+            currentSaving.text = changeToMoney(saving?.currentSaving.toString()) + " "
+        }
         var tmp1 = saving!!.currentSaving!!.toInt()
         var tmp2 = saving!!.moneyOfProduct!!.toInt()
         var per = tmp1 * 100 / tmp2

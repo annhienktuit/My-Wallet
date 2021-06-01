@@ -27,17 +27,22 @@ class SavingDetailAdapter(private val savingDetailList: List<SavingDetail>) : Re
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = savingDetailList[position]
-        var holder = holder as SavingDetailViewHolder
-        holder.name.text = currentItem.nameOfSaving
-        holder.money.text = "+ " + changeToMoney(currentItem.costOfSaving)
-        holder.date.text = currentItem.dayOfSaving + " - " + currentItem.timeOfSaving
+        var holder1 = holder as SavingDetailViewHolder
+        holder1.name.text = currentItem.nameOfSaving
+        if (currentItem.costOfSaving != null)
+            holder1.money.text = "+" + changeToMoney(currentItem.costOfSaving)
+        else
+            holder1.money.text = "+" + currentItem.costOfSaving
+        holder1.date.text = currentItem.dayOfSaving + " - " + currentItem.timeOfSaving
     }
 
     override fun getItemCount() = savingDetailList.size
-    fun changeToMoney(str: String?): String {
+    fun changeToMoney(str: String?): String? {
         val formatter: NumberFormat = DecimalFormat("#,###")
-        val myNumber = str?.toLong()
-        val formattedNumber = formatter.format(myNumber)
-        return formattedNumber
+        if (str != null) {
+            val myNumber = str?.toLong()
+            return formatter.format(myNumber)
+        }
+        return null
     }
 }

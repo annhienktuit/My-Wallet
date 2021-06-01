@@ -4,10 +4,14 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.view.get
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.annhienktuit.mywallet.R
@@ -21,9 +25,16 @@ import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_saving.*
+import kotlinx.android.synthetic.main.dialog_add_transaction.*
+import kotlinx.android.synthetic.main.dialog_add_transaction.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -49,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     private var income: String? = null
     private var expense: String? = null
     private var balance: String? = null
+    private var totalTrans: Int = 0
     //--------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,15 +80,77 @@ class MainActivity : AppCompatActivity() {
             override fun onFailure() {
             }
         })
-
+        fab.setOnClickListener {
+            eventOnClickAddButton()
+        }
     }
-    fun setUI() {
+    private fun eventOnClickAddButton() {
+        val builder = AlertDialog.Builder(this)
+        val viewInflater = LayoutInflater.from(this).inflate(R.layout.dialog_add_transaction, null, false)
+        val textCategory = viewInflater.findViewById<AutoCompleteTextView>(R.id.textCategory)
+        val editName = viewInflater.findViewById<TextInputEditText>(R.id.inputDetailTrans)
+        val editMoney = viewInflater.findViewById<TextInputEditText>(R.id.inputMoneyTrans)
+        val itemsIncome = resources.getStringArray(R.array.categoriesIncome)
+        val itemsExpense = resources.getStringArray(R.array.categoriesExpense)
+        var date = Calendar.getInstance()
+        var dayFormatter = SimpleDateFormat("dd/MM/yyyy")
+        var timeFormatter = SimpleDateFormat("hh:mm")
+        var inorout = "true"
+        var day = dayFormatter.format(date.time)
+        var time = timeFormatter.format(date.time)
+        val categoryAdapter2 = ArrayAdapter(applicationContext, R.layout.layout_category, itemsExpense)
+        val categoryAdapter1 = ArrayAdapter(applicationContext, R.layout.layout_category, itemsIncome)
+        viewInflater.toggleMoneyButton.check(R.id.toggleIncome)
+        textCategory.setAdapter(categoryAdapter1)
+        viewInflater.toggleMoneyButton.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            if (isChecked) {
+                if (checkedId == R.id.toggleIncome){
+                    textCategory.setText("")
+                    inorout = "true"
+                    textCategory.setAdapter(categoryAdapter1)
+                }
+                if (checkedId == R.id.toggleExpense) {
+                    inorout = "false"
+                    textCategory.setText("")
+                    textCategory.setAdapter(categoryAdapter2)
+                }
+            }
+        }
+
+        val refTrans = ref.child(user?.uid.toString()).child("transactions").child("transaction" + (totalTrans + 1))
+        val ref1 = ref.child(user?.uid.toString())
+        textCategory.dropDownHeight = 500
+        builder.setView(viewInflater)
+        builder.setPositiveButton("OK"
+        ) { dialog, which ->
+            val name = editName.text.toString()
+            val money = editMoney.text.toString()
+            refTrans.child("day").setValue(day)
+            refTrans.child("money").setValue(money)
+            refTrans.child("name").setValue(name)
+            refTrans.child("time").setValue(time)
+            refTrans.child("inorout").setValue(inorout)
+            if (inorout == "true") {
+                ref1.child("income").setValue((income?.toLong()?.plus(money.toLong())).toString())
+                ref1.child("balance").setValue((balance?.toLong()?.plus(money.toLong())).toString())
+            }
+            else {
+                ref1.child("expense").setValue((expense?.toLong()?.plus(money.toLong())).toString())
+                ref1.child("balance").setValue((balance?.toLong()?.minus(money.toLong())).toString())
+            }
+        }
+        builder.setNegativeButton("Cancel"
+        ) { dialog, which -> dialog.cancel() }
+        builder.show()
+    }
+
+
+    private fun setUI() {
         //hide action bar
         if (supportActionBar != null) {
             supportActionBar!!.hide();
         }
         //---------------
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window: Window = window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -181,8 +255,9 @@ class MainActivity : AppCompatActivity() {
                 override fun onFailure() {
                 }
             })
-            getDatabase(transactionDb, object : OnGetDataListener {
+            getDatabase(transactionDb.orderByKey(), object : OnGetDataListener {
                 override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    totalTrans = 0
                     transactionList.clear()
                     for (data in dataSnapshot.children) {
                         var day = data.child("day").value.toString()
@@ -191,8 +266,9 @@ class MainActivity : AppCompatActivity() {
                         var name = data.child("name").value.toString()
                         var time = data.child("time").value.toString()
                         transactionList.add(RecentTransaction(day, inorout, money, name, time))
+                        totalTrans++
                     }
-                    Collections.reverse(transactionList)
+                    //Collections.reverse(transactionList)
                 }
                 override fun onStart() {
                 }
@@ -240,6 +316,17 @@ class MainActivity : AppCompatActivity() {
         fun onFailure()
     }
     fun getDatabase(ref: DatabaseReference, listener: OnGetDataListener?) {
+        listener?.onStart()
+        ref.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listener?.onSuccess(snapshot)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                listener?.onFailure()
+            }
+        })
+    }
+    fun getDatabase(ref: Query, listener: OnGetDataListener?) {
         listener?.onStart()
         ref.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
