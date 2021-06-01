@@ -58,11 +58,14 @@ class WalletAdapter(private val walletList: List<Wallet>) : RecyclerView.Adapter
     }
 
     override fun getItemCount() = walletList.size
-    fun changeToMoney(str: String?): String? {
+    private fun changeToMoney(str: String?): String? {
         val formatter: NumberFormat = DecimalFormat("#,###")
-        if (str != null) {
-            val myNumber = str?.toLong()
-            return formatter.format(myNumber)
+        if (str != "") {
+            val myNumber = str!!.toLong()
+            if (myNumber < 0)
+                return formatter.format(-myNumber)
+            else
+                return formatter.format(myNumber)
         }
         return null
     }
