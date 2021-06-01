@@ -1,20 +1,19 @@
 package com.annhienktuit.mywallet.fragments
 
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.annhienktuit.mywallet.*
 import com.annhienktuit.mywallet.activity.*
-import com.annhienktuit.mywallet.utils.FirebaseInstance
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.fragment_user.*
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,6 +36,7 @@ class UserFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        getActivity()?.let { getActivity()?.getWindow()?.setStatusBarColor(it.getColor(R.color.mainColor)) };
     }
 
     override fun onCreateView(
@@ -45,20 +45,6 @@ class UserFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_user, container, false)
-        val btnLogin = view?.findViewById<Button>(R.id.btnSignIn)
-        btnLogin?.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it, LoginActivity::class.java)
-                it.startActivity(intent)
-            }
-        }
-        val btnSignUp = view?.findViewById<Button>(R.id.btnSignUp)
-        btnSignUp?.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it, SignUpActivity::class.java)
-                it.startActivity(intent)
-            }
-        }
         val btnSignOut = view?.findViewById<Button>(R.id.btnLogOut)
         btnSignOut?.setOnClickListener {
             firebaseAuth.signOut()
@@ -91,26 +77,7 @@ class UserFragment : Fragment() {
                 it.startActivity(intent)
             }
         }
-        val btnPush = view?.findViewById<Button>(R.id.btnPush)
-        btnPush?.setOnClickListener {
-            activity?.let {
-                try {
-                    val database = FirebaseDatabase.getInstance(FirebaseInstance.INSTANCE_URL)
-                    val myRef = database.getReference("messages")
-                    myRef.setValue((edtfirebase.text.toString()).toString()).addOnCompleteListener {
-                        Log.i("pushtoFirebase","200")
-                    }.addOnFailureListener {
-                        Log.i("pushtoFirebase","500")
-                    }
-                }
-                catch (e:Exception){
-                    print(e)
-                }
 
-
-
-            }
-        }
 
         return view
     }

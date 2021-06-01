@@ -115,6 +115,7 @@ class PlanningFragment : Fragment() {
                 }
             }
     }
+
     fun setData(view: View) {
         var data = (activity as MainActivity)
         walletList = data.getWalletList()!!
@@ -133,19 +134,23 @@ class PlanningFragment : Fragment() {
         limitationAdapter = LimitationAdapter(activity as MainActivity, limitationList)
 
         recyclerWallet.adapter = WalletAdapter(walletList)
-        recyclerWallet.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerWallet.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         recyclerWallet.setHasFixedSize(true)
 
         recyclerSaving.adapter = SavingAdapter(savingList)
-        recyclerSaving.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        recyclerSaving.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerSaving.setHasFixedSize(true)
 
         recyclerCard.adapter = CardAdapter(cardList)
-        recyclerCard.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        recyclerCard.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerCard.setHasFixedSize(true)
 
         recyclerLimitation.adapter = limitationAdapter
-        recyclerLimitation.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        recyclerLimitation.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerLimitation.setHasFixedSize(true)
     }
     private fun addCardInfo() {
@@ -205,7 +210,8 @@ class PlanningFragment : Fragment() {
 
     private fun addLimitationInfo() {
         val inflter = LayoutInflater.from(activity)
-        val v = inflter.inflate(R.layout.dialog_add_limitation,null)
+        val v = inflter.inflate(R.layout.dialog_add_limitation, null)
+
         /**set view*/
         val group = v.findViewById<MaterialTextView>(R.id.tvGroup)
         val target = v.findViewById<EditText>(R.id.tfTarget)
@@ -213,27 +219,25 @@ class PlanningFragment : Fragment() {
         val addDialog = AlertDialog.Builder(activity as MainActivity)
 
         addDialog.setView(v)
-        addDialog.setPositiveButton("Ok"){
-                dialog,_->
-            try{
+        addDialog.setPositiveButton("Ok") { dialog, _ ->
+            try {
                 val groupName = group.text.toString()
                 val targetName = target.text.toString().toLong()
 
-                limitationList.add(Limitation(targetName,groupName))
+                limitationList.add(Limitation(targetName, groupName))
 
                 limitationAdapter.notifyDataSetChanged()
-                Toast.makeText(activity,"Adding limitation item success", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Adding limitation item success", Toast.LENGTH_SHORT)
+                    .show()
                 dialog.dismiss()
-            }
-            catch(e: Exception){
-                Toast.makeText(activity,"Please fill all the fields!", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(activity, "Please fill all the fields!", Toast.LENGTH_SHORT).show()
             }
         }
 
-        addDialog.setNegativeButton("Cancel"){
-                dialog,_->
+        addDialog.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
-            Toast.makeText(activity,"Cancel", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "Cancel", Toast.LENGTH_SHORT).show()
 
         }
         addDialog.create()
