@@ -37,11 +37,14 @@ class SavingDetailAdapter(private val savingDetailList: List<SavingDetail>) : Re
     }
 
     override fun getItemCount() = savingDetailList.size
-    fun changeToMoney(str: String?): String? {
+    private fun changeToMoney(str: String?): String? {
         val formatter: NumberFormat = DecimalFormat("#,###")
-        if (str != null) {
-            val myNumber = str?.toLong()
-            return formatter.format(myNumber)
+        if (str != "") {
+            val myNumber = str!!.toLong()
+            if (myNumber < 0)
+                return formatter.format(-myNumber)
+            else
+                return formatter.format(myNumber)
         }
         return null
     }

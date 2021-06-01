@@ -13,7 +13,10 @@ object Extensions {
         val formatter: NumberFormat = DecimalFormat("#,###")
         if (str != null) {
             val myNumber = str?.toLong()
-            return formatter.format(myNumber)
+            if (myNumber < 0)
+                return "-" + formatter.format(-myNumber)
+            else
+                return formatter.format(myNumber)
         }
         return null
     }

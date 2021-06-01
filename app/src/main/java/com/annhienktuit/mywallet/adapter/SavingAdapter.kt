@@ -80,12 +80,15 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
     }
 
     override fun getItemCount() = savingList.size
-    fun changeToMoney(str: String?): String? {
+    private fun changeToMoney(str: String?): String? {
         val formatter: NumberFormat = DecimalFormat("#,###")
-        if (str != null) {
-            val myNumber = str?.toLong()
-            return formatter.format(myNumber)
+        if (str != "") {
+            val myNumber = str!!.toLong()
+            if (myNumber < 0)
+                return "-" + formatter.format(-myNumber)
+            else
+                return formatter.format(myNumber)
         }
-        return null
+        return str
     }
 }
