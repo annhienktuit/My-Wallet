@@ -13,6 +13,8 @@ import com.annhienktuit.mywallet.`object`.Saving
 import com.annhienktuit.mywallet.activity.MainActivity
 import kotlinx.android.synthetic.main.layout_saving_1.view.*
 import kotlinx.android.synthetic.main.layout_saving_2.view.*
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class SavingViewHolder1(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -27,40 +29,50 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val itemView1 = LayoutInflater.from(parent.context).inflate(R.layout.layout_saving_1, parent, false)
+        val itemView2 = LayoutInflater.from(parent.context).inflate(R.layout.layout_saving_2, parent, false)
         if (viewType == 0) {
-            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layout_saving_1, parent, false)
-            return SavingViewHolder1(itemView)
+            return SavingViewHolder1(itemView1)
         }
-        else{
-            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layout_saving_2, parent, false)
-            return SavingViewHolder2(itemView)
-        }
+        return SavingViewHolder2(itemView2)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = savingList[position]
         if (position % 2 == 0) {
-            var holder = holder as SavingViewHolder1
-            holder.name1.text = currentItem.nameOfProduct
-            holder.money1.text = currentItem.moneyOfProduct
+            var holder1 = holder as SavingViewHolder1
+            holder1.name1.text = currentItem.nameOfProduct
+            if (currentItem.moneyOfProduct != null)
+                holder1.money1.text = changeToMoney(currentItem.moneyOfProduct)
+            else
+                holder1.money1.text = currentItem.moneyOfProduct
             var tmp1 = currentItem.currentSaving?.toLong()
             var tmp2 = currentItem.moneyOfProduct?.toLong()
             var result = (tmp1!! * 100) / tmp2!!
-            holder.progress1.progress = result.toInt()
+            holder1.progress1.progress = result.toInt()
+            holder1.itemView.setOnClickListener {
+                val intent = Intent(holder1.itemView.context, SavingActivity::class.java)
+                intent.putExtra("position", position)
+                holder1.itemView.context.startActivity(intent)
+            }
         } else {
-            var holder = holder as SavingViewHolder2
-            holder.name2.text = currentItem.nameOfProduct
-            holder.money2.text = currentItem.moneyOfProduct
+            var holder2 = holder as SavingViewHolder2
+            holder2.name2.text = currentItem.nameOfProduct
+            if (currentItem.moneyOfProduct != null)
+                holder2.money2.text = changeToMoney(currentItem.moneyOfProduct)
+            else
+                holder2.money2.text = currentItem.moneyOfProduct
             var tmp1 = currentItem.currentSaving?.toLong()
             var tmp2 = currentItem.moneyOfProduct?.toLong()
             var result = (tmp1!! * 100) / tmp2!!
-            holder.progress2.progress = result.toInt()
+            holder2.progress2.progress = result.toInt()
+            holder2.itemView.setOnClickListener {
+                val intent = Intent(holder2.itemView.context, SavingActivity::class.java)
+                intent.putExtra("position", position)
+                holder2.itemView.context.startActivity(intent)
+            }
         }
-        holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context, SavingActivity::class.java)
-            intent.putExtra("position", position)
-            holder.itemView.context.startActivity(intent)
-        }
+
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -68,4 +80,12 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
     }
 
     override fun getItemCount() = savingList.size
+    fun changeToMoney(str: String?): String? {
+        val formatter: NumberFormat = DecimalFormat("#,###")
+        if (str != null) {
+            val myNumber = str?.toLong()
+            return formatter.format(myNumber)
+        }
+        return null
+    }
 }

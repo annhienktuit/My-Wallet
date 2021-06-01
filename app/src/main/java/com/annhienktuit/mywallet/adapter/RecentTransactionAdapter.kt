@@ -1,5 +1,6 @@
 package com.annhienktuit.mywallet.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.RecentTransaction
 import kotlinx.android.synthetic.main.layout_recent_transaction_1.view.*
 import kotlinx.android.synthetic.main.layout_recent_transaction_2.view.*
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 class RecentTransactionAdapter(private val transactionList: List<RecentTransaction>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class TransactionViewHolder1(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -33,24 +36,43 @@ class RecentTransactionAdapter(private val transactionList: List<RecentTransacti
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = transactionList[position]
-        if (position % 2 == 0) {
-            var holder = holder as TransactionViewHolder1
-            holder.name1.text = currentItem.nameOfTrans
-            holder.date1.text = (currentItem.dayOfTrans + " - " + currentItem.timeOfTrans)
-            holder.money1.text = currentItem.moneyOfTrans
+        if (currentItem.inOrOut == "false") {
+            var holder1 = holder as TransactionViewHolder1
+            holder1.name1.text = currentItem.nameOfTrans
+            holder1.date1.text = (currentItem.dayOfTrans + " - " + currentItem.timeOfTrans)
+            if (currentItem.moneyOfTrans != null)
+                holder1.money1.text = "-" + changeToMoney(currentItem.moneyOfTrans)
+            else
+                holder1.money1.text = "-" + currentItem.moneyOfTrans
+
         } else {
-            var holder = holder as TransactionViewHolder2
-            holder.name2.text = currentItem.nameOfTrans
-            holder.date2.text = (currentItem.dayOfTrans + " - " + currentItem.timeOfTrans)
-            holder.money2.text = currentItem.moneyOfTrans
+            var holder2 = holder as TransactionViewHolder2
+            holder2.name2.text = currentItem.nameOfTrans
+            holder2.date2.text = (currentItem.dayOfTrans + " - " + currentItem.timeOfTrans)
+            if (currentItem.moneyOfTrans != null)
+                holder2.money2.text = "+" + changeToMoney(currentItem.moneyOfTrans)
+            else
+                holder2.money2.text = "+" + currentItem.moneyOfTrans
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return position % 2
+        if (transactionList.get(position).inOrOut == "false")
+            return 0
+        else
+            return 1
     }
 
     override fun getItemCount() = transactionList.size
+    fun changeToMoney(str: String?): String? {
+        val formatter: NumberFormat = DecimalFormat("#,###")
+        if (str != "") {
+            val myNumber = str!!.toLong()
+            return formatter.format(myNumber)
+        }
+        return str
+    }
 }

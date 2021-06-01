@@ -33,7 +33,6 @@ class CardActivity : AppCompatActivity() {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 card = dataSnapshot.getValue(Card::class.java)
                 setData(card)
-                Log.d("khaidf", "success")
             }
 
             override fun onStart() {

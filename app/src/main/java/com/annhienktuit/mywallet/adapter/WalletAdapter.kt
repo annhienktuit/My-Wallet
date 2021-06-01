@@ -10,6 +10,8 @@ import com.annhienktuit.mywallet.R.*
 import com.annhienktuit.mywallet.`object`.Wallet
 import kotlinx.android.synthetic.main.layout_wallet_item_2.view.*
 import kotlinx.android.synthetic.main.layout_wallet_item_1.view.*
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 class WalletAdapter(private val walletList: List<Wallet>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class WalletViewHolder1(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,13 +37,19 @@ class WalletAdapter(private val walletList: List<Wallet>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = walletList[position]
         if (position % 2 == 0) {
-            var holder = holder as WalletViewHolder1
-            holder.name1.text = currentItem.nameOfWallet
-            holder.money1.text = currentItem.moneyOfWallet
+            var holder1 = holder as WalletViewHolder1
+            holder1.name1.text = currentItem.nameOfWallet
+            if (currentItem.moneyOfWallet != null)
+                holder1.money1.text = changeToMoney(currentItem.moneyOfWallet)
+            else
+                holder1.money1.text = currentItem.moneyOfWallet
         } else {
-            var holder = holder as WalletViewHolder2
-            holder.name2.text = currentItem.nameOfWallet
-            holder.money2.text = currentItem.moneyOfWallet
+            var holder2 = holder as WalletViewHolder2
+            holder2.name2.text = currentItem.nameOfWallet
+            if (currentItem.moneyOfWallet != null)
+                holder2.money2.text = changeToMoney(currentItem.moneyOfWallet)
+            else
+                holder2.money2.text = currentItem.moneyOfWallet
         }
     }
 
@@ -50,5 +58,13 @@ class WalletAdapter(private val walletList: List<Wallet>) : RecyclerView.Adapter
     }
 
     override fun getItemCount() = walletList.size
+    fun changeToMoney(str: String?): String? {
+        val formatter: NumberFormat = DecimalFormat("#,###")
+        if (str != null) {
+            val myNumber = str?.toLong()
+            return formatter.format(myNumber)
+        }
+        return null
+    }
 }
 

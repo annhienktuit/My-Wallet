@@ -25,14 +25,14 @@ class CardAdapter(private val cardList: List<Card>) : RecyclerView.Adapter<Recyc
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = cardList[position]
-        var holder = holder as CardViewHolder
-        holder.card.text = currentItem.nameCard
-        holder.person.text = currentItem.namePerson
-        holder.bank.text = currentItem.bankName
-        holder.itemView.setOnClickListener {
+        var holder1 = holder as CardViewHolder
+        holder1.card.text = currentItem.nameCard
+        holder1.person.text = currentItem.namePerson
+        holder1.bank.text = currentItem.bankName
+        holder1.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, CardActivity::class.java)
             intent.putExtra("position", position)
-            holder.itemView.context.startActivity(intent)
+            holder1.itemView.context.startActivity(intent)
         }
     }
 

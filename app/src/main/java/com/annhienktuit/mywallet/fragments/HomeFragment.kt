@@ -17,6 +17,7 @@ import com.annhienktuit.mywallet.activity.MainActivity
 import com.annhienktuit.mywallet.activity.SplashScreenActivity
 import com.annhienktuit.mywallet.adapter.RecentTransactionAdapter
 import com.annhienktuit.mywallet.adapter.WalletAdapter
+import com.annhienktuit.mywallet.utils.Extensions.changeToMoney
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -84,9 +85,9 @@ class HomeFragment : Fragment() {
         var txtIncome = view.findViewById<TextView>(R.id.textIncome)
         var txtExpense = view.findViewById<TextView>(R.id.textExpense)
         txtName.text = name
-        txtBalance.text = balance + " VND"
-        txtIncome.text = income
-        txtExpense.text = expense
+        txtBalance.text = changeToMoney(balance) + " VND"
+        txtIncome.text = changeToMoney(income)
+        txtExpense.text = changeToMoney(expense)
     }
 }
 

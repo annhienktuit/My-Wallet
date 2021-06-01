@@ -100,70 +100,82 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout_balance"
             android:gravity="center"
+            android:weightSum="10"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/income" />
-
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_weight="5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:fontFamily="@font/gotham_bold"
-                    android:text="Income"
-                    android:textColor="#828282" />
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/income" />
 
-                <TextView
-                    android:id="@+id/textIncome"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/gotham_bold"
-                    android:maxLines="1"
-                    android:text="999,000,000"
-                    android:textColor="#2F2543"
-                    android:textSize="18sp" />
+                    android:layout_marginStart="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:fontFamily="@font/gotham_bold"
+                        android:text="Income"
+                        android:textColor="#828282" />
+
+                    <TextView
+                        android:id="@+id/textIncome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_bold"
+                        android:maxLines="1"
+                        android:text="999,000,000"
+                        android:textColor="#2F2543"
+                        android:textSize="18sp" />
+                </LinearLayout>
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/outcome" />
-
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_weight="5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:fontFamily="@font/gotham_bold"
-                    android:text="Expense"
-                    android:textColor="#828282" />
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/outcome" />
 
-                <TextView
-                    android:id="@+id/textExpense"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/gotham_bold"
-                    android:maxLines="1"
-                    android:text="999,745,000"
-                    android:textColor="#2F2543"
-                    android:textSize="18sp" />
+                    android:layout_marginLeft="5dp"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:fontFamily="@font/gotham_bold"
+                        android:text="Expense"
+                        android:textColor="#828282" />
+
+                    <TextView
+                        android:id="@+id/textExpense"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_bold"
+                        android:maxLines="1"
+                        android:text="999,745,000"
+                        android:textColor="#2F2543"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
