@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.get
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -92,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         val itemsIncome = resources.getStringArray(R.array.categoriesIncome)
         val itemsExpense = resources.getStringArray(R.array.categoriesExpense)
         var date = Calendar.getInstance()
-        var dayFormatter = SimpleDateFormat("dd/MM/yyyy")
+        var dayFormatter = SimpleDateFormat("yyyy/MM/dd")
         var timeFormatter = SimpleDateFormat("hh:mm")
         var inorout = "true"
         var day = dayFormatter.format(date.time)
@@ -239,20 +240,24 @@ class MainActivity : AppCompatActivity() {
                 override fun onFailure() {
                 }
             })
-            getDatabase(transactionDb.orderByKey(), object : OnGetDataListener {
+            getDatabase(transactionDb.orderByChild("day").limitToLast(4), object : OnGetDataListener {
                 override fun onSuccess(dataSnapshot: DataSnapshot) {
                     totalTrans = 0
                     transactionList.clear()
                     for (data in dataSnapshot.children) {
-                        var day = data.child("day").value.toString()
+                        val day = data.child("day").value.toString()
+                        val originalDay = SimpleDateFormat("yyyy/MM/dd")
+                        val targetDay = SimpleDateFormat("dd/MM/yyyy")
+                        val tmpDayOriginal = originalDay.parse(day)
+                        val tmpDayTarget = targetDay.format(tmpDayOriginal)
                         var inorout = data.child("inorout").value.toString()
                         var money = data.child("money").value.toString()
                         var name = data.child("name").value.toString()
                         var time = data.child("time").value.toString()
-                        transactionList.add(RecentTransaction(day, inorout, money, name, time))
+                        transactionList.add(RecentTransaction(tmpDayTarget, inorout, money, name, time))
                         totalTrans++
                     }
-                    //Collections.reverse(transactionList)
+                    Collections.reverse(transactionList)
                 }
                 override fun onStart() {
                 }

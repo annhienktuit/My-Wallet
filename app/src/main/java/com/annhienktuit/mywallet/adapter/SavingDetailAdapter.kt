@@ -1,5 +1,6 @@
 package com.annhienktuit.mywallet.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,12 +40,20 @@ class SavingDetailAdapter(private val savingDetailList: List<SavingDetail>) : Re
     override fun getItemCount() = savingDetailList.size
     private fun changeToMoney(str: String?): String? {
         val formatter: NumberFormat = DecimalFormat("#,###")
-        if (str != "") {
-            val myNumber = str!!.toLong()
-            if (myNumber < 0)
-                return formatter.format(-myNumber)
-            else
-                return formatter.format(myNumber)
+        if (str != null) {
+            try {
+                val myNumber = str.toDouble()
+                if (myNumber != null) {
+                    return if (myNumber < 0)
+                        formatter.format(-myNumber)
+                    else
+                        formatter.format(myNumber)
+                }
+            }
+            catch (e:NumberFormatException){
+                Log.e("numberformat: ", e.toString() )
+            }
+
         }
         return null
     }
