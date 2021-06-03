@@ -12,7 +12,7 @@ object Extensions {
     fun changeToMoney(str: String?): String? {
         val formatter: NumberFormat = DecimalFormat("#,###")
         if (str != null) {
-            val myNumber = str?.toLong()
+            val myNumber = str?.toDouble()
             if (myNumber < 0)
                 return "-" + formatter.format(-myNumber)
             else

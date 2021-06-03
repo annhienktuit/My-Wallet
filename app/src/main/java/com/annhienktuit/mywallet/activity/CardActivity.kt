@@ -3,8 +3,12 @@ package com.annhienktuit.mywallet.activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.Card
@@ -22,6 +26,11 @@ class CardActivity : AppCompatActivity() {
         .getReference("datas").child(user?.uid.toString()).child("cards")
     var card: Card? = null
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window: Window = window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = Color.parseColor("#FFFFFF")
+        }
         var pos = intent.getIntExtra("position", 0)
         ref.keepSynced(true)
         getDatabase(ref.child("card" + (pos + 1)),object : OnGetDataListener{
