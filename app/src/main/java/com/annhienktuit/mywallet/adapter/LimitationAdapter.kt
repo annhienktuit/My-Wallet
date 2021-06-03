@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.Limitation
@@ -37,7 +38,7 @@ class LimitationAdapter(val context: Context, val LimitationList: ArrayList<Limi
                         val target = v.findViewById<TextInputEditText>(R.id.tfTarget)
                         AlertDialog.Builder(context)
                             .setView(v)
-                            .setPositiveButton("Ok"){
+                            .setPositiveButton("Add"){
                                     dialog,_->
                                 position.limitedGroup = group.text.toString()
                                 position.target = target.text.toString()

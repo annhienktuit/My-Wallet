@@ -24,7 +24,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
-import java.lang.Exception
 
 
 private const val ARG_PARAM1 = "param1"
@@ -200,7 +199,7 @@ class PlanningFragment : Fragment() {
         val categoryAdapter = ArrayAdapter(requireContext(), R.layout.layout_category, itemsExpense)
         textCategory.setAdapter(categoryAdapter)
         builder.setView(view)
-        builder.setPositiveButton("OK") { dialog, _ ->
+        builder.setPositiveButton("Add") { dialog, _ ->
             try {
                 val tmp1 = money.text.toString()
                 val tmp2 = textCategory.text.toString()
@@ -209,6 +208,17 @@ class PlanningFragment : Fragment() {
                 ref1.child("nameLimit").setValue(tmp2)
                 Toast.makeText(activity, "Adding limitation item success", Toast.LENGTH_SHORT)
                     .show()
+                val count = requireFragmentManager().backStackEntryCount
+
+                if (count == 0) {
+                    val nextFrag = PlanningFragment()
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_planning, PlanningFragment(), "findThisFragment")
+                        .addToBackStack(null)
+                        .commit()
+                } else {
+                    activity?.fragmentManager?.popBackStack()
+                }
                 dialog.dismiss()
             } catch (e: Exception) {
                 Toast.makeText(activity, "Please fill all the fields!", Toast.LENGTH_SHORT).show()

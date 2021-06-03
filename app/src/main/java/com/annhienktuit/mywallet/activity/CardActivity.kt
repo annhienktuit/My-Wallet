@@ -29,7 +29,7 @@ class CardActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window: Window = window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = Color.parseColor("#FFFFFF")
+            window.statusBarColor = Color.parseColor("#4CAF50")
         }
         var pos = intent.getIntExtra("position", 0)
         ref.keepSynced(true)
