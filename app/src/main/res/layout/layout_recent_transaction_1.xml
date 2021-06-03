@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/txtNameTransaction1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Food and Beverage"
-        android:fontFamily="@font/gotham_bold"
-        android:textColor="#2F2543"
-        android:textSize="16sp"/>
-    <TextView
-        android:id="@+id/txtDateAndName1"
-        android:layout_below="@+id/txtNameTransaction1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Today - Makan Bakso"
-        android:textColor="#828282"
-        android:fontFamily="@font/gotham"
-        android:textSize="14sp"/>
-    <TextView
-        android:id="@+id/txtMoneyChange1"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="-15,000 VND"
-        android:textColor="#EB5772"
-        android:fontFamily="@font/gotham_bold"
-        android:textSize="14sp"/>
+    <androidx.cardview.widget.CardView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        app:cardCornerRadius="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:padding="10dp"
+            android:background="#F6F0F0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/txtNameTransaction1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Food and Beverage"
+                android:fontFamily="@font/gotham_bold"
+                android:textColor="#2F2543"
+                android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/txtDateAndName1"
+                android:layout_below="@+id/txtNameTransaction1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today - Makan Bakso"
+                android:textColor="#828282"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/gotham"
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/txtMoneyChange1"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-15,000 VND"
+                android:textColor="#EB5772"
+                android:fontFamily="@font/gotham_bold"
+                android:textSize="14sp"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

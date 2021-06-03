@@ -36,8 +36,8 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="10dp"
         android:background="#00FFFFFF"
-        android:tint="@color/white"
-        android:src="@drawable/ic_back"/>
+        android:src="@drawable/ic_back"
+        app:tint="@color/white" />
 
     <RelativeLayout
         android:id="@+id/layout_card_saving"

@@ -38,7 +38,7 @@ class SavingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_saving)
         ref.keepSynced(true)
         pos = intent.getIntExtra("position", 0)
-        getDatabase(ref.child("saving" + (pos + 1)).child("details"), object : OnGetDataListener {
+        getDatabase(ref.child("saving" + (pos + 1)).child("details").orderByChild("day"), object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 totalDetail = 0
                 savingDetailList.clear()
@@ -47,9 +47,14 @@ class SavingActivity : AppCompatActivity() {
                     var tmp2 = data.child("day").value.toString()
                     var tmp3 = data.child("time").value.toString()
                     var tmp4 = data.child("transName").value.toString()
+                    val originalDay = SimpleDateFormat("yyyy/MM/dd")
+                    val targetDay = SimpleDateFormat("dd/MM/yyyy")
+                    val tmpDayOriginal = originalDay.parse(tmp2)
+                    val tmpDayTarget = targetDay.format(tmpDayOriginal)
                     totalDetail++;
-                    savingDetailList.add(SavingDetail(tmp1, tmp2, tmp3, tmp4))
+                    savingDetailList.add(SavingDetail(tmp1, tmpDayTarget, tmp3, tmp4))
                 }
+                Collections.reverse(savingDetailList)
             }
 
             override fun onStart() {
@@ -96,7 +101,7 @@ class SavingActivity : AppCompatActivity() {
             val name = editName.text.toString()
             val money = editMoney.text.toString()
             var date = Calendar.getInstance()
-            var dayFormatter = SimpleDateFormat("dd/MM/yyyy")
+            var dayFormatter = SimpleDateFormat("yyyy/MM/dd")
             var timeFormatter = SimpleDateFormat("hh:mm")
             var day = dayFormatter.format(date.time)
             var time = timeFormatter.format(date.time)
@@ -135,9 +140,9 @@ class SavingActivity : AppCompatActivity() {
         fun onStart()
         fun onFailure()
     }
-    private fun getDatabase(ref: DatabaseReference?, listener: OnGetDataListener?) {
+    fun getDatabase(ref: DatabaseReference, listener: OnGetDataListener?) {
         listener?.onStart()
-        ref?.addValueEventListener(object : ValueEventListener{
+        ref.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 listener?.onSuccess(snapshot)
             }
@@ -146,6 +151,16 @@ class SavingActivity : AppCompatActivity() {
             }
         })
     }
-
+    fun getDatabase(ref: Query, listener: OnGetDataListener?) {
+        listener?.onStart()
+        ref.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listener?.onSuccess(snapshot)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                listener?.onFailure()
+            }
+        })
+    }
 
 }
