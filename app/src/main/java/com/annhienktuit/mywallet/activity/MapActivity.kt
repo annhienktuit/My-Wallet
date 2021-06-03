@@ -80,7 +80,7 @@ class MapActivity : AppCompatActivity() {
             if (addresses != null) {
                 val returnedAddress: Address = addresses[0]
                 Log.i("location",addresses[0].toString())
-                val strReturnedAddress = StringBuilder("Address:${returnedAddress.featureName}, ${returnedAddress.subAdminArea}, ${returnedAddress.adminArea}")
+                val strReturnedAddress = StringBuilder("Your address:${returnedAddress.featureName}, ${returnedAddress.thoroughfare}, ${returnedAddress.locality}, ${returnedAddress.countryName}")
                 for (i in 0 until returnedAddress.getMaxAddressLineIndex()) {
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
                 }

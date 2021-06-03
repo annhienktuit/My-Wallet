@@ -6,26 +6,64 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.MapActivity">
+    <TextView
+        android:id="@+id/txtPlanning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:text="Nearby Me"
+        android:fontFamily="@font/gotham_bold"
+        android:textSize="24sp"
+        android:textColor="@color/mainColor"/>
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textViewBankName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/edit_text_border"
         android:hint="Enter Bank Name"/>
-    <Button
-        android:id="@+id/btnfindATM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Find near me ATM"/>
-    <Button
-        android:id="@+id/btnfindBank"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Find near me bank"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnfindATM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_alignParentLeft="true"
+            android:drawableLeft="@drawable/ic_machine"
+            android:text="Find ATM"/>
+        <Button
+            android:id="@+id/btnfindBank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@id/btnfindBank"
+            android:drawableLeft="@drawable/ic_bank"
+            android:text="Find bank"/>
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/textViewLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:text="Address"/>
+        android:layout_marginTop="30dp"
+        android:textSize="18sp"
+        android:text="Your address: "
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/ic_mylocation"/>
 
 </LinearLayout>
