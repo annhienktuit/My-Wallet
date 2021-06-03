@@ -14,6 +14,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.Card
+import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
@@ -52,18 +53,21 @@ class CardActivity : AppCompatActivity() {
             val clipboard: ClipboardManager =
                 getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("Copied", card!!.namePerson.toString())
+            toast("Copied to clipboard")
             clipboard.setPrimaryClip(clip)
         }
         btnCopyAccountNumber.setOnClickListener {
             val clipboard: ClipboardManager =
                 getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("Copied", card?.accountNumber.toString())
+            toast("Copied to clipboard")
             clipboard.setPrimaryClip(clip)
         }
         btnCopyCardNumber.setOnClickListener {
             val clipboard: ClipboardManager =
                 getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("Copied", card?.cardNumber.toString())
+            toast("Copied to clipboard")
             clipboard.setPrimaryClip(clip)
         }
     }
