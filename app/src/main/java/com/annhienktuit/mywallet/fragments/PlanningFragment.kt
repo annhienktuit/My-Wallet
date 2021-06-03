@@ -1,39 +1,29 @@
 package com.annhienktuit.mywallet.fragments
 
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.Card
 import com.annhienktuit.mywallet.`object`.Limitation
 import com.annhienktuit.mywallet.`object`.Saving
-import com.annhienktuit.mywallet.`object`.Wallet
 import com.annhienktuit.mywallet.activity.MainActivity
 import com.annhienktuit.mywallet.adapter.CardAdapter
 import com.annhienktuit.mywallet.adapter.LimitationAdapter
 import com.annhienktuit.mywallet.adapter.SavingAdapter
-import com.annhienktuit.mywallet.adapter.WalletAdapter
-import com.annhienktuit.mywallet.dialog.AddLimitationDialog
 import com.annhienktuit.mywallet.utils.FirebaseUtils
-import com.google.android.gms.dynamic.SupportFragmentWrapper
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.activity_saving.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_planning.*
 import java.lang.Exception
 
 
@@ -45,7 +35,6 @@ class PlanningFragment : Fragment() {
 
     private var param1: String? = null
     private var param2: String? = null
-    var walletList = ArrayList<Wallet>()
     var savingList = ArrayList<Saving>()
     var cardList = ArrayList<Card>()
     var limitationList = ArrayList<Limitation>()
@@ -55,7 +44,6 @@ class PlanningFragment : Fragment() {
         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
         .getReference("datas").child(user?.uid.toString())
     //--------------------------------------------------
-    lateinit var recyclerWallet: RecyclerView
     lateinit var recyclerSaving: RecyclerView
     lateinit var recyclerCard: RecyclerView
     lateinit var recyclerLimitation: RecyclerView
@@ -118,11 +106,10 @@ class PlanningFragment : Fragment() {
 
     fun setData(view: View) {
         var data = (activity as MainActivity)
-        walletList = data.getWalletList()!!
         savingList = data.getSavingList()
         cardList = data.getCardList()
+        limitationList = data.getLimitationList()
         //limitationList = data.getLimitationList()!!
-        recyclerWallet = view.findViewById(R.id.recyclerWalletDetail)
         recyclerSaving = view.findViewById(R.id.recyclerSavings)
         recyclerCard = view.findViewById(R.id.recyclerCards)
         recyclerLimitation = view.findViewById(R.id.recyclerLimitation)
@@ -132,11 +119,6 @@ class PlanningFragment : Fragment() {
         btnAddCard = view.findViewById(R.id.btnAddCard)
 
         limitationAdapter = LimitationAdapter(activity as MainActivity, limitationList)
-
-        recyclerWallet.adapter = WalletAdapter(walletList)
-        recyclerWallet.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        recyclerWallet.setHasFixedSize(true)
 
         recyclerSaving.adapter = SavingAdapter(savingList)
         recyclerSaving.layoutManager =
@@ -209,24 +191,22 @@ class PlanningFragment : Fragment() {
     }
 
     private fun addLimitationInfo() {
-        val inflter = LayoutInflater.from(activity)
-        val v = inflter.inflate(R.layout.dialog_add_limitation, null)
-
-        /**set view*/
-        val group = v.findViewById<MaterialTextView>(R.id.tvGroup)
-        val target = v.findViewById<EditText>(R.id.tfTarget)
-
-        val addDialog = AlertDialog.Builder(activity as MainActivity)
-
-        addDialog.setView(v)
-        addDialog.setPositiveButton("Ok") { dialog, _ ->
+        val totalLimit = limitationList.size
+        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_add_limitation, null)
+        val builder = AlertDialog.Builder(activity as MainActivity)
+        val textCategory = view.findViewById<AutoCompleteTextView>(R.id.textCategoryLimit)
+        val money = view.findViewById<TextInputEditText>(R.id.tfTarget)
+        val itemsExpense = resources.getStringArray(R.array.categoriesExpense)
+        val categoryAdapter = ArrayAdapter(requireContext(), R.layout.layout_category, itemsExpense)
+        textCategory.setAdapter(categoryAdapter)
+        builder.setView(view)
+        builder.setPositiveButton("OK") { dialog, _ ->
             try {
-                val groupName = group.text.toString()
-                val targetName = target.text.toString().toLong()
-
-                limitationList.add(Limitation(targetName, groupName))
-
-                limitationAdapter.notifyDataSetChanged()
+                val tmp1 = money.text.toString()
+                val tmp2 = textCategory.text.toString()
+                val ref1 = ref.child("limits").child("limit" + (totalLimit + 1))
+                ref1.child("costLimit").setValue(tmp1)
+                ref1.child("nameLimit").setValue(tmp2)
                 Toast.makeText(activity, "Adding limitation item success", Toast.LENGTH_SHORT)
                     .show()
                 dialog.dismiss()
@@ -235,12 +215,12 @@ class PlanningFragment : Fragment() {
             }
         }
 
-        addDialog.setNegativeButton("Cancel") { dialog, _ ->
+        builder.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
             Toast.makeText(activity, "Cancel", Toast.LENGTH_SHORT).show()
 
         }
-        addDialog.create()
-        addDialog.show()
+        builder.create()
+        builder.show()
     }
 }

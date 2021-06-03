@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
         .getReference("datas")
     //-------------------------------------------------------
-    private var walletList = ArrayList<Wallet>()
     private var savingList = ArrayList<Saving>()
     private var transactionList = ArrayList<RecentTransaction>()
     private var cardList = ArrayList<Card>()
@@ -217,7 +216,6 @@ class MainActivity : AppCompatActivity() {
             ref.child(user?.uid.toString()).child("expense").setValue("0")
         } else {
             val db = ref.child(user?.uid.toString())
-            val walletDb = db.child("wallets")
             val savingDb = db.child("savings")
             val transactionDb = db.child("transactions")
             val cardDb = db.child("cards")
@@ -226,20 +224,6 @@ class MainActivity : AppCompatActivity() {
             income = data.child(user?.uid.toString()).child("income").value.toString()
             expense = data.child(user?.uid.toString()).child("expense").value.toString()
             balance = data.child(user?.uid.toString()).child("balance").value.toString()
-            getDatabase(walletDb, object : OnGetDataListener {
-                override fun onSuccess(dataSnapshot: DataSnapshot) {
-                    walletList.clear()
-                    for (data in dataSnapshot.children) {
-                        var nameWallet = data.child("nameWallet").value.toString()
-                        var balanceWallet = data.child("balanceWallet").value.toString()
-                        walletList.add(Wallet(balanceWallet, nameWallet))
-                    }
-                }
-                override fun onStart() {
-                }
-                override fun onFailure() {
-                }
-            })
             getDatabase(savingDb, object : OnGetDataListener {
                 override fun onSuccess(dataSnapshot: DataSnapshot) {
                     savingList.clear()
@@ -299,8 +283,7 @@ class MainActivity : AppCompatActivity() {
                     for (data in dataSnapshot.children) {
                         var nameLimit = data.child("nameLimit").value.toString()
                         var costLimit = data.child("costLimit").value.toString()
-                        var cost = costLimit.toLong()
-                        limitList.add(Limitation(cost, nameLimit))
+                        limitList.add(Limitation(costLimit, nameLimit))
                     }
                 }
                 override fun onStart() {
@@ -350,9 +333,6 @@ class MainActivity : AppCompatActivity() {
     fun getBalance(): String? {
         return balance
     }
-    fun getWalletList(): ArrayList<Wallet>? {
-        return walletList
-    }
     fun getSavingList(): ArrayList<Saving> {
         return savingList
     }
@@ -361,6 +341,9 @@ class MainActivity : AppCompatActivity() {
     }
     fun getCardList(): ArrayList<Card> {
         return cardList
+    }
+    fun getLimitationList(): ArrayList<Limitation> {
+        return limitList
     }
 }
 
