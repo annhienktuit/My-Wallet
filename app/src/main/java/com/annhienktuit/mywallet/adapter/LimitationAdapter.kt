@@ -33,14 +33,14 @@ class LimitationAdapter(val context: Context, val LimitationList: ArrayList<Limi
                 when(it.itemId){
                     R.id.editText->{
                         val v = LayoutInflater.from(context).inflate(R.layout.dialog_add_limitation,null)
-                        val group = v.findViewById<TextView>(R.id.tvGroup)
+                        val group = v.findViewById<AutoCompleteTextView>(R.id.textCategoryLimit)
                         val target = v.findViewById<TextInputEditText>(R.id.tfTarget)
                         AlertDialog.Builder(context)
                             .setView(v)
                             .setPositiveButton("Ok"){
                                     dialog,_->
                                 position.limitedGroup = group.text.toString()
-                                position.target = target.text.toString().toLong()
+                                position.target = target.text.toString()
                                 notifyDataSetChanged()
                                 Toast.makeText(context,"Limitation Information is Edited", Toast.LENGTH_SHORT).show()
                                 dialog.dismiss()

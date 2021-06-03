@@ -10,5 +10,4 @@ data class DatabaseObject(
     val phone: String? = null,
     val savings: ArrayList<Saving>? = null,
     val transactions: ArrayList<RecentTransaction>? = null,
-    val wallets: ArrayList<Wallet>? = null,
 )
