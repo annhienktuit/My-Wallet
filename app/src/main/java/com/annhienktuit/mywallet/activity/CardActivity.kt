@@ -1,15 +1,9 @@
 package com.annhienktuit.mywallet.activity
 
-import android.R.attr.label
-import android.app.ProgressDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.AsyncTask
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.annhienktuit.mywallet.R
@@ -70,9 +64,19 @@ class CardActivity : AppCompatActivity() {
             toast("Copied to clipboard")
             clipboard.setPrimaryClip(clip)
         }
+        btnCopyAll.setOnClickListener {
+            val clipboard: ClipboardManager =
+                getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val fullInformation = ClipData.newPlainText("Copied","Name: " + card!!.namePerson.toString() + "\n"
+                    + "Account number: " + card?.accountNumber.toString() + "\n"
+                    + "Cardnumber: " + card?.cardNumber.toString() )
+            toast("Copied to clipboard")
+            clipboard.setPrimaryClip(fullInformation)
+        }
     }
     fun setData(card: Card?) {
-        numberCard.text = card?.cardNumber.toString()
+        var numberCardFormated = formatCard(card?.cardNumber.toString())
+        numberCard.text = numberCardFormated
         dateValid.text = card?.expiredDate.toString()
         nameCard.text = card?.namePerson.toString()
         bankingName.text = card?.bankName.toString()
@@ -96,5 +100,10 @@ class CardActivity : AppCompatActivity() {
                 listener?.onFailure()
             }
         })
+    }
+    fun formatCard(cardNumber: String?): String? {
+        if (cardNumber == null) return null
+        val delimiter = ' '
+        return cardNumber.replace(".{4}(?!$)".toRegex(), "$0$delimiter")
     }
 }

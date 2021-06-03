@@ -38,7 +38,7 @@
 
     <RelativeLayout
         android:id="@+id/cardInfo"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:elevation="10dp"
         android:layout_height="wrap_content">
@@ -219,6 +219,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
+            android:id="@+id/rlvcardno"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp"
@@ -260,5 +261,22 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
+    <Button
+        android:id="@+id/btnCopyAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:elevation="8dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/mainColor"
+        android:text="Copy all info to clipboard"
+        app:icon="@drawable/ic_copy"
+        app:iconTint="@color/white"
+        android:drawableRight="@drawable/ic_copy"
+        android:layout_below="@id/cardNumber"/>
+
 
 </RelativeLayout>
