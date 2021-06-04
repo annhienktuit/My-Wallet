@@ -130,6 +130,7 @@ class MainActivity : AppCompatActivity() {
             refTrans.child("name").setValue(name)
             refTrans.child("time").setValue(time)
             refTrans.child("inorout").setValue(inorout)
+            refTrans.child("category").setValue(textCategory.text.toString())
             if (inorout == "true") {
                 ref1.child("income").setValue((income?.toLong()?.plus(money.toLong())).toString())
                 ref1.child("balance").setValue((balance?.toLong()?.plus(money.toLong())).toString())
