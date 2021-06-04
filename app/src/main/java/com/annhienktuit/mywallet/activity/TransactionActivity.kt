@@ -27,7 +27,7 @@ class TransactionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transaction)
-
+        setData()
         val format = SimpleDateFormat("dd/MM/yyyy")
         val currentDay = format.format(Date().time)
         btn_pick_day_transaction.text = currentDay
@@ -46,9 +46,9 @@ class TransactionActivity : AppCompatActivity() {
                     var name = data.child("name").value.toString()
                     var time = data.child("time").value.toString()
                     transactionList.add(RecentTransaction(tmpDayTarget, inorout, money, name, time))
-                    setData()
                 }
-                Collections.reverse(transactionList)
+                transactionList.reverse()
+                setData()
             }
             override fun onStart() {
             }
@@ -140,6 +140,5 @@ class TransactionActivity : AppCompatActivity() {
         val formatter1 = SimpleDateFormat("dd/MM/yyyy")
         val tmp1 = formatter1.parse(str)
         return formatter.format(tmp1)
-
     }
 }

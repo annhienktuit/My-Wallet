@@ -240,7 +240,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onFailure() {
                 }
             })
-            getDatabase(transactionDb.orderByChild("day").limitToLast(4), object : OnGetDataListener {
+            getDatabase(transactionDb.orderByChild("day"), object : OnGetDataListener {
                 override fun onSuccess(dataSnapshot: DataSnapshot) {
                     totalTrans = 0
                     transactionList.clear()
@@ -257,7 +257,7 @@ class MainActivity : AppCompatActivity() {
                         transactionList.add(RecentTransaction(tmpDayTarget, inorout, money, name, time))
                         totalTrans++
                     }
-                    Collections.reverse(transactionList)
+                    transactionList.reverse()
                 }
                 override fun onStart() {
                 }
