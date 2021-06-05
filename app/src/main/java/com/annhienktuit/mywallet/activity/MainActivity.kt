@@ -4,15 +4,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.view.get
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.annhienktuit.mywallet.R
@@ -24,17 +20,12 @@ import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
 import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_saving.*
-import kotlinx.android.synthetic.main.dialog_add_transaction.*
 import kotlinx.android.synthetic.main.dialog_add_transaction.view.*
+import kotlinx.android.synthetic.main.fragment_current_month.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -61,6 +52,8 @@ class MainActivity : AppCompatActivity() {
     private var expense: String? = null
     private var balance: String? = null
     private var totalTrans: Int = 0
+    //--------------------------------
+    private var currentMonthIncome: String? = null
     //--------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,6 +124,7 @@ class MainActivity : AppCompatActivity() {
             refTrans.child("time").setValue(time)
             refTrans.child("inorout").setValue(inorout)
             refTrans.child("category").setValue(textCategory.text.toString())
+            refTrans.child("currentMonth").setValue((date.get(Calendar.MONTH) + 1).toString())
             if (inorout == "true") {
                 ref1.child("income").setValue((income?.toLong()?.plus(money.toLong())).toString())
                 ref1.child("balance").setValue((balance?.toLong()?.plus(money.toLong())).toString())
