@@ -111,21 +111,19 @@
             android:textStyle="bold"
             android:layout_marginLeft="10dp"/>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="#f8a488"
+        <TextView
+            android:id="@+id/testText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.anychart.AnyChartView
+            android:id="@+id/pieChart"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="This is a chart"
-                android:layout_gravity="center"
-                />
-        </FrameLayout>
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
