@@ -195,6 +195,7 @@ class CurrentMonthFragment : Fragment() {
         while(iForCurrentMonth < list.size){
             if(list[iForCurrentMonth].currentMonth != currentMonth.toString()){
                 list.remove(list[iForCurrentMonth])
+                iForCurrentMonth--
             }
             iForCurrentMonth++
         }
