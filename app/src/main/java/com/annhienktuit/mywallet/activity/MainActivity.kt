@@ -9,7 +9,9 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+
 import androidx.fragment.app.Fragment
+
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.*
 import com.annhienktuit.mywallet.fragments.HomeFragment
@@ -19,13 +21,13 @@ import com.annhienktuit.mywallet.fragments.UserFragment
 import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_saving.*
-import kotlinx.android.synthetic.main.dialog_add_transaction.*
 import kotlinx.android.synthetic.main.dialog_add_transaction.view.*
+import kotlinx.android.synthetic.main.fragment_current_month.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -53,6 +55,8 @@ class MainActivity : AppCompatActivity() {
     private var balance: String? = null
     private var totalTrans: Int = 0
     private var firstStart = false
+    //--------------------------------
+    private var currentMonthIncome: String? = null
     //--------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,6 +145,8 @@ class MainActivity : AppCompatActivity() {
             refTrans.child("name").setValue(name)
             refTrans.child("time").setValue(time)
             refTrans.child("inorout").setValue(inorout)
+            refTrans.child("category").setValue(textCategory.text.toString())
+            refTrans.child("currentMonth").setValue((date.get(Calendar.MONTH) + 1).toString())
             if (inorout == "true") {
                 ref1.child("income").setValue((income?.toLong()?.plus(money.toLong())).toString())
                 ref1.child("balance").setValue((balance?.toLong()?.plus(money.toLong())).toString())

@@ -33,6 +33,7 @@ class ReportFragment : Fragment() {
         var adapter = ReportPagerAdapter(childFragmentManager, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
         myPager.adapter = adapter
         myTab.setupWithViewPager(myPager)
+
         return myView
     }
     fun setData(view: View){

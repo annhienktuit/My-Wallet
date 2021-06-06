@@ -81,4 +81,8 @@ dependencies {
     //custom progress bar library
     //https://github.com/saisasanksunkavalli/RoundedHorizontalProgressBar
     implementation 'com.sasank.roundedhorizontalprogress:roundedhorizontalprogress:1.0.1'
+
+    //chart library
+    //https://github.com/AnyChart/AnyChart-Android?fbclid=IwAR3AFY4x2MXZoyrsOVDZ-Cjgxre5XvkCnscTXlQkNumZFulwnFyyB7Kjlhg
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
 }
