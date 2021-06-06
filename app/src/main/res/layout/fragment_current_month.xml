@@ -19,75 +19,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_bold"
-            android:text="Overage"
-            android:textColor="#2F2543"
-            android:textSize="20sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="First overage"
-                android:textColor="#828282"
-                android:layout_marginLeft="10dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Last overage"
-                android:textColor="#828282"
-                android:layout_marginLeft="80dp"/>
-
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-
-            <TextView
-                android:id="@+id/firstOverage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textColor="#2F2543"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <TextView
-                android:id="@+id/lastOverage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="161dp"
-                android:text="0"
-                android:textColor="#2F2543"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_height="2dp"
-            android:background="#d8e3e7"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/gotham_bold"
             android:text="Revenue and Expenses"
             android:textColor="#2F2543"
             android:textSize="20sp"
@@ -97,13 +28,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Net income"
+            android:text="Current Month Balance"
             android:textColor="#828282"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"/>
 
         <TextView
-            android:id="@+id/netIncome"
+            android:id="@+id/balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
@@ -111,19 +42,30 @@
             android:textStyle="bold"
             android:layout_marginLeft="10dp"/>
 
-        <TextView
-            android:id="@+id/testText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="2dp"
+            android:background="#d8e3e7"/>
 
         <com.anychart.AnyChartView
-            android:id="@+id/pieChart"
+            android:id="@+id/pieChartIncome"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="2dp"
+            android:background="#d8e3e7"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -134,7 +76,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Revenue"
+                android:text="Income"
                 android:textColor="#828282"
                 android:layout_marginLeft="10dp"/>
 
@@ -153,7 +95,7 @@
             android:layout_marginRight="10dp">
 
             <TextView
-                android:id="@+id/revenue"
+                android:id="@+id/income"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
@@ -166,7 +108,7 @@
                 android:id="@+id/expense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="161dp"
+                android:layout_marginLeft="154dp"
                 android:text="0"
                 android:textColor="#F2884D"
                 android:textStyle="bold"
@@ -174,21 +116,22 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <FrameLayout
+        <View
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="#f8a488"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="2dp"
+            android:background="#d8e3e7"/>
+
+        <com.anychart.AnyChartView
+            android:id="@+id/pieChartExpense"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="This is another chart"
-                android:layout_gravity="center"
-                />
-        </FrameLayout>
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            />
 
         <View
             android:layout_width="match_parent"
