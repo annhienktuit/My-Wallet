@@ -4,31 +4,22 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.view.get
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.fragment.app.Fragment
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.*
-import com.annhienktuit.mywallet.adapter.MainPagerAdapter
 import com.annhienktuit.mywallet.fragments.HomeFragment
 import com.annhienktuit.mywallet.fragments.PlanningFragment
 import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
 import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -61,18 +52,37 @@ class MainActivity : AppCompatActivity() {
     private var expense: String? = null
     private var balance: String? = null
     private var totalTrans: Int = 0
+    private var firstStart = false
     //--------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //hide action bar
+        if (supportActionBar != null) {
+            supportActionBar!!.hide();
+        }
+        //---------------
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window: Window = window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = Color.parseColor("#FFFFFF")
+        }
         ref.keepSynced(true)
         if(user == null) {
             startActivity(Intent(this, SignUpActivity::class.java))
         }
+
         getDatabase(ref, object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 setUpDatabase(dataSnapshot)
                 setUI()
+                if (!check) {
+                    val transaction = supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.container_fragment, HomeFragment())
+                    //transaction.addToBackStack(null)
+                    transaction.commit()
+                    firstStart = true
+                }
             }
             override fun onStart() {
 
@@ -84,6 +94,7 @@ class MainActivity : AppCompatActivity() {
             eventOnClickAddButton()
         }
     }
+
     private fun eventOnClickAddButton() {
         val builder = AlertDialog.Builder(this)
         val viewInflater = LayoutInflater.from(this).inflate(R.layout.dialog_add_transaction, null, false)
@@ -146,20 +157,22 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setUI() {
-        //hide action bar
-        if (supportActionBar != null) {
-            supportActionBar!!.hide();
-        }
-        //---------------
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val window: Window = window
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = Color.parseColor("#FFFFFF")
-        }
 
         //modify the display of bottom navigation view
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(2).isEnabled = false
+        //----------------------------------------------
+        val fragment = when (bottomNavigationView.selectedItemId) {
+            R.id.navReport -> ReportFragment()
+            R.id.navPlanning -> PlanningFragment()
+            R.id.navUser -> UserFragment()
+            else -> {
+                HomeFragment()
+            }
+        }
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container_fragment, fragment)
+
         //--------------------------------------------
         if (user !== null) {
             toast("Hello ${user!!.email}")
@@ -167,45 +180,41 @@ class MainActivity : AppCompatActivity() {
             Log.i("logged in", "false")
         }
         //--------------------------------------
-        var adapter = MainPagerAdapter(
-            supportFragmentManager,
-            FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-        )
-        containerViewPager.adapter = adapter
-        //When slide or choose a specific fragment, bottom navigation view icons will change their color to corresponding fragment
-        containerViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        bottomNavigationView.setOnItemSelectedListener(mOnBottomNavigationView)
+    }
 
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-
+    private val mOnBottomNavigationView = BottomNavigationView.OnNavigationItemSelectedListener {
+        when (it.itemId) {
+            R.id.navHome -> {
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.container_fragment, HomeFragment())
+                //transaction.addToBackStack(null)
+                transaction.commit()
+                return@OnNavigationItemSelectedListener true
             }
-
-            override fun onPageSelected(position: Int) {
-                when (position) {
-                    0 -> bottomNavigationView.menu.findItem(R.id.navHome).isChecked = true
-                    1 -> bottomNavigationView.menu.findItem(R.id.navReport).isChecked = true
-                    2 -> bottomNavigationView.menu.findItem(R.id.navPlanning).isChecked = true
-                    3 -> bottomNavigationView.menu.findItem(R.id.navUser).isChecked = true
-                }
+            R.id.navReport -> {
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.container_fragment, ReportFragment())
+                //transaction.addToBackStack(null)
+                transaction.commit()
+                return@OnNavigationItemSelectedListener true
             }
-
-            override fun onPageScrollStateChanged(state: Int) {
-
+            R.id.navPlanning -> {
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.container_fragment, PlanningFragment())
+                //transaction.addToBackStack(null)
+                transaction.commit()
+                return@OnNavigationItemSelectedListener true
             }
-        })
-
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navHome -> containerViewPager.currentItem = 0
-                R.id.navReport -> containerViewPager.currentItem = 1
-                R.id.navPlanning -> containerViewPager.currentItem = 2
-                R.id.navUser -> containerViewPager.currentItem = 3
+            R.id.navUser -> {
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.container_fragment, UserFragment())
+               // transaction.addToBackStack(null)
+                transaction.commit()
+                return@OnNavigationItemSelectedListener true
             }
-            true
         }
+        false
     }
 
     fun setUpDatabase(data: DataSnapshot?) {
@@ -351,4 +360,7 @@ class MainActivity : AppCompatActivity() {
         return limitList
     }
 }
+
+
+
 
