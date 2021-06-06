@@ -78,6 +78,9 @@ class CurrentMonthFragment : Fragment() {
                 var pie: Pie = AnyChart.pie()
 
                 var listPieChartData = mutableListOf<DataEntry>()
+                amountBalance = 0L
+                amountIncome = 0L
+                amountExpense = 0L
 
                 //listCurrentIncome.removeAll(listCurrentIncome)
                 for(childBranch in snapshot.children){

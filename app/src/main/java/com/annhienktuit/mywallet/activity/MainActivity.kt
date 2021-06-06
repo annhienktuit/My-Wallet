@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 setUpDatabase(dataSnapshot)
                 setUI()
-                if (!check) {
+                if (!firstStart) {
                     val transaction = supportFragmentManager.beginTransaction()
                     transaction.replace(R.id.container_fragment, HomeFragment())
                     //transaction.addToBackStack(null)
