@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham"
-                    android:text="Cash"
+                    android:text="All Month Balance"
                     android:textColor="#828282"
                     android:textSize="12sp" />
 
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham_bold"
-                    android:text="200.000.000đ"
+                    android:text="0"
                     android:textColor="#2F2543"
                     android:textSize="15sp" />
             </LinearLayout>
