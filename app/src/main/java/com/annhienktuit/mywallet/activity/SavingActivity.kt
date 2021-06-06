@@ -47,14 +47,19 @@ class SavingActivity : AppCompatActivity() {
                     var tmp2 = data.child("day").value.toString()
                     var tmp3 = data.child("time").value.toString()
                     var tmp4 = data.child("transName").value.toString()
-                    val originalDay = SimpleDateFormat("yyyy/MM/dd")
-                    val targetDay = SimpleDateFormat("dd/MM/yyyy")
-                    val tmpDayOriginal = originalDay.parse(tmp2)
-                    val tmpDayTarget = targetDay.format(tmpDayOriginal)
+                    try {
+                        val originalDay = SimpleDateFormat("yyyy/MM/dd")
+                        val targetDay = SimpleDateFormat("dd/MM/yyyy")
+                        val tmpDayOriginal = originalDay.parse(tmp2)
+                        val tmpDayTarget = targetDay.format(tmpDayOriginal)
+                        savingDetailList.add(SavingDetail(tmp1, tmpDayTarget, tmp3, tmp4))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                     totalDetail++;
-                    savingDetailList.add(SavingDetail(tmp1, tmpDayTarget, tmp3, tmp4))
+
                 }
-                Collections.reverse(savingDetailList)
+                savingDetailList.reverse()
             }
 
             override fun onStart() {

@@ -63,7 +63,7 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
                 holder2.money2.text = changeToMoney(currentItem.moneyOfProduct)
             else
                 holder2.money2.text = currentItem.moneyOfProduct
-            var tmp1 = currentItem.currentSaving?.toLong()
+            var tmp1 = currentItem.currentSaving?.toDouble()
             var tmp2 = currentItem.moneyOfProduct?.toLong()
             var result = (tmp1!! * 100) / tmp2!!
             holder2.progress2.progress = result.toInt()

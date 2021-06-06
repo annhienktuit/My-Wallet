@@ -38,8 +38,8 @@
         app:rippleColor="@color/white"
         app:backgroundTint="#43D149"/>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/containerViewPager"
+    <FrameLayout
+        android:id="@+id/container_fragment"
         android:layout_marginBottom="57dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
