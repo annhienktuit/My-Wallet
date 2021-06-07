@@ -69,7 +69,7 @@ class AboutActivity : AppCompatActivity() {
             R.drawable.hoan_bede,urlHoan))
         coderModelList.add(CoderModel("Hien Tran",
             "SE faculty\n Academic scholarship at 2nd semester",
-            R.drawable.hoan_bede,urlHien))
+            R.drawable.hien_bede,urlHien))
         coderAdapter = CoderAdapter(applicationContext , coderModelList)
         viewpager.adapter = coderAdapter
         viewpager.setPadding(100,0,100,0)
