@@ -37,14 +37,15 @@
         <item>Allowance</item>
         <item>Bonus</item>
         <item>Side income</item>
-        <item>Invest</item>
+        <item>Investment</item>
         <item>Temporary income</item>
         <item>Debt</item>
-        <item>Other</item>
+        <item>Others</item>
     </string-array>
     <string-array name="categoriesExpense">
         <item>Meals</item>
         <item>Daily spending</item>
+        <item>Entertainment</item>
         <item>Clothes</item>
         <item>Cosmetics</item>
         <item>Healthcare</item>
@@ -53,6 +54,6 @@
         <item>Travel money</item>
         <item>House renting</item>
         <item>Loan</item>
-        <item>Other</item>
+        <item>Others</item>
     </string-array>
 </resources>
