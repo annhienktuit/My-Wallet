@@ -10,6 +10,7 @@ import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.CoderModel
 import kotlinx.android.synthetic.main.card_about_item.view.*
 
+
 class CoderAdapter(private val context: Context, private val coderList: ArrayList<CoderModel>) :PagerAdapter() {
     override fun getCount(): Int {
         return coderList.size
@@ -25,12 +26,10 @@ class CoderAdapter(private val context: Context, private val coderList: ArrayLis
         val name = model.name
         val description = model.description
         val img = model.img
-        view.bannerIv.setImageResource(img)
-        view.tvDescription.text = description
-        view.tvName.text = name
-        view.setOnClickListener {
-            Toast.makeText(context,"Clicked",Toast.LENGTH_LONG).show()
-        }
+        val url = model.url
+        view.bannerIv.setImageResource(img!!)
+        view.tvDescription.text = description!!
+        view.tvName.text = name!!
         container.addView(view,position)
 
         return view
@@ -39,5 +38,6 @@ class CoderAdapter(private val context: Context, private val coderList: ArrayLis
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View)
     }
+
 
 }
