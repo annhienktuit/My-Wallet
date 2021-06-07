@@ -49,6 +49,13 @@ class UserFragment : Fragment() {
         val name = view?.findViewById<TextView>(R.id.nameOfUser)
         val data = activity as MainActivity
         name?.text = data.getName()
+        val btnCardManager = view?.findViewById<Button>(R.id.btnmanagecard)
+        btnCardManager?.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it, CardActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
         val btnSignOut = view?.findViewById<Button>(R.id.btnLogOut)
         btnSignOut?.setOnClickListener {
             firebaseAuth.signOut()
