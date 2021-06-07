@@ -36,10 +36,13 @@ class PreviousMonthFragment : Fragment() {
     lateinit var previousBalance: TextView
     lateinit var previousIncome: TextView
     lateinit var previousExpense: TextView
+    lateinit var previousDebt: TextView
+    lateinit var previousLoan: TextView
 
     var amountBalance = 0L
     var amountIncome = 0L
     var amountExpense = 0L
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -59,6 +62,8 @@ class PreviousMonthFragment : Fragment() {
         previousBalance = rootView.findViewById(R.id.balance)
         previousExpense = rootView.findViewById(R.id.expense)
         previousIncome = rootView.findViewById(R.id.income)
+        previousDebt = rootView.findViewById(R.id.debt)
+        previousLoan = rootView.findViewById(R.id.loan)
     }
 
     private fun setIncomePieChartData(rootView: View) {
@@ -77,9 +82,9 @@ class PreviousMonthFragment : Fragment() {
                 var pie: Pie = AnyChart.pie()
 
                 var listPieChartData = mutableListOf<DataEntry>()
-                amountBalance = 0L
                 amountIncome = 0L
-                amountExpense = 0L
+                amountBalance = 0L
+                var amountDebt = 0L
 
                 //listPreviousIncome.removeAll(listPreviousIncome)
                 for(childBranch in snapshot.children){
@@ -99,6 +104,10 @@ class PreviousMonthFragment : Fragment() {
                 Log.d("preAf", listPreviousIncome.toString())
 
                 for(item in listPreviousIncome){
+                    if(item.category == "Debt"){
+                        amountDebt += item.moneyAmount.toLong()
+                    }
+
                     amountIncome += item.moneyAmount.toLong()
                     listPieChartData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
                 }
@@ -106,6 +115,7 @@ class PreviousMonthFragment : Fragment() {
                 amountBalance += amountIncome
                 previousIncome.text = amountIncome.toString()
                 previousBalance.text = amountBalance.toString()
+                previousDebt.text = amountDebt.toString()
 
                 pie.data(listPieChartData)
 
@@ -149,6 +159,9 @@ class PreviousMonthFragment : Fragment() {
 
                 var listPieChartData = mutableListOf<DataEntry>()
 
+                amountExpense = 0L
+                var amountLoan = 0L
+
                 //listPreviousIncome.removeAll(listPreviousIncome)
                 for(childBranch in snapshot.children){
                     listPreviousExpense.add(Transaction(
@@ -161,6 +174,10 @@ class PreviousMonthFragment : Fragment() {
                 listPreviousExpense = handleListForChart(listPreviousExpense)
 
                 for(item in listPreviousExpense){
+                    if(item.category == "Loan"){
+                        amountLoan += item.moneyAmount.toLong()
+                    }
+
                     amountExpense += item.moneyAmount.toLong()
                     listPieChartData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
                 }
@@ -168,6 +185,7 @@ class PreviousMonthFragment : Fragment() {
                 amountBalance -= amountExpense
                 previousBalance.text = amountBalance.toString()
                 previousExpense.text = amountExpense.toString()
+                previousLoan.text = amountLoan.toString()
 
                 pie.data(listPieChartData)
 
