@@ -20,7 +20,7 @@
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/mainColor"
         android:text="My Wallet"
         android:textAllCaps="true"
         android:textSize="32sp"

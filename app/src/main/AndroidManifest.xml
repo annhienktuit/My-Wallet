@@ -16,8 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyWallet"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.TransactionActivity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"></activity>
+        <activity android:name=".activity.AboutActivity"></activity>
+        <activity
+            android:name=".activity.TransactionActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity android:name=".activity.LimitationActivity" />
         <activity
             android:name=".activity.SavingActivity"
