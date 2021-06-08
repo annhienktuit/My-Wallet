@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.annhienktuit.mywallet.R
-import com.annhienktuit.mywallet.`object`.Transaction
+import com.annhienktuit.mywallet.`object`.TransactionForReport
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.anychart.APIlib
 import com.anychart.AnyChart
@@ -72,7 +72,7 @@ class PreviousMonthFragment : Fragment() {
         val refIncome = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("true")
 
         //list of previous month income
-        var listPreviousIncome = mutableListOf<Transaction>()
+        var listPreviousIncome = mutableListOf<TransactionForReport>()
 
         refIncome.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -89,7 +89,7 @@ class PreviousMonthFragment : Fragment() {
                 //listPreviousIncome.removeAll(listPreviousIncome)
                 for(childBranch in snapshot.children){
                     listPreviousIncome.add(
-                        Transaction(
+                        TransactionForReport(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
                         childBranch.child("currentMonth").value.toString()
@@ -148,7 +148,7 @@ class PreviousMonthFragment : Fragment() {
         val refExs = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("false")
 
         //list of previous month income
-        var listPreviousExpense = mutableListOf<Transaction>()
+        var listPreviousExpense = mutableListOf<TransactionForReport>()
 
         refExs.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -164,7 +164,7 @@ class PreviousMonthFragment : Fragment() {
 
                 //listPreviousIncome.removeAll(listPreviousIncome)
                 for(childBranch in snapshot.children){
-                    listPreviousExpense.add(Transaction(
+                    listPreviousExpense.add(TransactionForReport(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
                         childBranch.child("currentMonth").value.toString()
@@ -213,7 +213,7 @@ class PreviousMonthFragment : Fragment() {
     }
 
 
-    private fun handleListForChart(list: MutableList<Transaction>) : MutableList<Transaction>{
+    private fun handleListForChart(list: MutableList<TransactionForReport>) : MutableList<TransactionForReport>{
         var now: Calendar = Calendar.getInstance()
         var previousMonth = now.get(Calendar.MONTH)
 
