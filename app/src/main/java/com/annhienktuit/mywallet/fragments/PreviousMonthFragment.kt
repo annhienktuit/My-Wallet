@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.annhienktuit.mywallet.R
-import com.annhienktuit.mywallet.`object`.TransactionForReport
+import com.annhienktuit.mywallet.`object`.DetailTransaction
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.anychart.APIlib
 import com.anychart.AnyChart
@@ -72,7 +72,7 @@ class PreviousMonthFragment : Fragment() {
         val refIncome = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("true")
 
         //list of previous month income
-        var listPreviousIncome = mutableListOf<TransactionForReport>()
+        var listPreviousIncome = mutableListOf<DetailTransaction>()
 
         refIncome.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -89,7 +89,7 @@ class PreviousMonthFragment : Fragment() {
                 //listPreviousIncome.removeAll(listPreviousIncome)
                 for(childBranch in snapshot.children){
                     listPreviousIncome.add(
-                        TransactionForReport(
+                        DetailTransaction(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
                         childBranch.child("currentMonth").value.toString()
@@ -97,11 +97,9 @@ class PreviousMonthFragment : Fragment() {
                     )
                 }
 
-                Log.d("preBef", listPreviousIncome.toString())
 
                 listPreviousIncome = handleListForChart(listPreviousIncome)
 
-                Log.d("preAf", listPreviousIncome.toString())
 
                 for(item in listPreviousIncome){
                     if(item.category == "Debt"){
@@ -148,7 +146,7 @@ class PreviousMonthFragment : Fragment() {
         val refExs = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("false")
 
         //list of previous month income
-        var listPreviousExpense = mutableListOf<TransactionForReport>()
+        var listPreviousExpense = mutableListOf<DetailTransaction>()
 
         refExs.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -164,7 +162,7 @@ class PreviousMonthFragment : Fragment() {
 
                 //listPreviousIncome.removeAll(listPreviousIncome)
                 for(childBranch in snapshot.children){
-                    listPreviousExpense.add(TransactionForReport(
+                    listPreviousExpense.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
                         childBranch.child("currentMonth").value.toString()
@@ -213,17 +211,16 @@ class PreviousMonthFragment : Fragment() {
     }
 
 
-    private fun handleListForChart(list: MutableList<TransactionForReport>) : MutableList<TransactionForReport>{
+    private fun handleListForChart(list: MutableList<DetailTransaction>) : MutableList<DetailTransaction>{
         var now: Calendar = Calendar.getInstance()
         var previousMonth = now.get(Calendar.MONTH)
 
         if(previousMonth == 0)
             previousMonth = 12
 
-        Log.d("preMon", previousMonth.toString())
 
         var iForPreviousMonth = 0
-        Log.d("preSize", list.size.toString())
+
         while(iForPreviousMonth < list.size){
             if(list[iForPreviousMonth].currentMonth != previousMonth.toString()){
                 list.remove(list[iForPreviousMonth])
@@ -231,9 +228,6 @@ class PreviousMonthFragment : Fragment() {
             }
             iForPreviousMonth++
         }
-        Log.d("preNextSize", list.size.toString())
-
-        Log.d("preBet", list.toString())
 
         var i = 0;
         while(i < list.size){
@@ -244,6 +238,7 @@ class PreviousMonthFragment : Fragment() {
                     moneyTemp += list[j].moneyAmount.toLong()
                     list[i].moneyAmount = moneyTemp.toString()
                     list.remove(list[j])
+                    j--
                 }
                 j++
             }
