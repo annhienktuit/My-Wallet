@@ -32,9 +32,9 @@ class ReportFragment : Fragment() {
         myTab = myView.findViewById(R.id.tabLayout)
         var adapter = ReportPagerAdapter(childFragmentManager, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
         myPager.adapter = adapter
-        myPager.currentItem = 1
-        myTab.setupWithViewPager(myPager)
 
+        myTab.setupWithViewPager(myPager)
+        myPager.currentItem = 1
         return myView
     }
     fun setData(view: View){
