@@ -24,7 +24,7 @@ class ReportPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePage
         return when(position){
             0 -> PreviousMonthFragment()
             1 -> CurrentMonthFragment()
-            else -> CurrentMonthFragment()
+            else -> PreviousMonthFragment()
         }
     }
 
