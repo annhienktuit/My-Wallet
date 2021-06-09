@@ -2,9 +2,25 @@ package com.annhienktuit.mywallet.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.annhienktuit.mywallet.R
+import com.annhienktuit.mywallet.`object`.DetailTransaction
+import com.annhienktuit.mywallet.adapter.AllMonthAdapter
+import com.annhienktuit.mywallet.utils.FirebaseUtils
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.activity_all_month_report.*
+import java.util.*
 
 class AllMonthReport : AppCompatActivity() {
+    val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
+    var ref = FirebaseDatabase
+        .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        .getReference("datas")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_month_report)
@@ -13,6 +29,83 @@ class AllMonthReport : AppCompatActivity() {
             supportActionBar!!.hide();
         }
 
+        btnArrowBack.setOnClickListener{
+            finish()
+        }
 
+        setListView()
+    }
+
+    private fun setListView() {
+        val refTrans = ref.child(user?.uid.toString()).child("transactions")
+
+
+        refTrans.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var monthlyTransaction = mutableListOf<DetailTransaction>()
+
+                monthlyTransaction.removeAll(monthlyTransaction)
+                for(childBranch in snapshot.children) {
+                    monthlyTransaction.add(
+                        DetailTransaction(
+                            childBranch.child("category").value.toString(),
+                            childBranch.child("money").value.toString(),
+                            childBranch.child("currentMonth").value.toString(),
+                            childBranch.child("currentYear").value.toString(),
+                            childBranch.child("inorout").value.toString()
+                        )
+                    )
+                }
+
+                monthlyTransaction = handleMonthlyTransaction(monthlyTransaction)
+                setReportAdapter(monthlyTransaction)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+    }
+
+    private fun handleMonthlyTransaction(listMonthlyTrans: MutableList<DetailTransaction>): MutableList<DetailTransaction> {
+
+        var k = 0;
+        // set negative value for expense transaction
+        while(k < listMonthlyTrans.size){
+            if(listMonthlyTrans[k].inOrOut == "false"){
+                listMonthlyTrans[k].moneyAmount = (-listMonthlyTrans[k].moneyAmount.toLong()).toString()
+            }
+            k++
+        }
+
+        //group by month
+        var i = 0;
+        while(i < listMonthlyTrans.size){
+            var j = i + 1
+            while(j < listMonthlyTrans.size){
+                if(listMonthlyTrans[j].currentMonth == listMonthlyTrans[i].currentMonth){
+                    if(listMonthlyTrans[j].inOrOut != "null"){
+                        var moneyTemp: Long = listMonthlyTrans[i].moneyAmount.toLong()
+                        moneyTemp += listMonthlyTrans[j].moneyAmount.toLong()
+                        listMonthlyTrans[i].moneyAmount = moneyTemp.toString()
+                        listMonthlyTrans.remove(listMonthlyTrans[j])
+                        j--
+                        }
+                    }
+                j++
+                }
+            i++
+            }
+
+        return listMonthlyTrans
+    }
+
+
+
+
+    private fun setReportAdapter(list: MutableList<DetailTransaction>){
+        val adapter = AllMonthAdapter(this, list)
+        listReport.adapter = adapter
     }
 }

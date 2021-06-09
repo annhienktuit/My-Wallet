@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.annhienktuit.mywallet.R
-import com.annhienktuit.mywallet.`object`.TransactionForReport
+import com.annhienktuit.mywallet.`object`.DetailTransaction
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.anychart.APIlib
 import com.anychart.AnyChart
@@ -39,10 +39,6 @@ class PreviousMonthFragment : Fragment() {
     lateinit var previousDebt: TextView
     lateinit var previousLoan: TextView
 
-    var amountBalance = 0L
-    var amountIncome = 0L
-    var amountExpense = 0L
-
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -67,29 +63,27 @@ class PreviousMonthFragment : Fragment() {
     }
 
     private fun setIncomePieChartData(rootView: View) {
-
         //reference of Income
         val refIncome = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("true")
 
         //list of previous month income
-        var listPreviousIncome = mutableListOf<TransactionForReport>()
+        var listPreviousIncome = mutableListOf<DetailTransaction>()
 
         refIncome.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                var amountIncome = 0L
+                var amountDebt = 0L
                 //set pie chart
                 pieIncomeChart = rootView.findViewById(R.id.pieChartIncome)
                 APIlib.getInstance().setActiveAnyChartView(pieIncomeChart)
                 var pie: Pie = AnyChart.pie()
 
                 var listPieChartData = mutableListOf<DataEntry>()
-                amountIncome = 0L
-                amountBalance = 0L
-                var amountDebt = 0L
 
-                //listPreviousIncome.removeAll(listPreviousIncome)
+                listPreviousIncome.removeAll(listPreviousIncome)
                 for(childBranch in snapshot.children){
                     listPreviousIncome.add(
-                        TransactionForReport(
+                        DetailTransaction(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
                         childBranch.child("currentMonth").value.toString()
@@ -97,11 +91,9 @@ class PreviousMonthFragment : Fragment() {
                     )
                 }
 
-                Log.d("preBef", listPreviousIncome.toString())
 
                 listPreviousIncome = handleListForChart(listPreviousIncome)
 
-                Log.d("preAf", listPreviousIncome.toString())
 
                 for(item in listPreviousIncome){
                     if(item.category == "Debt"){
@@ -112,10 +104,11 @@ class PreviousMonthFragment : Fragment() {
                     listPieChartData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
                 }
 
-                amountBalance += amountIncome
                 previousIncome.text = amountIncome.toString()
-                previousBalance.text = amountBalance.toString()
                 previousDebt.text = amountDebt.toString()
+
+                previousBalance.text = (previousIncome.text.toString().toLong() - previousExpense.text.toString().toLong()).toString()
+                previousBalance.append(" VND")
 
                 pie.data(listPieChartData)
 
@@ -148,10 +141,12 @@ class PreviousMonthFragment : Fragment() {
         val refExs = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("false")
 
         //list of previous month income
-        var listPreviousExpense = mutableListOf<TransactionForReport>()
+        var listPreviousExpense = mutableListOf<DetailTransaction>()
 
         refExs.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                var amountExpense = 0L
+                var amountLoan = 0L
                 //set pie chart
                 pieExpenseChart = rootView.findViewById(R.id.pieChartExpense)
                 APIlib.getInstance().setActiveAnyChartView(pieExpenseChart)
@@ -159,12 +154,9 @@ class PreviousMonthFragment : Fragment() {
 
                 var listPieChartData = mutableListOf<DataEntry>()
 
-                amountExpense = 0L
-                var amountLoan = 0L
-
-                //listPreviousIncome.removeAll(listPreviousIncome)
+                listPreviousExpense.removeAll(listPreviousExpense)
                 for(childBranch in snapshot.children){
-                    listPreviousExpense.add(TransactionForReport(
+                    listPreviousExpense.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
                         childBranch.child("currentMonth").value.toString()
@@ -182,10 +174,11 @@ class PreviousMonthFragment : Fragment() {
                     listPieChartData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
                 }
 
-                amountBalance -= amountExpense
-                previousBalance.text = amountBalance.toString()
                 previousExpense.text = amountExpense.toString()
                 previousLoan.text = amountLoan.toString()
+
+                previousBalance.text = (previousIncome.text.toString().toLong() - previousExpense.text.toString().toLong()).toString()
+                previousBalance.append(" VND")
 
                 pie.data(listPieChartData)
 
@@ -213,17 +206,16 @@ class PreviousMonthFragment : Fragment() {
     }
 
 
-    private fun handleListForChart(list: MutableList<TransactionForReport>) : MutableList<TransactionForReport>{
+    private fun handleListForChart(list: MutableList<DetailTransaction>) : MutableList<DetailTransaction>{
         var now: Calendar = Calendar.getInstance()
         var previousMonth = now.get(Calendar.MONTH)
 
         if(previousMonth == 0)
             previousMonth = 12
 
-        Log.d("preMon", previousMonth.toString())
 
         var iForPreviousMonth = 0
-        Log.d("preSize", list.size.toString())
+
         while(iForPreviousMonth < list.size){
             if(list[iForPreviousMonth].currentMonth != previousMonth.toString()){
                 list.remove(list[iForPreviousMonth])
@@ -231,9 +223,6 @@ class PreviousMonthFragment : Fragment() {
             }
             iForPreviousMonth++
         }
-        Log.d("preNextSize", list.size.toString())
-
-        Log.d("preBet", list.toString())
 
         var i = 0;
         while(i < list.size){
@@ -244,6 +233,7 @@ class PreviousMonthFragment : Fragment() {
                     moneyTemp += list[j].moneyAmount.toLong()
                     list[i].moneyAmount = moneyTemp.toString()
                     list.remove(list[j])
+                    j--
                 }
                 j++
             }
