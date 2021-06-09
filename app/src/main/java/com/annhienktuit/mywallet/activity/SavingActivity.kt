@@ -3,6 +3,7 @@ package com.annhienktuit.mywallet.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.Toast
@@ -32,13 +33,21 @@ class SavingActivity : AppCompatActivity() {
         .getReference("datas").child(user?.uid.toString()).child("savings")
     var saving: Saving? = null
     var totalDetail: Int = 0
+    //---------------------------------------------
     var pos: Int = 0
+    var current: String? = null
+    var total: String? = null
+    var name: String? = null
+    //---------------------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_saving)
         ref.keepSynced(true)
         pos = intent.getIntExtra("position", 0)
-        getDatabase(ref.child("saving" + (pos + 1)).child("details").orderByChild("day"), object : OnGetDataListener {
+        current = intent.getStringExtra("current")
+        total = intent.getStringExtra("total")
+        name = intent.getStringExtra("name")
+        getDatabase(ref.child("saving" + pos).child("details").orderByChild("day"), object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 totalDetail = 0
                 savingDetailList.clear()
@@ -70,12 +79,13 @@ class SavingActivity : AppCompatActivity() {
 
             }
         })
-        getDatabase(ref.child("saving" + (pos + 1)), object : OnGetDataListener {
+        getDatabase(ref.child("saving" + pos), object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                var tmp1 = dataSnapshot.child("current").value.toString()
-                var tmp2 = dataSnapshot.child("price").value.toString()
-                var tmp3 = dataSnapshot.child("product").value.toString()
-                saving = Saving(tmp1, savingDetailList, tmp2, tmp3)
+                val index = dataSnapshot.child("index").value.toString()
+                val tmp1 = dataSnapshot.child("current").value.toString()
+                val tmp2 = dataSnapshot.child("price").value.toString()
+                val tmp3 = dataSnapshot.child("product").value.toString()
+                saving = Saving(index.toIntOrNull(), tmp1, savingDetailList, tmp2, tmp3)
                 setData(saving)
             }
 
@@ -107,36 +117,37 @@ class SavingActivity : AppCompatActivity() {
             val money = editMoney.text.toString()
             var date = Calendar.getInstance()
             var dayFormatter = SimpleDateFormat("yyyy/MM/dd")
-            var timeFormatter = SimpleDateFormat("hh:mm")
+            var timeFormatter = SimpleDateFormat("HH:mm")
             var day = dayFormatter.format(date.time)
             var time = timeFormatter.format(date.time)
-            val ref3 = ref.child("saving" + (pos + 1))
-            val ref2 = ref.child("saving" + (pos + 1)).child("details").child("detail" + (totalDetail + 1))
+            val ref3 = ref.child("saving" + pos)
+            val ref2 = ref.child("saving" + pos).child("details").child("detail" + (totalDetail + 1))
             ref2.child("cost").setValue(money)
             ref2.child("day").setValue(day)
             ref2.child("time").setValue(time)
             ref2.child("transName").setValue(name)
             ref3.child("current").setValue((saving!!.currentSaving!!.toLong() + money.toLong()).toString())
+            dialog.dismiss()
         }
         builder.setNegativeButton("Cancel"
-        ) { dialog, which -> dialog.cancel() }
+        ) { dialog, which -> dialog.dismiss() }
+        builder.create()
         builder.show()
     }
 
     private fun setData(saving: Saving?) {
-        var recyclerTransactionSaving = findViewById(R.id.recyclerTransactionSaving) as RecyclerView
         recyclerTransactionSaving.adapter = SavingDetailAdapter(savingDetailList)
         recyclerTransactionSaving.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerTransactionSaving.setHasFixedSize(true)
 
         nameOfSavingProduct.text = saving?.nameOfProduct.toString()
-        if (saving?.moneyOfProduct.toString() != null && saving?.currentSaving.toString() != null) {
-            totalSaving.text = "of " + changeToMoney(saving?.moneyOfProduct.toString()) + " VND"
-            currentSaving.text = changeToMoney(saving?.currentSaving.toString()) + " "
+        if (total != null && current != null) {
+            totalSaving.text = "of " + changeToMoney(total) + " VND"
+            currentSaving.text = changeToMoney(current) + " "
         }
-        var tmp1 = saving!!.currentSaving!!.toInt()
-        var tmp2 = saving!!.moneyOfProduct!!.toInt()
-        var per = tmp1 * 100 / tmp2
+        val tmp1 = current?.toInt()
+        val tmp2 = total?.toInt()
+        val per = tmp1!! * 100 / tmp2!!
         percentage.text = per.toString() + "%"
         progressSavings.progress = per
     }
@@ -167,5 +178,6 @@ class SavingActivity : AppCompatActivity() {
             }
         })
     }
+
 
 }

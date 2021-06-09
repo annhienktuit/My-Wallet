@@ -9,14 +9,16 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.*
+import com.annhienktuit.mywallet.adapter.CardAdapter
+import com.annhienktuit.mywallet.adapter.LimitationAdapter
+import com.annhienktuit.mywallet.adapter.RecentTransactionAdapter
+import com.annhienktuit.mywallet.adapter.SavingAdapter
 import com.annhienktuit.mywallet.fragments.HomeFragment
 import com.annhienktuit.mywallet.fragments.PlanningFragment
 import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
-import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
@@ -26,17 +28,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_saving.*
 import kotlinx.android.synthetic.main.dialog_add_transaction.*
 import kotlinx.android.synthetic.main.dialog_add_transaction.view.*
+import kotlinx.android.synthetic.main.dialog_done_interest_rate.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
-    //fragment declarations
-    private val homeFragment = HomeFragment()
-    private val reportFragment = ReportFragment()
-    private val planningFragment = PlanningFragment()
-    private val userFragment = UserFragment()
     val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
     var ref = FirebaseDatabase
         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
@@ -46,43 +44,46 @@ class MainActivity : AppCompatActivity() {
     private var transactionList = ArrayList<RecentTransaction>()
     private var cardList = ArrayList<Card>()
     private var limitList = ArrayList<Limitation>()
+    private var checked: Boolean = true
+    //--------------------------------------------------
+    private val savingAdapter = SavingAdapter(savingList)
+    private val limitationAdapter = LimitationAdapter(limitList)
+    private val cardAdapter = CardAdapter(cardList)
+    private val transactionAdapter = RecentTransactionAdapter(transactionList)
     //-------------------------------------------------------
     private var name: String? = null
     private var income: String? = null
     private var expense: String? = null
     private var balance: String? = null
     private var totalTrans: Int = 0
-    private var firstStart = false
+    //-----------------------------------
+    private var indexSaving: Int = 0
+    private var indexCard: Int = 0
+    private var indexLimitation: Int = 0
     //--------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //hide action bar
-        if (supportActionBar != null) {
-            supportActionBar!!.hide();
-        }
-        //---------------
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val window: Window = window
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = Color.parseColor("#FFFFFF")
-        }
         ref.keepSynced(true)
-        if(user == null) {
-            startActivity(Intent(this, SignUpActivity::class.java))
-        }
 
         getDatabase(ref, object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                setUpDatabase(dataSnapshot)
-                setUI()
-                if (!check) {
-                    val transaction = supportFragmentManager.beginTransaction()
-                    transaction.replace(R.id.container_fragment, HomeFragment())
-                    //transaction.addToBackStack(null)
-                    transaction.commit()
-                    firstStart = true
+                if(user == null) {
+                    startActivity(Intent(this@MainActivity, SignUpActivity::class.java))
+                } else {
+                    if (!dataSnapshot.hasChild(user.uid)) {
+                        val fullName = intent.getStringExtra("fulname").toString()
+                        ref.child(user.uid).child("name").setValue(fullName)
+                        ref.child(user.uid).child("limits").child("total").setValue(0)
+                        ref.child(user.uid).child("savings").child("total").setValue(0)
+                        ref.child(user.uid).child("cards").child("total").setValue(0)
+                        ref.child(user.uid).child("balance").setValue("0")
+                        ref.child(user.uid).child("income").setValue("0")
+                        ref.child(user.uid).child("expense").setValue("0")
+                    }
                 }
+                setUpDatabase(dataSnapshot)
+                if (checked) setUI()
             }
             override fun onStart() {
 
@@ -103,12 +104,12 @@ class MainActivity : AppCompatActivity() {
         val editMoney = viewInflater.findViewById<TextInputEditText>(R.id.inputMoneyTrans)
         val itemsIncome = resources.getStringArray(R.array.categoriesIncome)
         val itemsExpense = resources.getStringArray(R.array.categoriesExpense)
-        var date = Calendar.getInstance()
-        var dayFormatter = SimpleDateFormat("yyyy/MM/dd")
-        var timeFormatter = SimpleDateFormat("hh:mm")
+        val date = Calendar.getInstance()
+        val dayFormatter = SimpleDateFormat("yyyy/MM/dd")
+        val timeFormatter = SimpleDateFormat("HH:mm")
         var inorout = "true"
-        var day = dayFormatter.format(date.time)
-        var time = timeFormatter.format(date.time)
+        val day = dayFormatter.format(date.time)
+        val time = timeFormatter.format(date.time)
         val categoryAdapter2 = ArrayAdapter(applicationContext, R.layout.layout_category, itemsExpense)
         val categoryAdapter1 = ArrayAdapter(applicationContext, R.layout.layout_category, itemsIncome)
         viewInflater.toggleMoneyButton.check(R.id.toggleIncome)
@@ -155,9 +156,28 @@ class MainActivity : AppCompatActivity() {
         builder.show()
     }
 
+    override fun onResume() {
+        super.onResume()
+        checked = true
+        Log.d("khaidf", checked.toString())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        checked = false
+        Log.d("khaidf", checked.toString())
+    }
 
     private fun setUI() {
-
+        //hide action bar
+        if (supportActionBar != null) {
+            supportActionBar!!.hide();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window: Window = window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = Color.parseColor("#FFFFFF")
+        }
         //modify the display of bottom navigation view
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(2).isEnabled = false
@@ -172,14 +192,8 @@ class MainActivity : AppCompatActivity() {
         }
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container_fragment, fragment)
-
-        //--------------------------------------------
-        if (user !== null) {
-            toast("Hello ${user!!.email}")
-        } else {
-            Log.i("logged in", "false")
-        }
-        //--------------------------------------
+        transaction.addToBackStack(null)
+        transaction.commit()
         bottomNavigationView.setOnItemSelectedListener(mOnBottomNavigationView)
     }
 
@@ -188,28 +202,24 @@ class MainActivity : AppCompatActivity() {
             R.id.navHome -> {
                 val transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.container_fragment, HomeFragment())
-                //transaction.addToBackStack(null)
                 transaction.commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navReport -> {
                 val transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.container_fragment, ReportFragment())
-                //transaction.addToBackStack(null)
                 transaction.commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navPlanning -> {
                 val transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.container_fragment, PlanningFragment())
-                //transaction.addToBackStack(null)
                 transaction.commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navUser -> {
                 val transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.container_fragment, UserFragment())
-               // transaction.addToBackStack(null)
                 transaction.commit()
                 return@OnNavigationItemSelectedListener true
             }
@@ -218,94 +228,103 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setUpDatabase(data: DataSnapshot?) {
-        if (!data?.hasChild(user?.uid.toString())!!) {
-            val fullName = intent.getStringExtra("fulname").toString()
-            ref.child(user?.uid.toString()).child("name").setValue(fullName)
-            ref.child(user?.uid.toString()).child("balance").setValue("0")
-            ref.child(user?.uid.toString()).child("income").setValue("0")
-            ref.child(user?.uid.toString()).child("expense").setValue("0")
-        } else {
-            val db = ref.child(user?.uid.toString())
-            val savingDb = db.child("savings")
-            val transactionDb = db.child("transactions")
-            val cardDb = db.child("cards")
-            val limitDb = db.child("limits")
-            name = data.child(user?.uid.toString()).child("name").value.toString()
-            income = data.child(user?.uid.toString()).child("income").value.toString()
-            expense = data.child(user?.uid.toString()).child("expense").value.toString()
-            balance = data.child(user?.uid.toString()).child("balance").value.toString()
-            getDatabase(savingDb, object : OnGetDataListener {
-                override fun onSuccess(dataSnapshot: DataSnapshot) {
-                    savingList.clear()
-                    for (data in dataSnapshot.children) {
-                        var current = data.child("current").value.toString()
-                        var price = data.child("price").value.toString()
-                        var product = data.child("product").value.toString()
-                        savingList.add(Saving(current, null, price, product))
+        val db = ref.child(user?.uid.toString())
+        val savingDb = db.child("savings")
+        val transactionDb = db.child("transactions")
+        val cardDb = db.child("cards")
+        val limitDb = db.child("limits")
+        name = data?.child(user?.uid.toString())!!.child("name").value.toString()
+        income = data.child(user?.uid.toString()).child("income").value.toString()
+        expense = data.child(user?.uid.toString()).child("expense").value.toString()
+        balance = data.child(user?.uid.toString()).child("balance").value.toString()
+        getDatabase(savingDb, object : OnGetDataListener {
+            override fun onSuccess(dataSnapshot: DataSnapshot) {
+                savingList.clear()
+                indexSaving = dataSnapshot.child("total").value.toString().toInt()
+                for (data in dataSnapshot.children) {
+                    if (data.key.toString() != "total") {
+                        val index = data.child("index").value.toString()
+                        val current = data.child("current").value.toString()
+                        val price = data.child("price").value.toString()
+                        val product = data.child("product").value.toString()
+                        savingList.add(Saving(index.toIntOrNull(), current, null, price, product))
                     }
                 }
-                override fun onStart() {
+                savingAdapter.notifyDataSetChanged()
+            }
+            override fun onStart() {
+            }
+            override fun onFailure() {
+            }
+        })
+        getDatabase(transactionDb.orderByChild("day"), object : OnGetDataListener {
+            override fun onSuccess(dataSnapshot: DataSnapshot) {
+                totalTrans = 0
+                transactionList.clear()
+                for (data in dataSnapshot.children) {
+                    val day = data.child("day").value.toString()
+                    val originalDay = SimpleDateFormat("yyyy/MM/dd")
+                    val targetDay = SimpleDateFormat("dd/MM/yyyy")
+                    val tmpDayOriginal = originalDay.parse(day)
+                    val tmpDayTarget = targetDay.format(tmpDayOriginal)
+                    val inorout = data.child("inorout").value.toString()
+                    val money = data.child("money").value.toString()
+                    val name = data.child("name").value.toString()
+                    val time = data.child("time").value.toString()
+                    transactionList.add(RecentTransaction(tmpDayTarget, inorout, money, name, time))
+                    totalTrans++
                 }
-                override fun onFailure() {
-                }
-            })
-            getDatabase(transactionDb.orderByChild("day"), object : OnGetDataListener {
-                override fun onSuccess(dataSnapshot: DataSnapshot) {
-                    totalTrans = 0
-                    transactionList.clear()
-                    for (data in dataSnapshot.children) {
-                        val day = data.child("day").value.toString()
-                        val originalDay = SimpleDateFormat("yyyy/MM/dd")
-                        val targetDay = SimpleDateFormat("dd/MM/yyyy")
-                        val tmpDayOriginal = originalDay.parse(day)
-                        val tmpDayTarget = targetDay.format(tmpDayOriginal)
-                        var inorout = data.child("inorout").value.toString()
-                        var money = data.child("money").value.toString()
-                        var name = data.child("name").value.toString()
-                        var time = data.child("time").value.toString()
-                        transactionList.add(RecentTransaction(tmpDayTarget, inorout, money, name, time))
-                        totalTrans++
-                    }
-                    transactionList.reverse()
-                }
-                override fun onStart() {
-                }
-                override fun onFailure() {
-                }
-            })
-            getDatabase(cardDb, object : OnGetDataListener {
-                override fun onSuccess(dataSnapshot: DataSnapshot) {
-                    cardList.clear()
-                    for (data in dataSnapshot.children) {
-                        var accNum = data.child("accountNumber").value.toString()
-                        var bankName = data.child("bankName").value.toString()
-                        var cardNum = data.child("cardNumber").value.toString()
-                        var date = data.child("expiredDate").value.toString()
-                        var name = data.child("name").value.toString()
-                        var namePerson = data.child("namePerson").value.toString()
-                        cardList.add(Card(accNum, bankName, cardNum, date, name, namePerson))
-                    }
-                }
-                override fun onStart() {
-                }
-                override fun onFailure() {
-                }
-            })
-            getDatabase(limitDb, object : OnGetDataListener {
-                override fun onSuccess(dataSnapshot: DataSnapshot) {
-                    limitList.clear()
-                    for (data in dataSnapshot.children) {
-                        var nameLimit = data.child("nameLimit").value.toString()
-                        var costLimit = data.child("costLimit").value.toString()
-                        limitList.add(Limitation(costLimit, nameLimit))
+                transactionList.reverse()
+                transactionAdapter.notifyDataSetChanged()
+            }
+            override fun onStart() {
+            }
+            override fun onFailure() {
+            }
+        })
+        getDatabase(cardDb, object : OnGetDataListener {
+            override fun onSuccess(dataSnapshot: DataSnapshot) {
+                cardList.clear()
+                indexCard = dataSnapshot.child("total").value.toString().toInt()
+                for (data in dataSnapshot.children) {
+                    if (data.key.toString() != "total") {
+                        val index = data.child("index").value.toString()
+                        val accNum = data.child("accountNumber").value.toString()
+                        val bankName = data.child("bankName").value.toString()
+                        val cardNum = data.child("cardNumber").value.toString()
+                        val date = data.child("expiredDate").value.toString()
+                        val name = data.child("name").value.toString()
+                        val namePerson = data.child("namePerson").value.toString()
+                        cardList.add(Card(accNum, bankName, cardNum, date, index.toIntOrNull(), name, namePerson))
                     }
                 }
-                override fun onStart() {
+                cardAdapter.notifyDataSetChanged()
+            }
+            override fun onStart() {
+            }
+            override fun onFailure() {
+            }
+        })
+        getDatabase(limitDb, object : OnGetDataListener {
+            override fun onSuccess(dataSnapshot: DataSnapshot) {
+                limitList.clear()
+                indexLimitation = dataSnapshot.child("total").value.toString().toInt()
+                for (data in dataSnapshot.children) {
+                    if (data.key.toString() != "total") {
+                        val index = data.child("index").value.toString()
+                        val nameLimit = data.child("nameLimit").value.toString()
+                        val costLimit = data.child("costLimit").value.toString()
+                        val currentLimit = data.child("currentLimit").value.toString()
+                        limitList.add(Limitation(index.toIntOrNull(), currentLimit, costLimit, nameLimit))
+                    }
                 }
-                override fun onFailure() {
-                }
-            })
-        }
+                limitationAdapter.notifyDataSetChanged()
+            }
+            override fun onStart() {
+            }
+            override fun onFailure() {
+            }
+        })
     }
     interface OnGetDataListener {
         fun onSuccess(dataSnapshot: DataSnapshot)
@@ -347,18 +366,28 @@ class MainActivity : AppCompatActivity() {
     fun getBalance(): String? {
         return balance
     }
-    fun getSavingList(): ArrayList<Saving> {
-        return savingList
+    fun getIndexSaving(): Int {
+        return indexSaving
     }
-    fun getTransactionList(): ArrayList<RecentTransaction> {
-        return transactionList
+    fun getIndexCard(): Int {
+        return indexCard
     }
-    fun getCardList(): ArrayList<Card> {
-        return cardList
+    fun getIndexLimitation(): Int {
+        return indexLimitation
     }
-    fun getLimitationList(): ArrayList<Limitation> {
-        return limitList
+    fun getTransactionAdapter(): RecentTransactionAdapter {
+        return transactionAdapter
     }
+    fun getCardAdapter(): CardAdapter {
+        return cardAdapter
+    }
+    fun getLimitationAdapter(): LimitationAdapter {
+        return limitationAdapter
+    }
+    fun getSavingAdapter(): SavingAdapter {
+        return savingAdapter
+    }
+
 }
 
 

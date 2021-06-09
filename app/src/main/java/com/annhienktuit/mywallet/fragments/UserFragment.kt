@@ -37,7 +37,6 @@ class UserFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        getActivity()?.let { getActivity()?.getWindow()?.setStatusBarColor(it.getColor(R.color.mainColor)) };
     }
 
     override fun onCreateView(

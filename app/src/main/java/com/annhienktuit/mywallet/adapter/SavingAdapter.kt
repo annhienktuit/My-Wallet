@@ -1,23 +1,32 @@
 package com.annhienktuit.mywallet.adapter
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
-import com.annhienktuit.mywallet.activity.SavingActivity
 import com.annhienktuit.mywallet.`object`.Saving
-import com.annhienktuit.mywallet.activity.MainActivity
+import com.annhienktuit.mywallet.activity.SavingActivity
+import com.annhienktuit.mywallet.utils.FirebaseUtils
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.layout_saving_1.view.*
 import kotlinx.android.synthetic.main.layout_saving_2.view.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
 class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
+    var ref = FirebaseDatabase
+        .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        .getReference("datas").child(user?.uid.toString())
     class SavingViewHolder1(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name1: TextView = itemView.nameProduct1
         val money1: TextView = itemView.priceProduct1
@@ -41,39 +50,58 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = savingList[position]
         if (position % 2 == 0) {
-            var holder1 = holder as SavingViewHolder1
+            val holder1 = holder as SavingViewHolder1
             holder1.name1.text = currentItem.nameOfProduct
             if (currentItem.moneyOfProduct != null)
                 holder1.money1.text = changeToMoney(currentItem.moneyOfProduct)
             else
                 holder1.money1.text = currentItem.moneyOfProduct
-            var tmp1 = currentItem.currentSaving?.toLong()
-            var tmp2 = currentItem.moneyOfProduct?.toLong()
-            var result = (tmp1!! * 100) / tmp2!!
-            holder1.progress1.progress = result.toInt()
-            holder1.itemView.setOnClickListener {
-                val intent = Intent(holder1.itemView.context, SavingActivity::class.java)
-                intent.putExtra("position", position)
-                holder1.itemView.context.startActivity(intent)
+
+            val tmp1 = currentItem.currentSaving?.toLongOrNull()
+            val tmp2 = currentItem.moneyOfProduct?.toLongOrNull()
+            var result = 0
+            if (tmp1 != null && tmp2 != null) {
+                result = ((tmp1 * 100) / tmp2).toInt()
             }
+            holder1.progress1.progress = result
         } else {
-            var holder2 = holder as SavingViewHolder2
+            val holder2 = holder as SavingViewHolder2
             holder2.name2.text = currentItem.nameOfProduct
             if (currentItem.moneyOfProduct != null)
                 holder2.money2.text = changeToMoney(currentItem.moneyOfProduct)
             else
                 holder2.money2.text = currentItem.moneyOfProduct
-            var tmp1 = currentItem.currentSaving?.toDouble()
-            var tmp2 = currentItem.moneyOfProduct?.toLong()
-            var result = (tmp1!! * 100) / tmp2!!
-            holder2.progress2.progress = result.toInt()
-            holder2.itemView.setOnClickListener {
-                val intent = Intent(holder2.itemView.context, SavingActivity::class.java)
-                intent.putExtra("position", position)
-                holder2.itemView.context.startActivity(intent)
+            val tmp1 = currentItem.currentSaving?.toLongOrNull()
+            val tmp2 = currentItem.moneyOfProduct?.toLongOrNull()
+            var result = 0
+            if (tmp1 != null && tmp2 != null) {
+                result = ((tmp1 * 100) / tmp2).toInt()
             }
+            holder2.progress2.progress = result
         }
-
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, SavingActivity::class.java)
+            intent.putExtra("position", currentItem.index)
+            intent.putExtra("current", currentItem.currentSaving)
+            intent.putExtra("total", currentItem.moneyOfProduct)
+            intent.putExtra("name", currentItem.nameOfProduct)
+            holder.itemView.context.startActivity(intent)
+        }
+        holder.itemView.setOnLongClickListener {
+            val builder = AlertDialog.Builder(holder.itemView.context)
+            builder.setMessage("Do you want to delete this item?")
+            builder.setPositiveButton("Yes")
+            { dialog, which ->
+                ref.child("savings").child("saving" + currentItem.index).removeValue()
+            }
+            builder.setNegativeButton("No")
+            { dialog, which ->
+                dialog.dismiss()
+            }
+            builder.create()
+            builder.show()
+            false
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -101,3 +129,4 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
         return null
     }
 }
+

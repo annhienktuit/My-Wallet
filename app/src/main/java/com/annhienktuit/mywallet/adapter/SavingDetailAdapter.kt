@@ -27,14 +27,18 @@ class SavingDetailAdapter(private val savingDetailList: List<SavingDetail>) : Re
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val currentItem = savingDetailList[position]
-        var holder1 = holder as SavingDetailViewHolder
-        holder1.name.text = currentItem.nameOfSaving
-        if (currentItem.costOfSaving != null)
-            holder1.money.text = "+" + changeToMoney(currentItem.costOfSaving)
-        else
-            holder1.money.text = "+" + currentItem.costOfSaving
-        holder1.date.text = currentItem.dayOfSaving + " - " + currentItem.timeOfSaving
+        try {
+            val currentItem = savingDetailList[position]
+            var holder1 = holder as SavingDetailViewHolder
+            holder1.name.text = currentItem.nameOfSaving
+            if (currentItem.costOfSaving != null)
+                holder1.money.text = "+" + changeToMoney(currentItem.costOfSaving)
+            else
+                holder1.money.text = "+" + currentItem.costOfSaving
+            holder1.date.text = currentItem.dayOfSaving + " - " + currentItem.timeOfSaving
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
     }
 
     override fun getItemCount() = savingDetailList.size
