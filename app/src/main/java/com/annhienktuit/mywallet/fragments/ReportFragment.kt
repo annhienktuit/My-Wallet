@@ -17,6 +17,9 @@ import com.annhienktuit.mywallet.activity.MainActivity
 import com.annhienktuit.mywallet.adapter.ReportPagerAdapter
 import com.annhienktuit.mywallet.utils.Extensions
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class ReportFragment : Fragment() {
 
@@ -52,12 +55,21 @@ class ReportFragment : Fragment() {
         seeMoreBtn = view.findViewById(R.id.seeMoreBtn)
 
         var data = (activity as MainActivity)
-        var name = data.getName()
-        var balance = data.getBalance()
-        var income = data.getIncome()
-        var expense = data.getExpense()
         var txtMoney = view.findViewById<TextView>(R.id.txtMoney)
-        txtMoney.text = Extensions.changeToMoney(balance) + " VND"
+
+        val refTrans = data.ref.child(data.user?.uid.toString())
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    txtMoney.text = Extensions.changeToMoney(snapshot.child("balance").value.toString()) + " VND"
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+            })
+
+
     }
 
 }

@@ -44,6 +44,7 @@ class AllMonthReport : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var monthlyTransaction = mutableListOf<DetailTransaction>()
 
+                monthlyTransaction.removeAll(monthlyTransaction)
                 for(childBranch in snapshot.children) {
                     monthlyTransaction.add(
                         DetailTransaction(
@@ -58,7 +59,6 @@ class AllMonthReport : AppCompatActivity() {
 
                 monthlyTransaction = handleMonthlyTransaction(monthlyTransaction)
                 setReportAdapter(monthlyTransaction)
-
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -70,47 +70,39 @@ class AllMonthReport : AppCompatActivity() {
 
     private fun handleMonthlyTransaction(listMonthlyTrans: MutableList<DetailTransaction>): MutableList<DetailTransaction> {
 
+        var k = 0;
+        // set negative value for expense transaction
+        while(k < listMonthlyTrans.size){
+            if(listMonthlyTrans[k].inOrOut == "false"){
+                listMonthlyTrans[k].moneyAmount = (-listMonthlyTrans[k].moneyAmount.toLong()).toString()
+            }
+            k++
+        }
+
+        //group by month
         var i = 0;
         while(i < listMonthlyTrans.size){
             var j = i + 1
             while(j < listMonthlyTrans.size){
                 if(listMonthlyTrans[j].currentMonth == listMonthlyTrans[i].currentMonth){
                     if(listMonthlyTrans[j].inOrOut != "null"){
-                        when(listMonthlyTrans[j].inOrOut){
-                            "true" -> {
-                                var moneyTemp: Long = listMonthlyTrans[i].moneyAmount.toLong()
-                                moneyTemp += listMonthlyTrans[j].moneyAmount.toLong()
-                                listMonthlyTrans[i].moneyAmount = moneyTemp.toString()
-                                listMonthlyTrans.remove(listMonthlyTrans[j])
-                                j--
-                            }
-
-                            "false" ->{
-                                if(listMonthlyTrans[i].inOrOut == "false"){
-                                    var moneyTemp: Long = -listMonthlyTrans[i].moneyAmount.toLong()
-                                    moneyTemp -= listMonthlyTrans[j].moneyAmount.toLong()
-                                    listMonthlyTrans[i].moneyAmount = moneyTemp.toString()
-                                    listMonthlyTrans.remove(listMonthlyTrans[j])
-                                    j--
-                                }
-                                else{
-                                    var moneyTemp: Long = listMonthlyTrans[i].moneyAmount.toLong()
-                                    moneyTemp -= listMonthlyTrans[j].moneyAmount.toLong()
-                                    listMonthlyTrans[i].moneyAmount = moneyTemp.toString()
-                                    listMonthlyTrans.remove(listMonthlyTrans[j])
-                                    j--
-                                }
-                            }
+                        var moneyTemp: Long = listMonthlyTrans[i].moneyAmount.toLong()
+                        moneyTemp += listMonthlyTrans[j].moneyAmount.toLong()
+                        listMonthlyTrans[i].moneyAmount = moneyTemp.toString()
+                        listMonthlyTrans.remove(listMonthlyTrans[j])
+                        j--
                         }
                     }
-                }
                 j++
-            }
+                }
             i++
-        }
+            }
 
         return listMonthlyTrans
     }
+
+
+
 
     private fun setReportAdapter(list: MutableList<DetailTransaction>){
         val adapter = AllMonthAdapter(this, list)

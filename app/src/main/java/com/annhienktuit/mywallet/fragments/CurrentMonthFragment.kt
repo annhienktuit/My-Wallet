@@ -1,5 +1,7 @@
 package com.annhienktuit.mywallet.fragments
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,16 +35,12 @@ class CurrentMonthFragment : Fragment() {
         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
         .getReference("datas")
     lateinit var pieIncomeChart: AnyChartView
-    lateinit var pieExpenseChart: AnyChartView
     lateinit var currentBalance: TextView
     lateinit var currentIncome: TextView
     lateinit var currentExpense: TextView
     lateinit var currentDebt: TextView
     lateinit var currentLoan: TextView
 
-    var amountBalance = 0L
-    var amountIncome = 0L
-    var amountExpense = 0L
 
 
 
@@ -69,7 +67,6 @@ class CurrentMonthFragment : Fragment() {
     }
 
     private fun setIncomePieChartData(rootview: View) {
-
         //reference of Income
         val refIncome = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("true")
 
@@ -77,7 +74,10 @@ class CurrentMonthFragment : Fragment() {
         var listCurrentIncome = mutableListOf<DetailTransaction>()
 
         refIncome.addValueEventListener(object: ValueEventListener {
+            @SuppressLint("ResourceAsColor")
             override fun onDataChange(snapshot: DataSnapshot) {
+                var amountIncome = 0L
+                var amountDebt = 0L
                 //set pie chart
                 pieIncomeChart = rootview.findViewById(R.id.pieChartIncome)
                 APIlib.getInstance().setActiveAnyChartView(pieIncomeChart)
@@ -85,11 +85,7 @@ class CurrentMonthFragment : Fragment() {
 
                 var listPieChartData = mutableListOf<DataEntry>()
 
-                amountIncome = 0L
-                amountBalance = 0L
-                var amountDebt = 0L
-
-                //listCurrentIncome.removeAll(listCurrentIncome)
+                listCurrentIncome.removeAll(listCurrentIncome)
                 for(childBranch in snapshot.children){
                     listCurrentIncome.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
@@ -108,10 +104,11 @@ class CurrentMonthFragment : Fragment() {
                     listPieChartData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
                 }
 
-                amountBalance += amountIncome
                 currentIncome.text = amountIncome.toString()
-                currentBalance.text = amountBalance.toString()
                 currentDebt.text = amountDebt.toString()
+
+                currentBalance.text = (currentIncome.text.toString().toLong() - currentExpense.text.toString().toLong()).toString()
+                currentBalance.append(" VND")
 
                 pie.data(listPieChartData)
 
@@ -133,7 +130,6 @@ class CurrentMonthFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
         })
 
@@ -143,22 +139,20 @@ class CurrentMonthFragment : Fragment() {
         //reference of Income
         val refExs = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("false")
 
-        //list of current month income
-        var listCurrentExpense = mutableListOf<DetailTransaction>()
-
         refExs.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                var amountExpense = 0L
+                var amountLoan = 0L
+                //list of current month income
+                var listCurrentExpense = mutableListOf<DetailTransaction>()
                 //set pie chart
-                pieExpenseChart = rootview.findViewById(R.id.pieChartExpense)
+                var pieExpenseChart: AnyChartView = rootview.findViewById(R.id.pieChartExpense)
                 APIlib.getInstance().setActiveAnyChartView(pieExpenseChart)
                 var pie: Pie = AnyChart.pie()
 
                 var listPieChartData = mutableListOf<DataEntry>()
 
-                amountExpense = 0L
-                var amountLoan = 0L
-
-                //listCurrentIncome.removeAll(listCurrentIncome)
+                listCurrentExpense.removeAll(listCurrentExpense)
                 for(childBranch in snapshot.children){
                     listCurrentExpense.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
@@ -179,10 +173,11 @@ class CurrentMonthFragment : Fragment() {
                     listPieChartData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
                 }
 
-                amountBalance -= amountExpense
-                currentBalance.text = amountBalance.toString()
                 currentExpense.text = amountExpense.toString()
                 currentLoan.text = amountLoan.toString()
+
+                currentBalance.text = (currentIncome.text.toString().toLong() - currentExpense.text.toString().toLong()).toString()
+                currentBalance.append(" VND")
 
                 pie.data(listPieChartData)
 
@@ -204,7 +199,6 @@ class CurrentMonthFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
         })
     }

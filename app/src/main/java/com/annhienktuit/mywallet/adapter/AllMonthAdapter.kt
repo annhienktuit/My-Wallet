@@ -1,6 +1,7 @@
 package com.annhienktuit.mywallet.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ class AllMonthAdapter(private val context: Context, private val dataSource: Muta
         balance.text = trans.moneyAmount
         if(trans.moneyAmount.toLong() < 0){
             mood.setImageResource(R.drawable.ic_baseline_mood_bad_24)
+            balance.setTextColor(Color.parseColor("#f44336"))
         }
         else{
             mood.setImageResource(R.drawable.ic_baseline_mood_24)
