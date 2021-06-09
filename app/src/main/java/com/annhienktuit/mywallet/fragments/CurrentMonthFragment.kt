@@ -74,7 +74,6 @@ class CurrentMonthFragment : Fragment() {
         var listCurrentIncome = mutableListOf<DetailTransaction>()
 
         refIncome.addValueEventListener(object: ValueEventListener {
-            @SuppressLint("ResourceAsColor")
             override fun onDataChange(snapshot: DataSnapshot) {
                 var amountIncome = 0L
                 var amountDebt = 0L

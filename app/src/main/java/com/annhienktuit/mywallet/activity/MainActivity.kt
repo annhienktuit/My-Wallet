@@ -148,7 +148,7 @@ class MainActivity : AppCompatActivity() {
             refTrans.child("inorout").setValue(inorout)
             refTrans.child("category").setValue(textCategory.text.toString())
             refTrans.child("currentMonth").setValue((date.get(Calendar.MONTH) + 1).toString())
-            refTrans.child("currentYear").setValue(date.get(Calendar.YEAR)).toString()
+            refTrans.child("currentYear").setValue(date.get(Calendar.YEAR).toString())
             if (inorout == "true") {
                 ref1.child("income").setValue((income?.toLong()?.plus(money.toLong())).toString())
                 ref1.child("balance").setValue((balance?.toLong()?.plus(money.toLong())).toString())
