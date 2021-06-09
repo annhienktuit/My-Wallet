@@ -39,24 +39,28 @@ class RecentTransactionAdapter(private val transactionList: List<RecentTransacti
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val currentItem = transactionList[position]
-        if (currentItem.inOrOut == "false") {
-            var holder1 = holder as TransactionViewHolder1
-            holder1.name1.text = currentItem.nameOfTrans
-            holder1.date1.text = (currentItem.dayOfTrans + " - " + currentItem.timeOfTrans)
-            if (currentItem.moneyOfTrans != null)
-                holder1.money1.text = "-" + changeToMoney(currentItem.moneyOfTrans)
-            else
-                holder1.money1.text = "-" + currentItem.moneyOfTrans
+        try {
+            val currentItem = transactionList[position]
+            if (currentItem.inOrOut == "false") {
+                var holder1 = holder as TransactionViewHolder1
+                holder1.name1.text = currentItem.nameOfTrans
+                holder1.date1.text = (currentItem.dayOfTrans + " - " + currentItem.timeOfTrans)
+                if (currentItem.moneyOfTrans != null)
+                    holder1.money1.text = "-" + changeToMoney(currentItem.moneyOfTrans)
+                else
+                    holder1.money1.text = "-" + currentItem.moneyOfTrans
 
-        } else {
-            var holder2 = holder as TransactionViewHolder2
-            holder2.name2.text = currentItem.nameOfTrans
-            holder2.date2.text = (currentItem.dayOfTrans + " - " + currentItem.timeOfTrans)
-            if (currentItem.moneyOfTrans != null)
-                holder2.money2.text = "+" + changeToMoney(currentItem.moneyOfTrans)
-            else
-                holder2.money2.text = "+" + currentItem.moneyOfTrans
+            } else {
+                var holder2 = holder as TransactionViewHolder2
+                holder2.name2.text = currentItem.nameOfTrans
+                holder2.date2.text = (currentItem.dayOfTrans + " - " + currentItem.timeOfTrans)
+                if (currentItem.moneyOfTrans != null)
+                    holder2.money2.text = "+" + changeToMoney(currentItem.moneyOfTrans)
+                else
+                    holder2.money2.text = "+" + currentItem.moneyOfTrans
+            }
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
         }
     }
 

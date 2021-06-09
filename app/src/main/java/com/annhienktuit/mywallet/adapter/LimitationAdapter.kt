@@ -1,52 +1,63 @@
 package com.annhienktuit.mywallet.adapter
 
 import android.app.AlertDialog
-import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.Limitation
+import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
+import com.sasank.roundedhorizontalprogress.RoundedHorizontalProgressBar
+import kotlinx.android.synthetic.main.layout_limitation_item.view.*
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
-class LimitationAdapter(val context: Context, val LimitationList: ArrayList<Limitation>) : RecyclerView.Adapter<LimitationAdapter.LimitationViewHolder>() {
-    inner class LimitationViewHolder(val v: View): RecyclerView.ViewHolder(v){
-        val title: TextView = v.findViewById(R.id.tvTitle)
-        //val subtitle: TextView = v.findViewById(R.id.tvSubTitle)
-        val target: TextView = v.findViewById(R.id.tvTarget)
-        //val ivGroup: ImageView = v.findViewById(R.id.ivGroup)
-        val mMenus: ImageView = v.findViewById(R.id.ivMore)
+class LimitationAdapter(private val limitationList: List<Limitation>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
+    var ref = FirebaseDatabase
+        .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        .getReference("datas").child(user?.uid.toString())
+    class LimitationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val nameLimit: TextView = itemView.tvTitle
+        val total: TextView = itemView.tvTarget
+        val current: TextView = itemView.tvSubTitle
+        val progress: RoundedHorizontalProgressBar = itemView.progressBarLimit
+        val mMenus: ImageView = itemView.ivMore
+    }
 
-        init{
-            mMenus.setOnClickListener {
-                popupMenus(it)
-            }
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layout_limitation_item, parent, false)
+        return LimitationViewHolder(itemView)
+    }
 
-        private fun popupMenus(v:View) {
-            val position = LimitationList[adapterPosition]
-            val popupMenus = PopupMenu(context,v)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        fun popupMenus(v: View, adapterPosition: Int) {
+            val pos = limitationList[adapterPosition]
+            val popupMenus = PopupMenu(holder.itemView.context, v)
             popupMenus.inflate(R.menu.show_menu_limitation)
             popupMenus.setOnMenuItemClickListener {
                 when(it.itemId){
                     R.id.editText->{
-                        val v = LayoutInflater.from(context).inflate(R.layout.dialog_add_limitation,null)
-                        val group = v.findViewById<AutoCompleteTextView>(R.id.textCategoryLimit)
-                        val target = v.findViewById<TextInputEditText>(R.id.tfTarget)
-                        AlertDialog.Builder(context)
-                            .setView(v)
-                            .setPositiveButton("Add"){
+                        val view = LayoutInflater.from(holder.itemView.context).inflate(R.layout.dialog_edit_limitation,null)
+                        val nameEdit = view.findViewById<TextView>(R.id.editNameLimitation)
+                        val moneyEdit = view.findViewById<TextInputEditText>(R.id.editMoneyLimitation)
+                        nameEdit.text = pos.limitedGroup.toString()
+                        moneyEdit.setText(pos.target.toString())
+                        AlertDialog.Builder(holder.itemView.context)
+                            .setView(view)
+                            .setPositiveButton("OK") {
                                     dialog,_->
-                                position.limitedGroup = group.text.toString()
-                                position.target = target.text.toString()
-                                notifyDataSetChanged()
-                                Toast.makeText(context,"Limitation Information is Edited", Toast.LENGTH_SHORT).show()
+                                ref.child("limits").child("limit" + pos.index).child("costLimit")
+                                    .setValue(moneyEdit.text.toString())
                                 dialog.dismiss()
                             }
-                            .setNegativeButton("Cancel"){
+                            .setNegativeButton("Cancel") {
                                     dialog,_->
                                 dialog.dismiss()
                             }
@@ -57,15 +68,14 @@ class LimitationAdapter(val context: Context, val LimitationList: ArrayList<Limi
                     }
                     R.id.delete->{
                         /**set delete*/
-                        AlertDialog.Builder(context)
+                        AlertDialog.Builder(holder.itemView.context)
                             .setTitle("Delete")
                             .setIcon(R.drawable.ic_baseline_warning_24)
                             .setMessage("Are you sure delete this Information")
                             .setPositiveButton("Yes"){
                                     dialog,_->
-                                LimitationList.removeAt(adapterPosition)
+                                ref.child("limits").child("limit" + pos.index).removeValue()
                                 notifyDataSetChanged()
-                                Toast.makeText(context,"Deleted this Information", Toast.LENGTH_SHORT).show()
                                 dialog.dismiss()
                             }
                             .setNegativeButton("No"){
@@ -88,22 +98,49 @@ class LimitationAdapter(val context: Context, val LimitationList: ArrayList<Limi
             menu.javaClass.getDeclaredMethod("setForceShowIcon",Boolean::class.java)
                 .invoke(menu,true)
         }
+        val currentItem = limitationList[position]
+        val holder1 = holder as LimitationViewHolder
+        holder1.nameLimit.text = currentItem.limitedGroup
+        if (currentItem.target != null)
+            holder1.total.text = changeToMoney(currentItem.target)
+        else
+            holder1.total.text = currentItem.target
+        try {
+            val tmp1 = currentItem.current?.toLongOrNull()
+            val tmp2 = currentItem.target?.toLongOrNull()
+            var result = 0
+            var result2 = 0
+            if (tmp1 != null && tmp2 != null) {
+                result = ((tmp1 * 100) / tmp2).toInt()
+                result2 = (tmp2 - tmp1).toInt()
+            }
+            holder1.current.text = ("You can use " + changeToMoney(result2.toString()))
+            holder1.progress.progress = result
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+        holder1.mMenus.setOnClickListener {
+            popupMenus(it, position)
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LimitationViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.layout_limitation_item, parent, false)
-        return LimitationViewHolder(view)
-    }
+    override fun getItemCount() = limitationList.size
 
-    override fun onBindViewHolder(holder: LimitationViewHolder, position: Int) {
-        val newList = LimitationList[position]
-        holder.title.text = newList.limitedGroup
-        //holder.subtitle.text = newList.moneyLeft.toString()
-        holder.target.text = newList.target.toString()
-    }
+    private fun changeToMoney(str: String?): String? {
+        val formatter: NumberFormat = DecimalFormat("#,###")
+        if (str != null) {
+            try {
+                val myNumber = str.toDouble()
+                return if (myNumber < 0)
+                    formatter.format(-myNumber)
+                else
+                    formatter.format(myNumber)
+            }
+            catch (e:NumberFormatException){
+                Log.e("numberformat: ", e.toString() )
+            }
 
-    override fun getItemCount(): Int {
-        return LimitationList.size
+        }
+        return null
     }
 }

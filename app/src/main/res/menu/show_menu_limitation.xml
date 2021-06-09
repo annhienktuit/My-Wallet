@@ -3,7 +3,7 @@
     <!--we add icons-->
     <item
         android:id="@+id/editText"
-        android:title="Edit Text"
+        android:title="Edit"
         android:icon="@drawable/ic_baseline_edit_24"
         android:iconTint="@color/mainColor"
         />

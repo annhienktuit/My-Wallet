@@ -24,19 +24,9 @@ import kotlinx.android.synthetic.main.fragment_home.*
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 class HomeFragment : Fragment() {
+    lateinit var data: MainActivity
 
-    private var param1: String? = null
-    private var param2: String? = null
-    var transactionList = ArrayList<RecentTransaction>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-
-    }
+    lateinit var transactionAdapter: RecentTransactionAdapter
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -64,14 +54,14 @@ class HomeFragment : Fragment() {
             }
     }
     fun setData(view: View) {
-        var data = (activity as MainActivity)
+        data = (activity as MainActivity)
+        transactionAdapter = data.getTransactionAdapter()
         var name = data.getName()
         var balance = data.getBalance()
         var income = data.getIncome()
         var expense = data.getExpense()
-        transactionList = data.getTransactionList()!!
         var recyclerTransaction = view.findViewById(R.id.recyclerTransaction) as RecyclerView
-        recyclerTransaction.adapter = RecentTransactionAdapter(transactionList)
+        recyclerTransaction.adapter = transactionAdapter
         recyclerTransaction.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerTransaction.setHasFixedSize(true)
         var txtName = view.findViewById<TextView>(R.id.txtName)

@@ -33,7 +33,7 @@ class CardActivity : AppCompatActivity() {
         }
         var pos = intent.getIntExtra("position", 0)
         ref.keepSynced(true)
-        getDatabase(ref.child("card" + (pos + 1)),object : OnGetDataListener{
+        getDatabase(ref.child("card" + (pos)),object : OnGetDataListener{
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 card = dataSnapshot.getValue(Card::class.java)
                 setData(card)
