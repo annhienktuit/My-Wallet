@@ -2,10 +2,9 @@ package com.annhienktuit.mywallet.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.annhienktuit.mywallet.fragments.currentMonthFragment
-import com.annhienktuit.mywallet.fragments.previousMonthFragment
+import com.annhienktuit.mywallet.fragments.CurrentMonthFragment
+import com.annhienktuit.mywallet.fragments.PreviousMonthFragment
 
 //This class manages 2 fragments previous month and current month in report fragment
 class ReportPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAdapter(fm, behavior){
@@ -23,9 +22,9 @@ class ReportPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePage
 
     override fun getItem(position: Int): Fragment {
         return when(position){
-            0 -> previousMonthFragment()
-            1 -> currentMonthFragment()
-            else -> previousMonthFragment()
+            0 -> PreviousMonthFragment()
+            1 -> CurrentMonthFragment()
+            else -> PreviousMonthFragment()
         }
     }
 

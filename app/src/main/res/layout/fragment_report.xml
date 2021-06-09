@@ -17,8 +17,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="0dp"
-            android:paddingTop="10dp"
             android:paddingLeft="8dp"
             >
 
@@ -31,6 +29,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_alignParentLeft="true"
                 android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
                 />
 
             <LinearLayout
@@ -38,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_toRightOf="@+id/walletImage"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp">
 
                 <TextView
@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham"
-                    android:text="Cash"
+                    android:text="All Month Balance"
                     android:textColor="#828282"
                     android:textSize="12sp" />
 
@@ -54,19 +54,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham_bold"
-                    android:text="200.000.000đ"
+                    android:text="0"
                     android:textColor="#2F2543"
                     android:textSize="15sp" />
             </LinearLayout>
 
             <Button
-                android:id="@+id/btnNotify"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="6dp"
+                android:id="@+id/bSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/ic_notification"/>
+                android:backgroundTint="@color/white"
+                android:textColor="@color/mainColor"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:text="See More"
+                android:drawableRight="@drawable/ic_baseline_read_more_24"
+                android:textSize="15sp"
+                android:textAllCaps="false"
+                />
 
         </RelativeLayout>
 

@@ -33,26 +33,27 @@
 
     </string-array>
     <string-array name="categoriesIncome">
-        <item>Tiền lương</item>
-        <item>Tiền phụ cấp</item>
-        <item>Tiền thưởng</item>
-        <item>Thu nhập phụ</item>
-        <item>Đầu tư</item>
-        <item>Thu nhập tạm thời</item>
-        <item>Khác</item>
+        <item>Salary</item>
+        <item>Allowance</item>
+        <item>Bonus</item>
+        <item>Side income</item>
+        <item>Investment</item>
+        <item>Temporary income</item>
+        <item>Debt</item>
+        <item>Others</item>
     </string-array>
     <string-array name="categoriesExpense">
-        <item>Ăn uống</item>
-        <item>Chi tiêu hàng ngày</item>
-        <item>Quần áo</item>
-        <item>Mỹ phẩm</item>
-        <item>Phí giao lưu</item>
-        <item>Y tế</item>
-        <item>Giáo dục</item>
-        <item>Tiền điện nước</item>
-        <item>Đi lại</item>
-        <item>Viễn thông</item>
-        <item>Tiền nhà</item>
-        <item>Khác</item>
+        <item>Meals</item>
+        <item>Daily spending</item>
+        <item>Entertainment</item>
+        <item>Clothes</item>
+        <item>Cosmetics</item>
+        <item>Healthcare</item>
+        <item>Education</item>
+        <item>Utility bills</item>
+        <item>Travel money</item>
+        <item>House renting</item>
+        <item>Loan</item>
+        <item>Others</item>
     </string-array>
 </resources>

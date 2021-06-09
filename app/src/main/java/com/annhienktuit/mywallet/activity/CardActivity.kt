@@ -52,6 +52,7 @@ class CardActivity : AppCompatActivity() {
         btn_back_card.setOnClickListener {
             finish()
         }
+
         btnCopyName.setOnClickListener {
             val clipboard: ClipboardManager =
                 getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
