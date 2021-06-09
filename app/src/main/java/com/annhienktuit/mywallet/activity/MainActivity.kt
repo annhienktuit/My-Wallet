@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         getDatabase(ref, object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 if(user == null) {
-                    startActivity(Intent(this@MainActivity, SignUpActivity::class.java))
+                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 } else {
                     if (!dataSnapshot.hasChild(user.uid)) {
                         val fullName = intent.getStringExtra("fulname").toString()
