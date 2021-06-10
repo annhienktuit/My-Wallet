@@ -114,7 +114,6 @@ class CurrentMonthFragment : Fragment() {
                 pie.title("Current Month Income")
 
                 pie.labels().position("outside")
-
                 pie.legend().title().enabled(true)
                 pie.legend().title()
                     .text("Retail channels")

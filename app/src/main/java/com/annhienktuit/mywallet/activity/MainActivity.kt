@@ -34,7 +34,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-
+//GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+//if (acct != null) {
+//    String personName = acct.getDisplayName();
+//    String personEmail = acct.getEmail();
+//    String personId = acct.getId();
+//}
 class MainActivity : AppCompatActivity() {
     val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
     var ref = FirebaseDatabase
@@ -75,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 } else {
                     if (!dataSnapshot.hasChild(user.uid)) {
-                        val fullName = intent.getStringExtra("fulname").toString()
+                        val fullName = intent.getStringExtra("fullname").toString()
                         ref.child(user.uid).child("name").setValue(fullName)
                         ref.child(user.uid).child("limits").child("total").setValue(0)
                         ref.child(user.uid).child("savings").child("total").setValue(0)
