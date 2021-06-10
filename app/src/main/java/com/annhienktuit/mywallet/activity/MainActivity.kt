@@ -22,6 +22,14 @@ import com.annhienktuit.mywallet.fragments.PlanningFragment
 import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
 import com.annhienktuit.mywallet.utils.FirebaseUtils
+import com.anychart.APIlib
+import com.anychart.AnyChart
+import com.anychart.AnyChartView
+import com.anychart.chart.common.dataentry.DataEntry
+import com.anychart.chart.common.dataentry.ValueDataEntry
+import com.anychart.charts.Pie
+import com.anychart.enums.Align
+import com.anychart.enums.LegendLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseUser
@@ -66,9 +74,27 @@ class MainActivity : AppCompatActivity() {
     private var indexSaving: Int = 0
     private var indexCard: Int = 0
     private var indexLimitation: Int = 0
-    //--------------------------------
-    private var currentMonthIncome: String? = null
-    //--------------------------------
+    //-----------------------------------
+    //Variables for current income reporting
+    private var listCurrentIncome = mutableListOf<DetailTransaction>()
+    private var amountCurrentIncome = 0L
+    private var amountCurrentDebt = 0L
+    //-----------------------------------
+    //Variables for current expense reporting
+    private var listCurrentExpense = mutableListOf<DetailTransaction>()
+    private var amountCurrentExpense = 0L
+    private var amountCurrentLoan = 0L
+    //-----------------------------------
+    //Variables for Previous income reporting
+    private var listPreviousIncome = mutableListOf<DetailTransaction>()
+    private var amountPreviousIncome = 0L
+    private var amountPreviousDebt = 0L
+    //-----------------------------------
+    //Variables for Previous expense reporting
+    private var listPreviousExpense = mutableListOf<DetailTransaction>()
+    private var amountPreviousExpense = 0L
+    private var amountPreviousLoan = 0L
+    //-----------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -92,6 +118,11 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 setUpDatabase(dataSnapshot)
+                setCurrentIncomePieChartData()
+                setCurrentExpensePieChartData()
+
+                setPreviousIncomePieChartData()
+                setPreviousExpensePieChartData()
                 if (checked) setUI()
             }
             override fun onStart() {
@@ -249,6 +280,7 @@ class MainActivity : AppCompatActivity() {
         income = data.child(user?.uid.toString()).child("income").value.toString()
         expense = data.child(user?.uid.toString()).child("expense").value.toString()
         balance = data.child(user?.uid.toString()).child("balance").value.toString()
+
         getDatabase(savingDb, object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 savingList.clear()
@@ -269,6 +301,7 @@ class MainActivity : AppCompatActivity() {
             override fun onFailure() {
             }
         })
+
         getDatabase(transactionDb.orderByChild("day"), object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 totalTrans = 0
@@ -364,6 +397,248 @@ class MainActivity : AppCompatActivity() {
                 listener?.onFailure()
             }
         })
+    }
+
+    fun setCurrentIncomePieChartData() {
+        //reference of Income
+        val refIncome = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("true")
+
+        //get current month
+        var now: Calendar = Calendar.getInstance()
+        var currentMonth = now.get(Calendar.MONTH) + 1
+
+        refIncome.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                amountCurrentIncome = 0L
+                amountCurrentDebt = 0L
+
+                listCurrentIncome.removeAll(listCurrentIncome)
+
+                for(childBranch in snapshot.children){
+                    listCurrentIncome.add(DetailTransaction(
+                        childBranch.child("category").value.toString(),
+                        childBranch.child("money").value.toString(),
+                        childBranch.child("currentMonth").value.toString()
+                    ))
+                }
+
+                listCurrentIncome = handleListForChart(listCurrentIncome, currentMonth)
+
+                for(item in listCurrentIncome){
+                    if(item.category == "Debt"){
+                        amountCurrentDebt += item.moneyAmount.toLong()
+                    }
+                    amountCurrentIncome += item.moneyAmount.toLong()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+
+    }
+
+    fun setCurrentExpensePieChartData() {
+        //reference of expense
+        val refExpense = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("false")
+
+        //get current month
+        var now: Calendar = Calendar.getInstance()
+        var currentMonth = now.get(Calendar.MONTH) + 1
+
+        refExpense.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                amountCurrentExpense = 0L
+                amountCurrentLoan = 0L
+
+                listCurrentExpense.removeAll(listCurrentExpense)
+
+                for(childBranch in snapshot.children){
+                    listCurrentExpense.add(DetailTransaction(
+                        childBranch.child("category").value.toString(),
+                        childBranch.child("money").value.toString(),
+                        childBranch.child("currentMonth").value.toString()
+                    ))
+                }
+
+                listCurrentExpense = handleListForChart(listCurrentExpense, currentMonth)
+
+                for(item in listCurrentExpense){
+                    if(item.category == "Loan"){
+                        amountCurrentLoan += item.moneyAmount.toLong()
+                    }
+                    amountCurrentExpense += item.moneyAmount.toLong()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+
+    }
+
+    fun setPreviousIncomePieChartData() {
+        //reference of Income
+        val refIncome = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("true")
+
+        //get previous month
+        var now: Calendar = Calendar.getInstance()
+        var previousMonth = now.get(Calendar.MONTH)
+
+        if(previousMonth == 0){
+            previousMonth = 12
+        }
+
+        refIncome.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                amountPreviousIncome = 0L
+                amountPreviousDebt = 0L
+
+                listPreviousIncome.removeAll(listPreviousIncome)
+
+                for(childBranch in snapshot.children){
+                    listPreviousIncome.add(DetailTransaction(
+                        childBranch.child("category").value.toString(),
+                        childBranch.child("money").value.toString(),
+                        childBranch.child("currentMonth").value.toString()
+                    ))
+                }
+
+                listPreviousIncome = handleListForChart(listPreviousIncome, previousMonth)
+
+                for(item in listPreviousIncome){
+                    if(item.category == "Debt"){
+                        amountPreviousDebt += item.moneyAmount.toLong()
+                    }
+                    amountPreviousIncome += item.moneyAmount.toLong()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+
+    }
+
+    fun setPreviousExpensePieChartData() {
+        //reference of expense
+        val refExpense = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("false")
+
+        //get previous month
+        var now: Calendar = Calendar.getInstance()
+        var previousMonth = now.get(Calendar.MONTH)
+
+        if(previousMonth == 0){
+            previousMonth = 12
+        }
+
+        refExpense.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                amountPreviousExpense = 0L
+                amountPreviousLoan = 0L
+
+                listPreviousExpense.removeAll(listPreviousExpense)
+
+                for(childBranch in snapshot.children){
+                    listPreviousExpense.add(DetailTransaction(
+                        childBranch.child("category").value.toString(),
+                        childBranch.child("money").value.toString(),
+                        childBranch.child("currentMonth").value.toString()
+                    ))
+                }
+
+                listPreviousExpense = handleListForChart(listPreviousExpense, previousMonth)
+
+                for(item in listPreviousExpense){
+                    if(item.category == "Loan"){
+                        amountPreviousLoan += item.moneyAmount.toLong()
+                    }
+                    amountPreviousExpense += item.moneyAmount.toLong()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+
+    }
+
+
+    private fun handleListForChart(list: MutableList<DetailTransaction>, month: Int) : MutableList<DetailTransaction>{
+
+        var iForCurrentMonth = 0
+        while(iForCurrentMonth < list.size){
+            if(list[iForCurrentMonth].currentMonth != month.toString()){
+                list.remove(list[iForCurrentMonth])
+                iForCurrentMonth--
+            }
+            iForCurrentMonth++
+        }
+
+        var i = 0;
+        while(i < list.size){
+            var j = i + 1
+            while(j < list.size){
+                if(list[j].category == list[i].category){
+                    var moneyTemp: Long = list[i].moneyAmount.toLong()
+                    moneyTemp += list[j].moneyAmount.toLong()
+                    list[i].moneyAmount = moneyTemp.toString()
+                    list.remove(list[j])
+                    j--
+                }
+                j++
+            }
+            i++
+        }
+
+        return list
+    }
+
+    fun getCurrentIncome(): Long{
+        return amountCurrentIncome
+    }
+
+    fun getCurrentDebt() : Long{
+        return amountCurrentDebt
+    }
+
+    fun getCurrentIncomeList() : MutableList<DetailTransaction>{
+        return listCurrentIncome
+    }
+
+    fun getCurrentExpense(): Long{
+        return amountCurrentExpense
+    }
+
+    fun getCurrentLoan() : Long{
+        return amountCurrentLoan
+    }
+
+    fun getCurrentExpenseList() : MutableList<DetailTransaction>{
+        return listCurrentExpense
+    }
+
+    //--------------------------
+    fun getPreviousIncome(): Long{
+        return amountPreviousIncome
+    }
+
+    fun getPreviousDebt() : Long{
+        return amountPreviousDebt
+    }
+
+    fun getPreviousIncomeList() : MutableList<DetailTransaction>{
+        return listPreviousIncome
+    }
+
+    fun getPreviousExpense(): Long{
+        return amountPreviousExpense
+    }
+
+    fun getPreviousLoan() : Long{
+        return amountPreviousLoan
+    }
+
+    fun getPreviousExpenseList() : MutableList<DetailTransaction>{
+        return listPreviousExpense
     }
 
     fun getName(): String? {
