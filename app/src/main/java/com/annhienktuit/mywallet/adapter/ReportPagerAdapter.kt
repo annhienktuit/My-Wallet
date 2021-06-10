@@ -9,7 +9,7 @@ import com.annhienktuit.mywallet.fragments.PreviousMonthFragment
 //This class manages 2 fragments previous month and current month in report fragment
 class ReportPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAdapter(fm, behavior){
     override fun getCount(): Int {
-        return 2 //we has only two child fragments in report fragment
+        return 2 //we have only two child fragments in report fragment
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

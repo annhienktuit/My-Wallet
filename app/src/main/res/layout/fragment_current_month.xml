@@ -50,14 +50,31 @@
             android:layout_height="2dp"
             android:background="#d8e3e7"/>
 
-        <com.anychart.AnyChartView
-            android:id="@+id/pieChartIncome"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.anychart.AnyChartView
+                android:id="@+id/pieChartIncome"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                />
+
+            <ProgressBar
+                android:id="@+id/progressIncomeBar"
+                android:indeterminate="true"
+                style="@style/Widget.MaterialComponents.CircularProgressIndicator"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+
 
         <View
             android:layout_width="match_parent"
@@ -124,14 +141,29 @@
             android:layout_height="2dp"
             android:background="#d8e3e7"/>
 
-        <com.anychart.AnyChartView
-            android:id="@+id/pieChartExpense"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.anychart.AnyChartView
+                android:id="@+id/pieChartExpense"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                />
+
+            <ProgressBar
+                android:id="@+id/progressExpenseBar"
+                android:indeterminate="true"
+                style="@style/Widget.MaterialComponents.CircularProgressIndicator"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
