@@ -5,10 +5,14 @@ import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
@@ -19,6 +23,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.edtEmail
 import kotlinx.android.synthetic.main.activity_login.edtPassword
@@ -60,6 +66,29 @@ class LoginActivity : AppCompatActivity() {
         btnDoLogin.setOnClickListener {
             signIn()
         }
+        btnReset.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("RESET PASSWORD")
+            val textEditor = EditText(this)
+            textEditor.setHint("Enter your email address")
+            builder.setView(textEditor)
+            textEditor.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+            builder.setPositiveButton("Confirm") { dialog, which ->
+                sendResetEmail(textEditor.text.toString())
+            }
+
+            builder.show()
+        }
+    }
+
+    private fun sendResetEmail(emailAddress:String) {
+        Firebase.auth.sendPasswordResetEmail(emailAddress)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this,"Email sent to $emailAddress",Toast.LENGTH_LONG).show()
+                    Log.d(TAG, "Email sent to $emailAddress")
+                }
+            }
     }
 
     private fun signInGoogle() {
