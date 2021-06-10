@@ -9,16 +9,16 @@ object Extensions {
     fun Activity.toast(msg: String){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
-    fun changeToMoney(str: String?): String? {
+    fun changeToMoney(str: String?): String {
         val formatter: NumberFormat = DecimalFormat("#,###")
         if (str != null) {
-            val myNumber = str?.toDouble()
+            val myNumber = str.toDouble()
             if (myNumber < 0)
                 return "-" + formatter.format(-myNumber)
             else
                 return formatter.format(myNumber)
         }
-        return null
+        return "0"
     }
 
 }

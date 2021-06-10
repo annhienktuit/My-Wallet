@@ -96,7 +96,7 @@
             android:fontFamily="@font/gotham"
             android:textSize="22sp"
             android:textColor="@color/white"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:text="CARDHOLDER NAME"
             android:layout_marginStart="20dp"/>
 
@@ -268,12 +268,12 @@
         android:gravity="center"
         android:elevation="24dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
         android:backgroundTint="@color/mainColor"
         android:text="Copy all info to clipboard"
         app:icon="@drawable/ic_copy"
         app:iconTint="@color/white"
         android:textColor="@color/white"
         android:drawableRight="@drawable/ic_copy"
-        android:layout_below="@id/cardNumber"/>
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
