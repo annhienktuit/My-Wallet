@@ -7,10 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.DetailTransaction
+import com.annhienktuit.mywallet.activity.MainActivity
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.anychart.APIlib
 import com.anychart.AnyChart
@@ -35,14 +37,14 @@ class CurrentMonthFragment : Fragment() {
         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
         .getReference("datas")
     lateinit var pieIncomeChart: AnyChartView
+    lateinit var pieExpenseChart: AnyChartView
     lateinit var currentBalance: TextView
     lateinit var currentIncome: TextView
     lateinit var currentExpense: TextView
     lateinit var currentDebt: TextView
     lateinit var currentLoan: TextView
-
-
-
+    lateinit var progressIncomeBar: ProgressBar
+    lateinit var progressExpenseBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,71 +54,54 @@ class CurrentMonthFragment : Fragment() {
         val rootView: View = inflater.inflate(R.layout.fragment_current_month, container, false)
 
         setData(rootView)
-        setIncomePieChartData(rootView)
-        setExpensePieChartData(rootView)
+        setIncomePieChartData()
+        setExpensePieChartData()
 
         return rootView
     }
 
     private fun setData(rootView: View){
+        progressIncomeBar = rootView.findViewById(R.id.progressIncomeBar)
+        progressExpenseBar = rootView.findViewById(R.id.progressExpenseBar)
         currentBalance = rootView.findViewById(R.id.balance)
         currentExpense = rootView.findViewById(R.id.expense)
         currentIncome = rootView.findViewById(R.id.income)
         currentDebt = rootView.findViewById(R.id.debt)
         currentLoan = rootView.findViewById(R.id.loan)
+        pieIncomeChart = rootView.findViewById(R.id.pieChartIncome)
+        pieExpenseChart = rootView.findViewById(R.id.pieChartExpense)
     }
 
-    private fun setIncomePieChartData(rootview: View) {
-        //reference of Income
-        val refIncome = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("true")
+    private fun setIncomePieChartData() {
+        val data = (activity as MainActivity)
 
-        //list of current month income
-        var listCurrentIncome = mutableListOf<DetailTransaction>()
+        var listCurrentIncome = data.getCurrentIncomeList()
+        var amountCurrentDebt = data.getCurrentDebt()
+        var amountCurrentIncome = data.getCurrentIncome()
 
-        refIncome.addValueEventListener(object: ValueEventListener {
-            @SuppressLint("ResourceAsColor")
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var amountIncome = 0L
-                var amountDebt = 0L
-                //set pie chart
-                pieIncomeChart = rootview.findViewById(R.id.pieChartIncome)
-                APIlib.getInstance().setActiveAnyChartView(pieIncomeChart)
-                var pie: Pie = AnyChart.pie()
+        currentIncome.text = amountCurrentIncome.toString()
+        currentDebt.text = amountCurrentDebt.toString()
+        currentBalance.text = (currentIncome.text.toString().toLong() - currentExpense.text.toString().toLong()).toString()
+        currentBalance.append(" VND")
 
-                var listPieChartData = mutableListOf<DataEntry>()
+        pieIncomeChart.setProgressBar(progressIncomeBar)
+        APIlib.getInstance().setActiveAnyChartView(pieIncomeChart)
+        var pie: Pie = AnyChart.pie()
+        val listPieChartData = mutableListOf<DataEntry>()
+        listPieChartData.removeAll(listPieChartData)
 
-                listCurrentIncome.removeAll(listCurrentIncome)
-                for(childBranch in snapshot.children){
-                    listCurrentIncome.add(DetailTransaction(
-                        childBranch.child("category").value.toString(),
-                        childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString()
-                    ))
-                }
+        for(item in listCurrentIncome){
+            listPieChartData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
+        }
 
-                listCurrentIncome = handleListForChart(listCurrentIncome)
+        pie.data(listPieChartData)
 
-                for(item in listCurrentIncome){
-                    if(item.category == "Debt"){
-                        amountDebt += item.moneyAmount.toLong()
-                    }
-                    amountIncome += item.moneyAmount.toLong()
-                    listPieChartData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
-                }
+        pie.title("Current Month Income")
 
-                currentIncome.text = amountIncome.toString()
-                currentDebt.text = amountDebt.toString()
+        pie.labels().position("outside")
 
-                currentBalance.text = (currentIncome.text.toString().toLong() - currentExpense.text.toString().toLong()).toString()
-                currentBalance.append(" VND")
+        pie.legend().title().enabled(true)
 
-                pie.data(listPieChartData)
-
-                pie.title("Current Month Income")
-
-                pie.labels().position("outside")
-
-                pie.legend().title().enabled(true)
                 pie.legend().title()
                     .text("Retail channels")
                     .padding(0.0, 0.0, 10.0, 0.0)
@@ -127,112 +112,46 @@ class CurrentMonthFragment : Fragment() {
                     .align(Align.CENTER)
 
                 pieIncomeChart.setChart(pie)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
-
     }
 
-    private fun setExpensePieChartData(rootview: View) {
-        //reference of Income
-        val refExs = ref.child(user?.uid.toString()).child("transactions").orderByChild("inorout").equalTo("false")
+    private fun setExpensePieChartData() {
+        val data = (activity as MainActivity)
 
-        refExs.addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var amountExpense = 0L
-                var amountLoan = 0L
-                //list of current month income
-                var listCurrentExpense = mutableListOf<DetailTransaction>()
-                //set pie chart
-                var pieExpenseChart: AnyChartView = rootview.findViewById(R.id.pieChartExpense)
-                APIlib.getInstance().setActiveAnyChartView(pieExpenseChart)
-                var pie: Pie = AnyChart.pie()
+        var listCurrentExpense = data.getCurrentExpenseList()
+        var amountCurrentLoan = data.getCurrentLoan()
+        var amountCurrentExpense = data.getCurrentExpense()
 
-                var listPieChartData = mutableListOf<DataEntry>()
+        currentExpense.text = amountCurrentExpense.toString()
+        currentLoan.text = amountCurrentLoan.toString()
+        currentBalance.text = (currentIncome.text.toString().toLong() - currentExpense.text.toString().toLong()).toString()
+        currentBalance.append(" VND")
 
-                listCurrentExpense.removeAll(listCurrentExpense)
-                for(childBranch in snapshot.children){
-                    listCurrentExpense.add(DetailTransaction(
-                        childBranch.child("category").value.toString(),
-                        childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString()
-                    ))
-                }
+        pieExpenseChart.setProgressBar(progressExpenseBar)
+        APIlib.getInstance().setActiveAnyChartView(pieExpenseChart)
+        var pie: Pie = AnyChart.pie()
+        val listPieChartData = mutableListOf<DataEntry>()
+        listPieChartData.removeAll(listPieChartData)
 
-                Log.d("preCurrent", listCurrentExpense.toString())
-                listCurrentExpense = handleListForChart(listCurrentExpense)
-                Log.d("postCurrent", listCurrentExpense.toString())
-
-                for(item in listCurrentExpense){
-                    if(item.category == "Loan"){
-                        amountLoan += item.moneyAmount.toLong()
-                    }
-                    amountExpense += item.moneyAmount.toLong()
-                    listPieChartData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
-                }
-
-                currentExpense.text = amountExpense.toString()
-                currentLoan.text = amountLoan.toString()
-
-                currentBalance.text = (currentIncome.text.toString().toLong() - currentExpense.text.toString().toLong()).toString()
-                currentBalance.append(" VND")
-
-                pie.data(listPieChartData)
-
-                pie.title("Current Month Expense")
-
-                pie.labels().position("outside")
-
-                pie.legend().title().enabled(true)
-                pie.legend().title()
-                    .text("Retail channels")
-                    .padding(0.0, 0.0, 10.0, 0.0)
-
-                pie.legend()
-                    .position("center-bottom")
-                    .itemsLayout(LegendLayout.HORIZONTAL)
-                    .align(Align.CENTER)
-
-                pieExpenseChart.setChart(pie)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
-    }
-
-
-    private fun handleListForChart(list: MutableList<DetailTransaction>) : MutableList<DetailTransaction>{
-        var now: Calendar = Calendar.getInstance()
-        var currentMonth = now.get(Calendar.MONTH) + 1
-
-        var iForCurrentMonth = 0
-        while(iForCurrentMonth < list.size){
-            if(list[iForCurrentMonth].currentMonth != currentMonth.toString()){
-                list.remove(list[iForCurrentMonth])
-                iForCurrentMonth--
-            }
-            iForCurrentMonth++
+        for(item in listCurrentExpense){
+            listPieChartData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
         }
 
-        var i = 0;
-        while(i < list.size){
-            var j = i + 1
-            while(j < list.size){
-               if(list[j].category == list[i].category){
-                   var moneyTemp: Long = list[i].moneyAmount.toLong()
-                   moneyTemp += list[j].moneyAmount.toLong()
-                   list[i].moneyAmount = moneyTemp.toString()
-                   list.remove(list[j])
-                   j--
-               }
-                j++
-            }
-            i++
-        }
+        pie.data(listPieChartData)
 
-        return list
+        pie.title("Current Month Expense")
+
+        pie.labels().position("outside")
+
+        pie.legend().title().enabled(true)
+        pie.legend().title()
+            .text("Retail channels")
+            .padding(0.0, 0.0, 10.0, 0.0)
+
+        pie.legend()
+            .position("center-bottom")
+            .itemsLayout(LegendLayout.HORIZONTAL)
+            .align(Align.CENTER)
+
+        pieExpenseChart.setChart(pie)
     }
 }
