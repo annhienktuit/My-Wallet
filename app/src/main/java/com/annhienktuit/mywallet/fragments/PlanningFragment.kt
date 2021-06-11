@@ -190,7 +190,7 @@ class PlanningFragment() : Fragment() {
             val tmp7 = tlYear.text.toString()
             val ref1 = ref.child("cards").child("card" + (totalCard + 1))
             //---------------------------------------------------------------
-            if (tmp1 != "" && tmp2 != "" && tmp3 != "" && tmp4 != "" && tmp5 != "" && tmp6 != "") {
+            if (tmp1 != "" && tmp2 != "" && tmp3 != "" && tmp4.length == 16 && tmp5 != "" && tmp6 != "") {
                 val tmp8 = tlMonth.text.toString() + "/" + tlYear.text.toString().substring(2, 4)
                 ref1.child("index").setValue(totalCard + 1)
                 ref1.child("accountNumber").setValue(tmp3)
@@ -214,7 +214,7 @@ class PlanningFragment() : Fragment() {
                     tlAccountNum.error = "Please input account number"
                 }
                 else tlAccountNum.error = null
-                if (tmp4 == "" || tmp4.length != 16) {
+                if (tmp4.length != 16) {
                     tlCardNum.error = "Please input valid card number"
                 }
                 else tlCardNum.error = null

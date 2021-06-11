@@ -104,22 +104,25 @@
                     android:fontFamily="@font/gotham_bold"
                     android:textSize="18sp"/>
             </com.google.android.material.textfield.TextInputLayout>
-            <RelativeLayout
+            <LinearLayout
+                android:weightSum="10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/labelDate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_weight="3"
+                    android:layout_gravity="center_vertical"
                     android:text="Expired Date:"
                     android:fontFamily="@font/gotham_bold"
                     android:textSize="18sp"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textloutMonth"
-                    android:layout_width="90dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
+                    android:layout_weight="3"
+                    android:layout_marginStart="10dp"
                     android:layout_toRightOf="@+id/labelDate"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
                     <AutoCompleteTextView
@@ -131,9 +134,10 @@
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textloutYear"
-                    android:layout_width="140dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
+                    android:layout_weight="4"
+                    android:layout_marginStart="10dp"
                     android:layout_toRightOf="@+id/textloutMonth"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
                     <AutoCompleteTextView
@@ -143,7 +147,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
-            </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

@@ -50,9 +50,15 @@ class UserFragment : Fragment() {
         name?.text = data.getName()
         val btnCardManager = view?.findViewById<Button>(R.id.btnmanagecard)
         btnCardManager?.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it, CardActivity::class.java)
-                it.startActivity(intent)
+            val totalCard = data.getCardAdapter().itemCount
+            if (totalCard == 0) {
+                Toast.makeText(activity, "There is no card in system", Toast.LENGTH_SHORT).show()
+            } else {
+                activity?.let {
+                    val intent = Intent(it, CardActivity::class.java)
+                    intent.putExtra("position", data.getCardAdapter().getFirstCard())
+                    it.startActivity(intent)
+                }
             }
         }
         val btnSignOut = view?.findViewById<Button>(R.id.btnLogOut)
