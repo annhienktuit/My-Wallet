@@ -268,7 +268,7 @@
         android:gravity="center"
         android:elevation="24dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="@color/mainColor"
         android:text="Copy all info to clipboard"
         app:icon="@drawable/ic_copy"

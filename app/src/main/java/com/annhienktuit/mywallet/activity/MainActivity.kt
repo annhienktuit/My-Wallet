@@ -31,6 +31,7 @@ import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.anychart.charts.Pie
 import com.anychart.enums.Align
 import com.anychart.enums.LegendLayout
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseUser
@@ -43,11 +44,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-//GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+//val acct = GoogleSignIn.getLastSignedInAccount(this@MainActivity);
 //if (acct != null) {
-//    String personName = acct.getDisplayName();
-//    String personEmail = acct.getEmail();
-//    String personId = acct.getId();
+//    fullName = acct.getDisplayName()
+//    val personEmail = acct.getEmail()
+//    val personId = acct.getId()
 //}
 class MainActivity : AppCompatActivity() {
     val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
@@ -120,12 +121,10 @@ class MainActivity : AppCompatActivity() {
                         ref.child(user.uid).child("income").setValue("0")
                         ref.child(user.uid).child("expense").setValue("0")
                     }
-
                 }
                 setUpDatabase(dataSnapshot)
                 setCurrentIncomePieChartData()
                 setCurrentExpensePieChartData()
-
                 setPreviousIncomePieChartData()
                 setPreviousExpensePieChartData()
                 if (checked) setUI()
@@ -437,7 +436,8 @@ class MainActivity : AppCompatActivity() {
                     listCurrentIncome.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString()
+                        childBranch.child("currentMonth").value.toString(),
+                        childBranch.child("currentYear").value.toString()
                     ))
                 }
 
@@ -478,7 +478,8 @@ class MainActivity : AppCompatActivity() {
                     listCurrentExpense.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString()
+                        childBranch.child("currentMonth").value.toString(),
+                        childBranch.child("currentYear").value.toString()
                     ))
                 }
 
@@ -521,7 +522,8 @@ class MainActivity : AppCompatActivity() {
                     listPreviousIncome.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString()
+                        childBranch.child("currentMonth").value.toString(),
+                        childBranch.child("currentYear").value.toString()
                     ))
                 }
 
@@ -565,7 +567,8 @@ class MainActivity : AppCompatActivity() {
                     listPreviousExpense.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString()
+                        childBranch.child("currentMonth").value.toString(),
+                        childBranch.child("currentYear").value.toString()
                     ))
                 }
 
@@ -718,7 +721,3 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
-
-
-
-
