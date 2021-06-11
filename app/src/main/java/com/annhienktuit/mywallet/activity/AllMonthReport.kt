@@ -1,8 +1,11 @@
 package com.annhienktuit.mywallet.activity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.widget.AdapterView.OnItemClickListener
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.DetailTransaction
 import com.annhienktuit.mywallet.adapter.AllMonthAdapter
@@ -13,7 +16,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_all_month_report.*
+import kotlinx.android.synthetic.main.layout_all_month_list_item.view.*
 import java.util.*
+
 
 class AllMonthReport : AppCompatActivity() {
     val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
@@ -38,7 +43,6 @@ class AllMonthReport : AppCompatActivity() {
 
     private fun setListView() {
         val refTrans = ref.child(user?.uid.toString()).child("transactions")
-
 
         refTrans.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -69,7 +73,6 @@ class AllMonthReport : AppCompatActivity() {
     }
 
     private fun handleMonthlyTransaction(listMonthlyTrans: MutableList<DetailTransaction>): MutableList<DetailTransaction> {
-
         var k = 0;
         // set negative value for expense transaction
         while(k < listMonthlyTrans.size){
@@ -79,12 +82,12 @@ class AllMonthReport : AppCompatActivity() {
             k++
         }
 
-        //group by month
+        //group by month and year
         var i = 0;
         while(i < listMonthlyTrans.size){
             var j = i + 1
             while(j < listMonthlyTrans.size){
-                if(listMonthlyTrans[j].currentMonth == listMonthlyTrans[i].currentMonth){
+                if(listMonthlyTrans[j].currentMonth == listMonthlyTrans[i].currentMonth && listMonthlyTrans[j].currentYear == listMonthlyTrans[i].currentYear){
                     if(listMonthlyTrans[j].inOrOut != "null"){
                         var moneyTemp: Long = listMonthlyTrans[i].moneyAmount.toLong()
                         moneyTemp += listMonthlyTrans[j].moneyAmount.toLong()
@@ -104,5 +107,14 @@ class AllMonthReport : AppCompatActivity() {
     private fun setReportAdapter(list: MutableList<DetailTransaction>){
         val adapter = AllMonthAdapter(this, list)
         listReport.adapter = adapter
+
+        listReport.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+            val intent = Intent(this, AllMonthDetailReport::class.java)
+
+            intent.putExtra("month", parent[position].tvMonth.text)
+            intent.putExtra("year", parent[position].tvYear.text)
+
+            startActivity(intent)
+        }
     }
 }

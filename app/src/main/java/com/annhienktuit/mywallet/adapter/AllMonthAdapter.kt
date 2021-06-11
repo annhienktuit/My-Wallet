@@ -30,13 +30,16 @@ class AllMonthAdapter(private val context: Context, private val dataSource: Muta
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val rowView = inflater.inflate(R.layout.layout_all_month_list_item, parent, false)
 
-        val monthYear = rowView.findViewById<TextView>(R.id.tvMonthYear)
+        val year = rowView.findViewById<TextView>(R.id.tvYear)
+        val month = rowView.findViewById<TextView>(R.id.tvMonth)
         val balance = rowView.findViewById<TextView>(R.id.tvBalance)
         val mood = rowView.findViewById<ImageView>(R.id.ivMood)
 
         val trans = getItem(position) as DetailTransaction
 
-        monthYear.append("${trans.currentMonth}/${trans.currentYear}")
+        month.text = trans.currentMonth
+        year.text = trans.currentYear
+
         balance.text = trans.moneyAmount
         if(trans.moneyAmount.toLong() < 0){
             mood.setImageResource(R.drawable.ic_baseline_mood_bad_24)
