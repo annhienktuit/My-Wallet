@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragments.CurrentMonthFragment"
+    tools:context=".activity.AllMonthDetailReport"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -14,6 +14,75 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="16dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            >
+
+            <Button
+                android:id="@+id/btnArrowBack"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/ic_baseline_arrow_back_24"
+                android:layout_marginTop="14dp"
+                android:layout_marginLeft="10dp"
+                />
+
+            <TextView
+                android:id="@+id/mainTitle"
+                android:layout_toRightOf="@id/btnArrowBack"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/mainColor"
+                android:fontFamily="@font/gotham_bold"
+                android:textSize="22sp"
+                android:text="Detail Report Of"
+                />
+
+            <TextView
+                android:id="@+id/monthTitle"
+                android:layout_toRightOf="@id/mainTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center"
+                android:layout_marginLeft="6dp"
+                android:textColor="@color/mainColor"
+                android:fontFamily="@font/gotham_bold"
+                android:textSize="22sp"
+                />
+
+            <TextView
+                android:id="@+id/forwardSlash"
+                android:layout_toRightOf="@id/monthTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center"
+                android:layout_marginLeft="2dp"
+                android:textColor="@color/mainColor"
+                android:fontFamily="@font/gotham_bold"
+                android:textSize="22sp"
+                android:text="/"
+                />
+
+            <TextView
+                android:id="@+id/yearTitle"
+                android:layout_toRightOf="@id/forwardSlash"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center"
+                android:layout_marginLeft="2dp"
+                android:textColor="@color/mainColor"
+                android:fontFamily="@font/gotham_bold"
+                android:textSize="22sp"
+                />
+
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
