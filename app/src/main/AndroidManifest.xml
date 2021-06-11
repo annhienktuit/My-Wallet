@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyWallet"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.AllMonthReport"></activity>
+        <activity android:name=".activity.AllMonthDetailReport"></activity>
+        <activity android:name=".activity.AllMonthReport" />
         <activity android:name=".activity.AboutActivity" />
         <activity
             android:name=".activity.TransactionActivity"
