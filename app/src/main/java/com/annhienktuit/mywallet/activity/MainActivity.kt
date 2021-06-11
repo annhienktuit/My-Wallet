@@ -437,7 +437,8 @@ class MainActivity : AppCompatActivity() {
                     listCurrentIncome.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString()
+                        childBranch.child("currentMonth").value.toString(),
+                        childBranch.child("currentYear").value.toString()
                     ))
                 }
 
@@ -478,7 +479,8 @@ class MainActivity : AppCompatActivity() {
                     listCurrentExpense.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString()
+                        childBranch.child("currentMonth").value.toString(),
+                        childBranch.child("currentYear").value.toString()
                     ))
                 }
 
@@ -521,7 +523,8 @@ class MainActivity : AppCompatActivity() {
                     listPreviousIncome.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString()
+                        childBranch.child("currentMonth").value.toString(),
+                        childBranch.child("currentYear").value.toString()
                     ))
                 }
 
@@ -565,7 +568,8 @@ class MainActivity : AppCompatActivity() {
                     listPreviousExpense.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
                         childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString()
+                        childBranch.child("currentMonth").value.toString(),
+                        childBranch.child("currentYear").value.toString()
                     ))
                 }
 
