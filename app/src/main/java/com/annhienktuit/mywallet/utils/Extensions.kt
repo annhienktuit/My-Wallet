@@ -2,6 +2,7 @@ package com.annhienktuit.mywallet.utils
 
 import android.app.Activity
 import android.widget.Toast
+import java.lang.Exception
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
@@ -10,15 +11,20 @@ object Extensions {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
     fun changeToMoney(str: String?): String {
-        val formatter: NumberFormat = DecimalFormat("#,###")
-        if (str != null) {
-            val myNumber = str.toDouble()
-            if (myNumber < 0)
-                return "-" + formatter.format(-myNumber)
-            else
-                return formatter.format(myNumber)
+        var result = "0"
+        try {
+            val formatter: NumberFormat = DecimalFormat("#,###")
+            if (str != null) {
+                val myNumber = str.toDouble()
+                if (myNumber < 0)
+                    result = "-" + formatter.format(-myNumber)
+                else
+                    result = formatter.format(myNumber)
+            }
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
         }
-        return "0"
+        return result
     }
 
 }

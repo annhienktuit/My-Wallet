@@ -110,17 +110,6 @@ class MainActivity : AppCompatActivity() {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 if(user == null) {
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-                } else {
-                    if (!dataSnapshot.hasChild(user.uid)) {
-                        val fullName = intent.getStringExtra("fullname").toString()
-                        ref.child(user.uid).child("name").setValue(fullName)
-                        ref.child(user.uid).child("limits").child("total").setValue(0)
-                        ref.child(user.uid).child("savings").child("total").setValue(0)
-                        ref.child(user.uid).child("cards").child("total").setValue(0)
-                        ref.child(user.uid).child("balance").setValue("0")
-                        ref.child(user.uid).child("income").setValue("0")
-                        ref.child(user.uid).child("expense").setValue("0")
-                    }
                 }
                 setUpDatabase(dataSnapshot)
                 setCurrentIncomePieChartData()

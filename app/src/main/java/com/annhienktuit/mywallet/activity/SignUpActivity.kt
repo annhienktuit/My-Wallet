@@ -113,7 +113,17 @@ class SignUpActivity : AppCompatActivity() {
                         pushToFireBase(userName,userEmail,userPassword)
                         val intentMain = Intent(this, MainActivity::class.java)
                         intentMain.putExtra("Full Name",createAccountInputsArray[3].text.toString() + " " +createAccountInputsArray[4].text.toString())
-                        intentMain.putExtra("fulname", edtLastName.text.toString() + " " + edtFirstName.text.toString())
+                        var ref = FirebaseDatabase
+                            .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
+                            .getReference("datas")
+                        val user: FirebaseUser? = firebaseAuth.currentUser
+                        ref.child(user!!.uid).child("name").setValue(edtLastName.text.toString() + " " + edtFirstName.text.toString())
+                        ref.child(user.uid).child("limits").child("total").setValue(0)
+                        ref.child(user.uid).child("savings").child("total").setValue(0)
+                        ref.child(user.uid).child("cards").child("total").setValue(0)
+                        ref.child(user.uid).child("balance").setValue("0")
+                        ref.child(user.uid).child("income").setValue("0")
+                        ref.child(user.uid).child("expense").setValue("0")
                         startActivity(intentMain)
                         finish()
                     } else {
