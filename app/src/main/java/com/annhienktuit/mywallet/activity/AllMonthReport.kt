@@ -101,9 +101,6 @@ class AllMonthReport : AppCompatActivity() {
         return listMonthlyTrans
     }
 
-
-
-
     private fun setReportAdapter(list: MutableList<DetailTransaction>){
         val adapter = AllMonthAdapter(this, list)
         listReport.adapter = adapter

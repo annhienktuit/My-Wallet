@@ -73,7 +73,7 @@ class PreviousMonthFragment : Fragment() {
     private fun setIncomePieChartData() {
         val data = (activity as MainActivity)
 
-        var listPreviousIncome = data.getPreviousIncomeList()
+        var listPieChartData = data.getPreviousIncomeData()
         var amountPreviousDebt = data.getPreviousDebt()
         var amountPreviousIncome = data.getPreviousIncome()
 
@@ -85,12 +85,6 @@ class PreviousMonthFragment : Fragment() {
         pieIncomeChart.setProgressBar(progressIncomeBar)
         APIlib.getInstance().setActiveAnyChartView(pieIncomeChart)
         var pie: Pie = AnyChart.pie()
-        val listPieChartData = mutableListOf<DataEntry>()
-        listPieChartData.removeAll(listPieChartData)
-
-        for(item in listPreviousIncome){
-            listPieChartData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
-        }
 
         pie.data(listPieChartData)
 
@@ -114,7 +108,7 @@ class PreviousMonthFragment : Fragment() {
     private fun setExpensePieChartData() {
         val data = (activity as MainActivity)
 
-        var listPreviousExpense = data.getPreviousExpenseList()
+        var listPieChartData = data.getPreviousExpenseData()
         var amountPreviousLoan = data.getPreviousLoan()
         var amountPreviousExpense = data.getPreviousExpense()
 
@@ -126,12 +120,6 @@ class PreviousMonthFragment : Fragment() {
         pieExpenseChart.setProgressBar(progressExpenseBar)
         APIlib.getInstance().setActiveAnyChartView(pieExpenseChart)
         var pie: Pie = AnyChart.pie()
-        val listPieChartData = mutableListOf<DataEntry>()
-        listPieChartData.removeAll(listPieChartData)
-
-        for(item in listPreviousExpense){
-            listPieChartData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
-        }
 
         pie.data(listPieChartData)
 

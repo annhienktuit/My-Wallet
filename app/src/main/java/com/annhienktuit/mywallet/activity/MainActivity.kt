@@ -79,21 +79,25 @@ class MainActivity : AppCompatActivity() {
     private var listCurrentIncome = mutableListOf<DetailTransaction>()
     private var amountCurrentIncome = 0L
     private var amountCurrentDebt = 0L
+    private var listCurrentIncomeData = mutableListOf<DataEntry>()
     //-----------------------------------
     //Variables for current expense reporting
     private var listCurrentExpense = mutableListOf<DetailTransaction>()
     private var amountCurrentExpense = 0L
     private var amountCurrentLoan = 0L
+    private var listCurrentExpenseData = mutableListOf<DataEntry>()
     //-----------------------------------
     //Variables for Previous income reporting
     private var listPreviousIncome = mutableListOf<DetailTransaction>()
     private var amountPreviousIncome = 0L
     private var amountPreviousDebt = 0L
+    private var listPreviousIncomeData = mutableListOf<DataEntry>()
     //-----------------------------------
     //Variables for Previous expense reporting
     private var listPreviousExpense = mutableListOf<DetailTransaction>()
     private var amountPreviousExpense = 0L
     private var amountPreviousLoan = 0L
+    private var listPreviousExpenseData = mutableListOf<DataEntry>()
     //-----------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -413,6 +417,7 @@ class MainActivity : AppCompatActivity() {
                 amountCurrentDebt = 0L
 
                 listCurrentIncome.removeAll(listCurrentIncome)
+                listCurrentIncomeData.removeAll(listCurrentIncomeData)
 
                 for(childBranch in snapshot.children){
                     listCurrentIncome.add(DetailTransaction(
@@ -428,6 +433,7 @@ class MainActivity : AppCompatActivity() {
                     if(item.category == "Debt"){
                         amountCurrentDebt += item.moneyAmount.toLong()
                     }
+                    listCurrentIncomeData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
                     amountCurrentIncome += item.moneyAmount.toLong()
                 }
             }
@@ -452,6 +458,7 @@ class MainActivity : AppCompatActivity() {
                 amountCurrentLoan = 0L
 
                 listCurrentExpense.removeAll(listCurrentExpense)
+                listCurrentExpenseData.removeAll(listCurrentExpenseData)
 
                 for(childBranch in snapshot.children){
                     listCurrentExpense.add(DetailTransaction(
@@ -467,6 +474,7 @@ class MainActivity : AppCompatActivity() {
                     if(item.category == "Loan"){
                         amountCurrentLoan += item.moneyAmount.toLong()
                     }
+                    listCurrentExpenseData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
                     amountCurrentExpense += item.moneyAmount.toLong()
                 }
             }
@@ -494,7 +502,7 @@ class MainActivity : AppCompatActivity() {
                 amountPreviousDebt = 0L
 
                 listPreviousIncome.removeAll(listPreviousIncome)
-
+                listPreviousIncomeData.removeAll(listPreviousIncomeData)
                 for(childBranch in snapshot.children){
                     listPreviousIncome.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
@@ -509,6 +517,7 @@ class MainActivity : AppCompatActivity() {
                     if(item.category == "Debt"){
                         amountPreviousDebt += item.moneyAmount.toLong()
                     }
+                    listPreviousIncomeData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
                     amountPreviousIncome += item.moneyAmount.toLong()
                 }
             }
@@ -536,8 +545,8 @@ class MainActivity : AppCompatActivity() {
                 amountPreviousExpense = 0L
                 amountPreviousLoan = 0L
 
+                listPreviousExpenseData.removeAll(listPreviousExpenseData)
                 listPreviousExpense.removeAll(listPreviousExpense)
-
                 for(childBranch in snapshot.children){
                     listPreviousExpense.add(DetailTransaction(
                         childBranch.child("category").value.toString(),
@@ -552,6 +561,7 @@ class MainActivity : AppCompatActivity() {
                     if(item.category == "Loan"){
                         amountPreviousLoan += item.moneyAmount.toLong()
                     }
+                    listPreviousExpenseData.add(ValueDataEntry(item.category, item.moneyAmount.toLong()))
                     amountPreviousExpense += item.moneyAmount.toLong()
                 }
             }
@@ -563,10 +573,12 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun handleListForChart(list: MutableList<DetailTransaction>, month: Int) : MutableList<DetailTransaction>{
+        var now: Calendar = Calendar.getInstance()
+        var currentYear = now.get(Calendar.YEAR)
 
         var iForCurrentMonth = 0
         while(iForCurrentMonth < list.size){
-            if(list[iForCurrentMonth].currentMonth != month.toString()){
+            if(list[iForCurrentMonth].currentMonth != month.toString() || list[iForCurrentMonth].currentYear != currentYear.toString()){
                 list.remove(list[iForCurrentMonth])
                 iForCurrentMonth--
             }
@@ -604,6 +616,10 @@ class MainActivity : AppCompatActivity() {
         return listCurrentIncome
     }
 
+    fun getCurrentIncomeData() : MutableList<DataEntry>{
+        return listCurrentIncomeData
+    }
+
     fun getCurrentExpense(): Long{
         return amountCurrentExpense
     }
@@ -614,6 +630,10 @@ class MainActivity : AppCompatActivity() {
 
     fun getCurrentExpenseList() : MutableList<DetailTransaction>{
         return listCurrentExpense
+    }
+
+    fun getCurrentExpenseData() : MutableList<DataEntry>{
+        return listCurrentExpenseData
     }
 
     //--------------------------
@@ -629,6 +649,10 @@ class MainActivity : AppCompatActivity() {
         return listPreviousIncome
     }
 
+    fun getPreviousIncomeData() : MutableList<DataEntry>{
+        return listPreviousIncomeData
+    }
+
     fun getPreviousExpense(): Long{
         return amountPreviousExpense
     }
@@ -639,6 +663,10 @@ class MainActivity : AppCompatActivity() {
 
     fun getPreviousExpenseList() : MutableList<DetailTransaction>{
         return listPreviousExpense
+    }
+
+    fun getPreviousExpenseData() : MutableList<DataEntry>{
+        return listPreviousExpenseData
     }
 
     fun getName(): String? {
