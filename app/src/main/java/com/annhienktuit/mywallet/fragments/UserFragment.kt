@@ -1,7 +1,9 @@
 package com.annhienktuit.mywallet.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -9,35 +11,29 @@ import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.annhienktuit.mywallet.*
+import com.annhienktuit.mywallet.`object`.DetailTransaction
 import com.annhienktuit.mywallet.activity.*
+import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Exception
+import java.lang.StringBuilder
 
-
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [UserFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class UserFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    val num:Int = 1
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+
+    val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
+    var ref = FirebaseDatabase
+        .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        .getReference("datas")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -101,27 +97,64 @@ class UserFragment : Fragment() {
             }
         }
 
+        val btnExport = view.findViewById<Button>(R.id.btnExport)
+        btnExport.setOnClickListener {
+            export()
+        }
 
         return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UserFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UserFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    fun export(){
+        val refTrans = ref.child(user?.uid.toString()).child("transactions")
+
+        refTrans.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var data: StringBuilder = StringBuilder()
+                data.clear()
+
+                //write data separated by colon
+                data.append("Date,Time,InOrOut,Category,Amount Of Money")
+                for(childBranch in snapshot.children){
+                    data.append("\n" +
+                            "${childBranch.child("day").value.toString()}," +
+                            "${childBranch.child("time").value.toString()}," +
+                            "${childBranch.child("inorout").value.toString()}," +
+                            "${childBranch.child("category").value.toString()}," +
+                            "${childBranch.child("money").value.toString()}")
+                }
+
+                try{
+                    //saving the file into device
+                    var out: FileOutputStream = context!!.openFileOutput("data.csv", Context.MODE_PRIVATE)
+                    out.write((data.toString()).toByteArray())
+                    out.close()
+
+                    //exporting
+                    var context: Context = activity!!.applicationContext
+                    var fileLocation: File = File(context.filesDir, "data.csv")
+
+                    var path: Uri = FileProvider.getUriForFile(
+                        context,
+                        "com.annhienktuit.mywallet.fileprovider",
+                    fileLocation)
+
+                    var fileIntent: Intent = Intent(Intent.ACTION_SEND)
+                    fileIntent.type = "text/csv"
+                    fileIntent.putExtra(Intent.EXTRA_SUBJECT, "Data")
+                    fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    fileIntent.putExtra(Intent.EXTRA_STREAM, path)
+
+                    startActivity(Intent.createChooser(fileIntent, "Send Mail"))
+                }
+                catch (e: Exception){
+                    Toast.makeText(activity, "$e", Toast.LENGTH_SHORT).show()
                 }
             }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
     }
 }
