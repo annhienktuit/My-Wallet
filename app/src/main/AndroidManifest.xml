@@ -16,13 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyWallet"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.AllMonthDetailReport"></activity>
+        <activity android:name=".activity.NotificationActivity"></activity>
+        <activity android:name=".activity.AllMonthDetailReport" />
         <activity android:name=".activity.AllMonthReport" />
         <activity android:name=".activity.AboutActivity" />
         <activity
             android:name=".activity.TransactionActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
-        <activity android:name=".activity.LimitationActivity" />
         <activity
             android:name=".activity.SavingActivity"
             android:theme="@style/Theme.Design.Light.NoActionBar" />
@@ -46,6 +46,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity" />
+        <receiver android:name=".activity.AlarmReceiver" />
     </application>
 
 </manifest>
