@@ -27,6 +27,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.lang.Exception
 import java.lang.StringBuilder
+import java.text.SimpleDateFormat
+import java.util.*
 
 class UserFragment : Fragment() {
 
@@ -107,21 +109,26 @@ class UserFragment : Fragment() {
 
     fun export(){
         val refTrans = ref.child(user?.uid.toString()).child("transactions")
-
+        val sdf = SimpleDateFormat("dd/M/yyyy")
+        val currentDate = sdf.format(Date())
+        var default_name:String = currentDate
+        Log.i("time",default_name)
         refTrans.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 var data: StringBuilder = StringBuilder()
                 data.clear()
 
                 //write data separated by colon
-                data.append("Date,Time,InOrOut,Category,Amount Of Money")
+                data.append("Date,Time,Name of Transaction, Type of Transaction(true is income),Category,Amount Of Money")
                 for(childBranch in snapshot.children){
                     data.append("\n" +
                             "${childBranch.child("day").value.toString()}," +
                             "${childBranch.child("time").value.toString()}," +
+                            "${childBranch.child("name").value.toString()}," +
                             "${childBranch.child("inorout").value.toString()}," +
                             "${childBranch.child("category").value.toString()}," +
-                            "${childBranch.child("money").value.toString()}")
+                            childBranch.child("money").value.toString()
+                    )
                 }
 
                 try{
@@ -141,7 +148,7 @@ class UserFragment : Fragment() {
 
                     var fileIntent: Intent = Intent(Intent.ACTION_SEND)
                     fileIntent.type = "text/csv"
-                    fileIntent.putExtra(Intent.EXTRA_SUBJECT, "Data")
+                    fileIntent.putExtra(Intent.EXTRA_SUBJECT, "$default_name")
                     fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     fileIntent.putExtra(Intent.EXTRA_STREAM, path)
 

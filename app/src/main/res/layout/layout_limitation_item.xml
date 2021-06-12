@@ -13,30 +13,42 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp">
 
-            <TextView
-                android:id="@+id/tvTitle"
-                android:text="Title"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:id="@+id/lnTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:text="Title"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/tvTarget"
-                android:text="0"
-                android:textColor="@color/mainColor"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                android:layout_below="@id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/tvTarget"
+                    android:text="0"
+                    android:textColor="@color/mainColor"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_below="@id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
 
             <TextView
                 android:id="@+id/tvSubTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvTarget"
+                android:layout_below="@+id/lnTitle"
                 android:text="SubTitle"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="15sp"
@@ -49,6 +61,7 @@
                 android:layout_centerVertical="true"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="15dp"
                 />
             <com.sasank.roundedhorizontalprogress.RoundedHorizontalProgressBar
                 android:id="@+id/progressBarLimit"
