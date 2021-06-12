@@ -22,7 +22,6 @@
         <activity
             android:name=".activity.TransactionActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
-        <activity android:name=".activity.LimitationActivity" />
         <activity
             android:name=".activity.SavingActivity"
             android:theme="@style/Theme.Design.Light.NoActionBar" />
@@ -46,6 +45,21 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity" />
+        
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.annhienktuit.mywallet.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false"
+            >
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"
+                />
+
+        </provider>
+        
     </application>
 
 </manifest>
