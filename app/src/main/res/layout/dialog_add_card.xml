@@ -22,10 +22,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textloutDescripCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:boxBackgroundColor="@color/white"
+                app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:hint="Description about card">
                 <com.google.android.material.textfield.TextInputEditText
@@ -36,10 +38,12 @@
                     android:textSize="18sp"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textloutCardHolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:boxBackgroundColor="@color/white"
+                app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:hint="Cardholder Name">
                 <com.google.android.material.textfield.TextInputEditText
@@ -50,10 +54,12 @@
                     android:textSize="18sp"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textloutAccountNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:boxBackgroundColor="@color/white"
+                app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:hint="Account Number">
                 <com.google.android.material.textfield.TextInputEditText
@@ -65,10 +71,12 @@
                     android:textSize="18sp"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textloudCardNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:boxBackgroundColor="@color/white"
+                app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:hint="Card Number">
                 <com.google.android.material.textfield.TextInputEditText
@@ -79,25 +87,14 @@
                     android:inputType="number"
                     android:textSize="18sp"/>
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textloutBankName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:boxBackgroundColor="@color/white"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:hint="Expired Date">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputExpiredDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/gotham_bold"
-                    android:textSize="18sp"/>
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:boxBackgroundColor="@color/white"
+                app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:hint="Bank Name">
                 <com.google.android.material.textfield.TextInputEditText
@@ -107,6 +104,50 @@
                     android:fontFamily="@font/gotham_bold"
                     android:textSize="18sp"/>
             </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
+                android:weightSum="10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/labelDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_gravity="center_vertical"
+                    android:text="Expired Date:"
+                    android:fontFamily="@font/gotham_bold"
+                    android:textSize="18sp"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textloutMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_marginStart="10dp"
+                    android:layout_toRightOf="@+id/labelDate"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                    <AutoCompleteTextView
+                        android:id="@+id/chooseMonth"
+                        android:inputType="none"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textloutYear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:layout_marginStart="10dp"
+                    android:layout_toRightOf="@+id/textloutMonth"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                    <AutoCompleteTextView
+                        android:id="@+id/chooseYear"
+                        android:inputType="none"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

@@ -63,4 +63,9 @@ class CardAdapter(private val cardList: List<Card>) : RecyclerView.Adapter<Recyc
     }
 
     override fun getItemCount() = cardList.size
+
+    fun getFirstCard(): Int {
+        if (cardList.size > 0) return cardList[0].index!!
+        return 0
+    }
 }

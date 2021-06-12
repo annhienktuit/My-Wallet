@@ -40,12 +40,13 @@
                 />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/categoryLimit"
+                android:id="@+id/textloutCategoryLimit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
+                app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
                 <AutoCompleteTextView
                     android:id="@+id/textCategoryLimit"
@@ -57,43 +58,27 @@
                     android:inputType="none"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_height="1dp"
-                android:background="#8d8d8d"/>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:textColor="#2F2543"
-            android:fontFamily="@font/gotham"
-            android:textSize="15sp"
-            android:text="Target"
-            />
-
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textloutTarget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:boxBackgroundColor="@color/white"
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
             app:startIconTint="#43D149"
-            app:startIconDrawable="@drawable/ic_baseline_attach_money_24"
-            >
-
+            app:errorEnabled="true"
+            android:hint="Target"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/ic_baseline_attach_money_24">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tfTarget"
+                android:id="@+id/target"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_bold"
                 android:inputType="number"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>

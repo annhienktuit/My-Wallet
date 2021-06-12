@@ -23,9 +23,13 @@ import com.annhienktuit.mywallet.adapter.SavingAdapter
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.dialog_done_interest_rate.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 private const val ARG_PARAM1 = "param1"
@@ -107,9 +111,6 @@ class PlanningFragment() : Fragment() {
     }
 
     private fun setData(view: View) {
-
-
-
         //------------------------
         savingAdapter = data.getSavingAdapter()
         cardAdapter = data.getCardAdapter()
@@ -150,30 +151,87 @@ class PlanningFragment() : Fragment() {
         val accountNum = view.findViewById<TextInputEditText>(R.id.inputAccountNumber)
         val cardNum = view.findViewById<TextInputEditText>(R.id.inputCardNumber)
         val bankName = view.findViewById<TextInputEditText>(R.id.inputBankName)
-        val exDate = view.findViewById<TextInputEditText>(R.id.inputExpiredDate)
+        //------------------------------------------------------------------
+        val tlDescrip = view.findViewById<TextInputLayout>(R.id.textloutDescripCard)
+        val tlCardHolder = view.findViewById<TextInputLayout>(R.id.textloutCardHolder)
+        val tlAccountNum = view.findViewById<TextInputLayout>(R.id.textloutAccountNum)
+        val tlMonth = view.findViewById<AutoCompleteTextView>(R.id.chooseMonth)
+        val tlYear = view.findViewById<AutoCompleteTextView>(R.id.chooseYear)
+        val tlBankName = view.findViewById<TextInputLayout>(R.id.textloutBankName)
+        val tlCardNum = view.findViewById<TextInputLayout>(R.id.textloudCardNumber)
+        //---------------------------------------------------------------------
+        val itemsMonth = listOf("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12")
+        val itemsYear = ArrayList<String>()
+        val date = Calendar.getInstance()
+        val start = date.get(Calendar.YEAR) - 20
+        val end = date.get(Calendar.YEAR) + 20
+        for (i in start..end) {
+            itemsYear.add(i.toString())
+        }
+        val monthAdapter = ArrayAdapter(data, R.layout.layout_category, itemsMonth)
+        val yearAdapter = ArrayAdapter(data, R.layout.layout_category, itemsYear)
+        tlMonth.setAdapter(monthAdapter)
+        tlYear.setAdapter(yearAdapter)
+        //-----------------------------------------------------------------------
         builder.setView(view)
-        builder.setPositiveButton("OK") { dialog, which ->
+        builder.setPositiveButton("OK") { dialog, which -> }
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val tmp1 = nameCard.text.toString()
             val tmp2 = namePerson.text.toString()
             val tmp3 = accountNum.text.toString()
             val tmp4 = cardNum.text.toString()
             val tmp5 = bankName.text.toString()
-            val tmp6 = exDate.text.toString()
+            val tmp6 = tlMonth.text.toString()
+            val tmp7 = tlYear.text.toString()
             val ref1 = ref.child("cards").child("card" + (totalCard + 1))
-            ref1.child("index").setValue(totalCard + 1)
-            ref1.child("accountNumber").setValue(tmp3)
-            ref1.child("bankName").setValue(tmp5)
-            ref1.child("cardNumber").setValue(tmp4)
-            ref1.child("expiredDate").setValue(tmp6)
-            ref1.child("name").setValue(tmp1)
-            ref1.child("namePerson").setValue(tmp2)
-            ref.child("cards").child("total").setValue(totalCard + 1)
+            //---------------------------------------------------------------
+            if (tmp1 != "" && tmp2 != "" && tmp3 != "" && tmp4.length == 16 && tmp5 != "" && tmp6 != "") {
+                val tmp8 = tlMonth.text.toString() + "/" + tlYear.text.toString().substring(2, 4)
+                ref1.child("index").setValue(totalCard + 1)
+                ref1.child("accountNumber").setValue(tmp3)
+                ref1.child("bankName").setValue(tmp5)
+                ref1.child("cardNumber").setValue(tmp4)
+                ref1.child("expiredDate").setValue(tmp8)
+                ref1.child("name").setValue(tmp1)
+                ref1.child("namePerson").setValue(tmp2)
+                ref.child("cards").child("total").setValue(totalCard + 1)
+                dialog.dismiss()
+            } else {
+                if (tmp1 == "") {
+                    tlDescrip.error = "Please fill in the blank"
+                }
+                else tlDescrip.error = null
+                if (tmp2 == "") {
+                    tlCardHolder.error = "Please input card holder name"
+                }
+                else tlCardHolder.error = null
+                if (tmp3 == "") {
+                    tlAccountNum.error = "Please input account number"
+                }
+                else tlAccountNum.error = null
+                if (tmp4.length != 16) {
+                    tlCardNum.error = "Please input valid card number"
+                }
+                else tlCardNum.error = null
+                if (tmp5 == "") {
+                    tlBankName.error = "Please input name of bank"
+                }
+                else tlBankName.error = null
+                if (tmp6 == "") {
+                    tlMonth.error = "Please choose expired month"
+                }
+                else tlMonth.error = null
+                if (tmp7 == "") {
+                    tlYear.error = "Please choose expired year"
+                }
+                else tlYear.error = null
+            }
         }
-        builder.setNegativeButton("Cancel") { dialog, which ->
-            dialog.dismiss()
-        }
-        builder.create()
-        builder.show()
     }
 
     private fun addSavingInfo() {
@@ -182,57 +240,83 @@ class PlanningFragment() : Fragment() {
         val builder = AlertDialog.Builder(activity as MainActivity)
         val product = view.findViewById<TextInputEditText>(R.id.inputSavingName)
         val cost = view.findViewById<TextInputEditText>(R.id.inputSavingCost)
+        val tlProduct = view.findViewById<TextInputLayout>(R.id.textloutNameSaving)
+        val tlCost = view.findViewById<TextInputLayout>(R.id.textloutCostSaving)
         builder.setView(view)
-        builder.setPositiveButton("OK") { dialog, which ->
-            val tmp1 = product.text.toString()
-            val tmp2 = cost.text.toString()
-            val ref1 = ref.child("savings").child("saving" + (totalSaving + 1))
-            ref1.child("index").setValue(totalSaving + 1)
-            ref1.child("product").setValue(tmp1)
-            ref1.child("price").setValue(tmp2)
-            ref1.child("current").setValue("0")
-            ref.child("savings").child("total").setValue(totalSaving + 1)
-        }
+        builder.setPositiveButton("OK") {dialog, which ->}
         builder.setNegativeButton("Cancel") { dialog, which ->
             dialog.dismiss()
         }
-        builder.create()
-        builder.show()
+        val dialog = builder.create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val tmp1 = product.text.toString()
+            val tmp2 = cost.text.toString()
+            if (tmp1 != "" && tmp2 != "") {
+                val ref1 = ref.child("savings").child("saving" + (totalSaving + 1))
+                ref1.child("index").setValue(totalSaving + 1)
+                ref1.child("product").setValue(tmp1)
+                ref1.child("price").setValue(tmp2)
+                ref1.child("current").setValue("0")
+                ref.child("savings").child("total").setValue(totalSaving + 1)
+                dialog.dismiss()
+            } else {
+                if (tmp1 == "") {
+                    tlProduct.error = "Please input name of product"
+                }
+                else tlProduct.error = null
+                if (tmp2 == "") {
+                    tlCost.error = "Please input cost of saving"
+                }
+                else tlCost.error = null
+            }
+        }
     }
 
     private fun addLimitationInfo() {
         val totalLimit = data.getIndexLimitation()
-        Log.d("khaidf", totalLimit.toString())
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_add_limitation, null)
         val builder = AlertDialog.Builder(activity as MainActivity)
-        val textCategory = view.findViewById<AutoCompleteTextView>(R.id.textCategoryLimit)
-        val money = view.findViewById<TextInputEditText>(R.id.tfTarget)
+        val tlCategoryLimit = view.findViewById<AutoCompleteTextView>(R.id.textCategoryLimit)
+        val tlTarget = view.findViewById<TextInputLayout>(R.id.textloutTarget)
+        val target = view.findViewById<TextInputEditText>(R.id.target)
+        val ref1 = ref.child("limits").child("limit" + (totalLimit + 1))
         val itemsExpense = resources.getStringArray(R.array.categoriesExpense)
-        val categoryAdapter = ArrayAdapter(requireContext(), R.layout.layout_category, itemsExpense)
-        textCategory.setAdapter(categoryAdapter)
+        val categoryAdapter = ArrayAdapter(data, R.layout.layout_category, itemsExpense)
+        tlCategoryLimit.setAdapter(categoryAdapter)
         builder.setView(view)
-        builder.setPositiveButton("Add") { dialog, _ ->
-            try {
-                val tmp1 = money.text.toString()
-                val tmp2 = textCategory.text.toString()
-                val ref1 = ref.child("limits").child("limit" + (totalLimit + 1))
-                ref1.child("index").setValue(totalLimit + 1)
-                ref1.child("currentLimit").setValue("0")
-                ref1.child("costLimit").setValue(tmp1)
-                ref1.child("nameLimit").setValue(tmp2)
-                ref.child("limits").child("total").setValue(totalLimit + 1)
-                Toast.makeText(activity, "Adding limitation item success", Toast.LENGTH_SHORT)
-                    .show()
-                dialog.dismiss()
-            } catch (e: Exception) {
-                Toast.makeText(activity, "Please fill all the fields!", Toast.LENGTH_SHORT).show()
-            }
-        }
-
+        builder.setPositiveButton("Add") { dialog, _ -> }
         builder.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
-        builder.create()
-        builder.show()
+        val dialog = builder.create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val tmp1 = tlCategoryLimit.text.toString()
+            val tmp2 = target.text.toString()
+            if (tmp1 != "" && tmp2 != "") {
+                if (data.checkIfHasLimit(tmp1) == 0) {
+                    ref1.child("index").setValue(totalLimit + 1)
+                    ref1.child("currentLimit").setValue("0")
+                    ref1.child("costLimit").setValue(tmp2)
+                    ref1.child("nameLimit").setValue(tmp1)
+                    ref.child("limits").child("total").setValue(totalLimit + 1)
+                    dialog.dismiss()
+                }
+                else {
+                    Toast.makeText(activity, "This limitation is existed. Please select another limitation", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            } else {
+                if (tmp1 == "") {
+                    tlCategoryLimit.error = "Please choose a limitation"
+                }
+                else tlCategoryLimit.error = null
+                if (tmp2 == "") {
+                    tlTarget.error = "Please input target limit"
+                }
+                else tlTarget.error = null
+            }
+        }
     }
 }

@@ -21,6 +21,7 @@ import com.annhienktuit.mywallet.fragments.HomeFragment
 import com.annhienktuit.mywallet.fragments.PlanningFragment
 import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
+import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.anychart.APIlib
 import com.anychart.AnyChart
@@ -30,6 +31,7 @@ import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.anychart.charts.Pie
 import com.anychart.enums.Align
 import com.anychart.enums.LegendLayout
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseUser
@@ -42,11 +44,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-//GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+//val acct = GoogleSignIn.getLastSignedInAccount(this@MainActivity);
 //if (acct != null) {
-//    String personName = acct.getDisplayName();
-//    String personEmail = acct.getEmail();
-//    String personId = acct.getId();
+//    fullName = acct.getDisplayName()
+//    val personEmail = acct.getEmail()
+//    val personId = acct.getId()
 //}
 class MainActivity : AppCompatActivity() {
     val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
@@ -108,26 +110,16 @@ class MainActivity : AppCompatActivity() {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 if(user == null) {
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-                } else {
-                    if (!dataSnapshot.hasChild(user.uid)) {
-                        val fullName = intent.getStringExtra("fullname").toString()
-                        ref.child(user.uid).child("name").setValue(fullName)
-                        ref.child(user.uid).child("limits").child("total").setValue(0)
-                        ref.child(user.uid).child("savings").child("total").setValue(0)
-                        ref.child(user.uid).child("cards").child("total").setValue(0)
-                        ref.child(user.uid).child("balance").setValue("0")
-                        ref.child(user.uid).child("income").setValue("0")
-                        ref.child(user.uid).child("expense").setValue("0")
-                    }
-
                 }
                 setUpDatabase(dataSnapshot)
                 setCurrentIncomePieChartData()
                 setCurrentExpensePieChartData()
-
                 setPreviousIncomePieChartData()
                 setPreviousExpensePieChartData()
                 if (checked) setUI()
+                fab.setOnClickListener {
+                    eventOnClickAddButton()
+                }
             }
             override fun onStart() {
 
@@ -135,9 +127,7 @@ class MainActivity : AppCompatActivity() {
             override fun onFailure() {
             }
         })
-        fab.setOnClickListener {
-            eventOnClickAddButton()
-        }
+
     }
 
     private fun eventOnClickAddButton() {
@@ -160,7 +150,7 @@ class MainActivity : AppCompatActivity() {
         textCategory.setAdapter(categoryAdapter1)
         viewInflater.toggleMoneyButton.addOnButtonCheckedListener { group, checkedId, isChecked ->
             if (isChecked) {
-                if (checkedId == R.id.toggleIncome){
+                if (checkedId == R.id.toggleIncome) {
                     textCategory.setText("")
                     inorout = "true"
                     textCategory.setAdapter(categoryAdapter1)
@@ -186,6 +176,7 @@ class MainActivity : AppCompatActivity() {
             refTrans.child("name").setValue(name)
             refTrans.child("time").setValue(time)
             refTrans.child("inorout").setValue(inorout)
+            refTrans.child("index").setValue(totalTrans + 1)
             refTrans.child("category").setValue(textCategory.text.toString())
             refTrans.child("currentMonth").setValue((date.get(Calendar.MONTH) + 1).toString())
             refTrans.child("currentYear").setValue(date.get(Calendar.YEAR).toString())
@@ -196,23 +187,33 @@ class MainActivity : AppCompatActivity() {
             else {
                 ref1.child("expense").setValue((expense?.toLong()?.plus(money.toLong())).toString())
                 ref1.child("balance").setValue((balance?.toLong()?.minus(money.toLong())).toString())
+                val tmp = checkIfHasLimit(textCategory.text.toString())
+                if (tmp != 0) {
+                    val curruntLimit = limitList[tmp - 1].current!!.toInt()
+                    Log.d("khaidff", limitList[tmp - 1].toString())
+                    ref1.child("limits").child("limit" + tmp).child("currentLimit").setValue((curruntLimit + money.toInt()).toString())
+                }
             }
         }
         builder.setNegativeButton("Cancel"
         ) { dialog, which -> dialog.cancel() }
         builder.show()
     }
+    fun checkIfHasLimit(str: String): Int {
+        for (data in limitList) {
+            if (data.limitedGroup == str) return data.index!!.toInt()
+        }
+        return 0
+    }
 
     override fun onResume() {
         super.onResume()
         checked = true
-        Log.d("khaidf", checked.toString())
     }
 
     override fun onPause() {
         super.onPause()
         checked = false
-        Log.d("khaidf", checked.toString())
     }
 
     private fun setUI() {
@@ -306,7 +307,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        getDatabase(transactionDb.orderByChild("day"), object : OnGetDataListener {
+        getDatabase(transactionDb.orderByChild("index"), object : OnGetDataListener {
+
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 totalTrans = 0
                 transactionList.clear()
@@ -354,7 +356,7 @@ class MainActivity : AppCompatActivity() {
             override fun onFailure() {
             }
         })
-        getDatabase(limitDb, object : OnGetDataListener {
+        getDatabase(limitDb.orderByChild("index"), object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 limitList.clear()
                 indexLimitation = dataSnapshot.child("total").value.toString().toInt()
@@ -708,7 +710,3 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
-
-
-
-

@@ -110,12 +110,19 @@ class LimitationAdapter(private val limitationList: List<Limitation>) : Recycler
             val tmp2 = currentItem.target?.toLongOrNull()
             var result = 0
             var result2 = 0
+            var result3 = 0
             if (tmp1 != null && tmp2 != null) {
                 result = ((tmp1 * 100) / tmp2).toInt()
                 result2 = (tmp2 - tmp1).toInt()
+                result3 = (tmp1 - tmp2).toInt()
+                if (tmp1 <= tmp2) {
+                    holder1.current.text = ("You can use " + changeToMoney(result2.toString()) + " VND")
+                    holder1.progress.progress = result
+                } else {
+                    holder1.current.text = ("You used over " + changeToMoney(result3.toString()) + "VND")
+                    holder1.progress.progress = 100
+                }
             }
-            holder1.current.text = ("You can use " + changeToMoney(result2.toString()))
-            holder1.progress.progress = result
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -144,3 +151,6 @@ class LimitationAdapter(private val limitationList: List<Limitation>) : Recycler
         return null
     }
 }
+
+
+
