@@ -105,20 +105,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ref.keepSynced(true)
-
         getDatabase(ref, object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
+
                 if(user == null) {
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-                }
-                setUpDatabase(dataSnapshot)
-                setCurrentIncomePieChartData()
-                setCurrentExpensePieChartData()
-                setPreviousIncomePieChartData()
-                setPreviousExpensePieChartData()
-                if (checked) setUI()
-                fab.setOnClickListener {
-                    eventOnClickAddButton()
+                } else {
+                    setUpDatabase(dataSnapshot)
+                    setCurrentIncomePieChartData()
+                    setCurrentExpensePieChartData()
+                    setPreviousIncomePieChartData()
+                    setPreviousExpensePieChartData()
+                    if (checked) setUI()
+                    fab.setOnClickListener {
+                        eventOnClickAddButton()
+                    }
                 }
             }
             override fun onStart() {
@@ -708,5 +709,4 @@ class MainActivity : AppCompatActivity() {
     fun getSavingAdapter(): SavingAdapter {
         return savingAdapter
     }
-
 }
