@@ -77,6 +77,17 @@
             android:drawableLeft="@drawable/ic_fixed_interest_rate"
             android:text="Calculate interest rates"
             android:background="@drawable/corner_radius_full"/>
+
+        <Button
+            android:id="@+id/btnExport"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_csv"
+            android:text="Export CSV file"
+            android:background="@drawable/corner_radius_full"/>
+
         <Button
             android:id="@+id/btnSettings"
             android:layout_width="350dp"

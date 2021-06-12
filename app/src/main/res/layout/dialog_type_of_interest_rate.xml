@@ -1,55 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize"
-        android:gravity="center"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textColor="#2F2543"
-        android:fontFamily="@font/gotham_bold"
-        android:textSize="20sp"
-        android:text="Type of interest rate"
-        />
-
-    <RadioGroup
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/TypeOfInterestRadioGroup"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/SimpleInterestRadioBtn"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/mainColor"
+            android:fontFamily="@font/gotham_bold"
+            android:textSize="20sp"
+            android:text="Type of interest rate"
+            />
+
+        <RadioGroup
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/TypeOfInterestRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <RadioButton
+                android:id="@+id/SimpleInterestRadioBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Simple interest"
+                android:textSize="15sp"/>
+
+            <RadioButton
+                android:id="@+id/CompoundInterestRadioBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Compound interest"
+                android:textSize="15sp"/>
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/submitBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Simple interest"
-            android:textSize="15sp"/>
+            android:textAllCaps="false"
+            android:text="Submit"
+            android:layout_marginLeft="27dp"
+            android:layout_marginBottom="15dp"
+            />
 
-        <RadioButton
-            android:id="@+id/CompoundInterestRadioBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Compound interest"
-            android:textSize="15sp"/>
+    </LinearLayout>
 
-    </RadioGroup>
 
-    <Button
-        android:id="@+id/submitBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="Submit"
-        android:layout_marginLeft="27dp"
-        android:layout_marginBottom="15dp"
-        />
 
 </LinearLayout>
