@@ -1,5 +1,8 @@
 package com.annhienktuit.mywallet.activity
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -9,8 +12,6 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.*
 import com.annhienktuit.mywallet.adapter.CardAdapter
@@ -21,17 +22,9 @@ import com.annhienktuit.mywallet.fragments.HomeFragment
 import com.annhienktuit.mywallet.fragments.PlanningFragment
 import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
-import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
-import com.anychart.APIlib
-import com.anychart.AnyChart
-import com.anychart.AnyChartView
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
-import com.anychart.charts.Pie
-import com.anychart.enums.Align
-import com.anychart.enums.LegendLayout
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseUser
@@ -43,6 +36,7 @@ import kotlinx.android.synthetic.main.fragment_current_month.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 //val acct = GoogleSignIn.getLastSignedInAccount(this@MainActivity);
 //if (acct != null) {
@@ -104,6 +98,29 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //ALARM
+        var alarmManager: AlarmManager? =
+            getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        var notificationIntent = Intent(this, AlarmReceiver::class.java)
+        val broadcast = PendingIntent.getBroadcast(
+            this,
+            100,
+            notificationIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = System.currentTimeMillis()
+        cal[Calendar.HOUR_OF_DAY] = 19 // thời gian gửi noti
+        cal[Calendar.MINUTE] = 0
+        cal[Calendar.SECOND] = 0
+        alarmManager!!.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            cal.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            broadcast
+        )
+        //the others
         ref.keepSynced(true)
         getDatabase(ref, object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {

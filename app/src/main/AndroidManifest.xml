@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyWallet"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.AllMonthDetailReport"></activity>
+        <activity android:name=".activity.NotificationActivity"></activity>
+        <activity android:name=".activity.AllMonthDetailReport" />
         <activity android:name=".activity.AllMonthReport" />
         <activity android:name=".activity.AboutActivity" />
         <activity
@@ -45,6 +46,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity" />
+
         
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -60,6 +62,7 @@
 
         </provider>
         
+        <receiver android:name=".activity.AlarmReceiver" />
     </application>
 
 </manifest>
