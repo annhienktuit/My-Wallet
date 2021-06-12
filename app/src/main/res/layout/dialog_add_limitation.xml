@@ -17,7 +17,7 @@
             android:gravity="center"
             android:layout_marginLeft="15dp"
             android:paddingRight="100dp"
-            android:textColor="#2F2543"
+            android:textColor="@color/mainColor"
             android:fontFamily="@font/gotham_bold"
             android:textSize="22sp"
             android:text="Add Limitation"
