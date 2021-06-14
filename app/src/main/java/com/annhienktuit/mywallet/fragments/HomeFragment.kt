@@ -1,19 +1,18 @@
 package com.annhienktuit.mywallet.fragments
 
+import android.content.Context
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
-import com.annhienktuit.mywallet.`object`.RecentTransaction
 import com.annhienktuit.mywallet.activity.MainActivity
 import com.annhienktuit.mywallet.activity.TransactionActivity
 import com.annhienktuit.mywallet.adapter.RecentTransactionAdapter
@@ -34,6 +33,10 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        val pref = this.requireActivity()
+            .getSharedPreferences("pref", Context.MODE_PRIVATE)
+        Log.i("NotiFrag: ", pref.getString("status","").toString())
+
         val btnSeeAllTransaction = view.findViewById<Button>(R.id.btnSeeAll)
         btnSeeAllTransaction.setOnClickListener {
             val intent = Intent(activity, TransactionActivity::class.java)

@@ -12,6 +12,7 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.*
 import com.annhienktuit.mywallet.adapter.CardAdapter
@@ -22,6 +23,7 @@ import com.annhienktuit.mywallet.fragments.HomeFragment
 import com.annhienktuit.mywallet.fragments.PlanningFragment
 import com.annhienktuit.mywallet.fragments.ReportFragment
 import com.annhienktuit.mywallet.fragments.UserFragment
+import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
@@ -33,6 +35,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_add_transaction.view.*
 import kotlinx.android.synthetic.main.dialog_done_interest_rate.*
 import kotlinx.android.synthetic.main.fragment_current_month.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -98,28 +101,36 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //ALARM
-        var alarmManager: AlarmManager? =
-            getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        var notificationIntent = Intent(this, AlarmReceiver::class.java)
-        val broadcast = PendingIntent.getBroadcast(
-            this,
-            100,
-            notificationIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        val cal = Calendar.getInstance()
-        cal.timeInMillis = System.currentTimeMillis()
-        cal[Calendar.HOUR_OF_DAY] = 19 // thời gian gửi noti
-        cal[Calendar.MINUTE] = 0
-        cal[Calendar.SECOND] = 0
-        alarmManager!!.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            cal.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            broadcast
-        )
+        val pref = getSharedPreferences("Notification", MODE_PRIVATE)
+        pref.edit().putBoolean("status", true).apply()
+        var notificationStatus:Boolean = pref.getBoolean("status",true)
+        Log.i("notiInitilize",notificationStatus.toString())
+        btnNotify.setOnClickListener {
+            toast("We will notify you to add transactions add 7pm every day ;)")
+        }
+        //ALARM
+            var alarmManager: AlarmManager? =
+                getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+            var notificationIntent = Intent(this, AlarmReceiver::class.java)
+            val broadcast = PendingIntent.getBroadcast(
+                this,
+                100,
+                notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = System.currentTimeMillis()
+            cal[Calendar.HOUR_OF_DAY] = 19 // thời gian gửi noti
+            cal[Calendar.MINUTE] = 0
+            cal[Calendar.SECOND] = 0
+            alarmManager!!.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                cal.timeInMillis,
+                AlarmManager.INTERVAL_DAY,
+                broadcast
+            )
         //the others
         ref.keepSynced(true)
         getDatabase(ref, object : OnGetDataListener {

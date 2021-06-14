@@ -24,7 +24,7 @@
                     android:layout_height="wrap_content"
                     android:text="ATM Card in Agribank"
                     android:fontFamily="@font/gotham_bold"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textColor="#2F2543"/>
                 <TextView
                     android:id="@+id/personName"
