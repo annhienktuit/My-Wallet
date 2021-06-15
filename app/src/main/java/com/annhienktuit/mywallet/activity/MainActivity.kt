@@ -5,6 +5,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -101,14 +103,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        if(!isNetworkAvailable()){
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Connection Warning")
+            builder.setMessage("Make sure you have Internet connection to sync data with other devices.\n" +
+                    "But no worry, you can use the app and your local data will be upload when connection available")
+            builder.setIcon(R.drawable.ic_baseline_warning_24)
+            builder.setPositiveButton("Okay") { dialog, which ->
+            }
+            builder.show()
+        }
         val pref = getSharedPreferences("Notification", MODE_PRIVATE)
         pref.edit().putBoolean("status", true).apply()
         var notificationStatus:Boolean = pref.getBoolean("status",true)
         Log.i("notiInitilize",notificationStatus.toString())
-        btnNotify.setOnClickListener {
-            toast("We will notify you to add transactions add 7pm every day ;)")
-        }
         //ALARM
             var alarmManager: AlarmManager? =
                 getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -157,6 +165,14 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE)
+        return if (connectivityManager is ConnectivityManager) {
+            val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+            networkInfo?.isConnected ?: false
+        } else false
     }
 
     private fun eventOnClickAddButton() {

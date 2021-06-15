@@ -11,6 +11,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.annhienktuit.mywallet.*
@@ -50,7 +51,14 @@ class UserFragment : Fragment() {
         btnCardManager?.setOnClickListener {
             val totalCard = data.getCardAdapter().itemCount
             if (totalCard == 0) {
-                Toast.makeText(activity, "There is no card in system", Toast.LENGTH_SHORT).show()
+                val builder = AlertDialog.Builder(activity as MainActivity)
+                builder.setTitle("No Available Card")
+                builder.setMessage("You haven't added any credit card to your account")
+                builder.setIcon(R.drawable.ic_baseline_credit_card_24)
+                builder.setPositiveButton("Okay") { dialog, which ->
+
+                }
+                builder.show()
             } else {
                 activity?.let {
                     val intent = Intent(it, CardActivity::class.java)
