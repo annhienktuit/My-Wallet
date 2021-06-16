@@ -22,13 +22,13 @@
         <activity android:name=".activity.AboutActivity" />
         <activity
             android:name=".activity.TransactionActivity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+            android:theme="@style/Theme.MyWallet" />
         <activity
             android:name=".activity.SavingActivity"
-            android:theme="@style/Theme.Design.Light.NoActionBar" />
+            android:theme="@style/Theme.MyWallet" />
         <activity
             android:name=".activity.CardActivity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+            android:theme="@style/Theme.MyWallet" />
         <activity android:name=".activity.InterestRateActivity" />
         <activity android:name=".activity.MoneyExchangeActivity" />
         <activity

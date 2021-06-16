@@ -2,9 +2,7 @@ package com.annhienktuit.mywallet.fragments
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -15,10 +13,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.annhienktuit.mywallet.*
-import com.annhienktuit.mywallet.`object`.DetailTransaction
 import com.annhienktuit.mywallet.activity.*
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -26,10 +27,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.Exception
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class UserFragment : Fragment() {
 
@@ -37,7 +37,9 @@ class UserFragment : Fragment() {
     var ref = FirebaseDatabase
         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
         .getReference("datas")
-
+    //Get account google
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+    //---------------------------------------------------
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,6 +77,7 @@ class UserFragment : Fragment() {
                 val intent = Intent(it, LoginActivity::class.java)
                 it.startActivity(intent)
             }
+
         }
         val btnMap = view?.findViewById<Button>(R.id.btnMap)
         btnMap?.setOnClickListener {

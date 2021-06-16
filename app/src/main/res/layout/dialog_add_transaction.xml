@@ -46,10 +46,12 @@
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textloutDetailTransaction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:boxBackgroundColor="@color/white"
+        app:errorEnabled="true"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:hint="Detail">
         <com.google.android.material.textfield.TextInputEditText
@@ -60,9 +62,11 @@
             android:textSize="18sp"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textloutMoneyTransaction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        app:errorEnabled="true"
         app:boxBackgroundColor="@color/white"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:hint="Money">
@@ -89,6 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        app:errorEnabled="true"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <AutoCompleteTextView
             android:id="@+id/textCategory"

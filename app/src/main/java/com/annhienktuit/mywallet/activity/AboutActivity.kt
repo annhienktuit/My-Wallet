@@ -29,14 +29,14 @@ class AboutActivity : AppCompatActivity() {
         setContentView(R.layout.activity_about)
         mContext = this
         loadData()
-        actionBar = this.supportActionBar!!
+        //actionBar = this.supportActionBar!!
         viewpager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                actionBar.title = coderModelList[position].name
+                //actionBar.title = coderModelList[position].name
             }
 
             override fun onPageSelected(position: Int) {
@@ -66,7 +66,7 @@ class AboutActivity : AppCompatActivity() {
             R.drawable.avt_nhien_deptrai,urlNhien))
         coderModelList.add(CoderModel("Khai Hoan",
             "SE faculty\n Published 2 apps on Play Store",
-            R.drawable.hoan_bede,urlHoan))
+            R.drawable.hoanle,urlHoan))
         coderModelList.add(CoderModel("Hien Tran",
             "SE faculty\n Academic scholarship at 2nd semester",
             R.drawable.hien_bede,urlHien))

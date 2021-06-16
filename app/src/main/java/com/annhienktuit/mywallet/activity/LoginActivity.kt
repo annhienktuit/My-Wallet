@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.edtEmail
@@ -130,13 +130,23 @@ class LoginActivity : AppCompatActivity() {
                     var ref = FirebaseDatabase
                         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
                         .getReference("datas")
-                    ref.child(user!!.uid).child("name").setValue(name)
-                    ref.child(user.uid).child("limits").child("total").setValue(0)
-                    ref.child(user.uid).child("savings").child("total").setValue(0)
-                    ref.child(user.uid).child("cards").child("total").setValue(0)
-                    ref.child(user.uid).child("balance").setValue("0")
-                    ref.child(user.uid).child("income").setValue("0")
-                    ref.child(user.uid).child("expense").setValue("0")
+                    getDatabase(ref, object : OnGetDataListener {
+                        override fun onSuccess(dataSnapshot: DataSnapshot) {
+                            if (!dataSnapshot.hasChild(user!!.uid)) {
+                                ref.child(user!!.uid).child("name").setValue(edtLastName.text.toString() + " " + edtFirstName.text.toString())
+                                ref.child(user.uid).child("limits").child("total").setValue(0)
+                                ref.child(user.uid).child("savings").child("total").setValue(0)
+                                ref.child(user.uid).child("cards").child("total").setValue(0)
+                                ref.child(user.uid).child("balance").setValue("0")
+                                ref.child(user.uid).child("income").setValue("0")
+                                ref.child(user.uid).child("expense").setValue("0")
+                            }
+                        }
+                        override fun onStart() {
+                        }
+                        override fun onFailure() {
+                        }
+                    })
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -183,5 +193,21 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+    interface OnGetDataListener {
+        fun onSuccess(dataSnapshot: DataSnapshot)
+        fun onStart()
+        fun onFailure()
+    }
+    fun getDatabase(ref: DatabaseReference, listener: OnGetDataListener?) {
+        listener?.onStart()
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listener?.onSuccess(snapshot)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                listener?.onFailure()
+            }
+        })
     }
 }

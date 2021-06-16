@@ -82,9 +82,6 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, SavingActivity::class.java)
             intent.putExtra("position", currentItem.index)
-            intent.putExtra("current", currentItem.currentSaving)
-            intent.putExtra("total", currentItem.moneyOfProduct)
-            intent.putExtra("name", currentItem.nameOfProduct)
             holder.itemView.context.startActivity(intent)
         }
         holder.itemView.setOnLongClickListener {

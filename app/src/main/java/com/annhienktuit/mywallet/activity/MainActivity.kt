@@ -29,8 +29,12 @@ import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -50,6 +54,7 @@ import kotlin.collections.ArrayList
 //    val personId = acct.getId()
 //}
 class MainActivity : AppCompatActivity() {
+    //----------------------------------------------------------
     val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
     var ref = FirebaseDatabase
         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
@@ -141,21 +146,19 @@ class MainActivity : AppCompatActivity() {
             )
         //the others
         ref.keepSynced(true)
+        if(user == null)
+            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+        else
         getDatabase(ref, object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-
-                if(user == null) {
-                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-                } else {
-                    setUpDatabase(dataSnapshot)
-                    setCurrentIncomePieChartData()
-                    setCurrentExpensePieChartData()
-                    setPreviousIncomePieChartData()
-                    setPreviousExpensePieChartData()
-                    if (checked) setUI()
-                    fab.setOnClickListener {
-                        eventOnClickAddButton()
-                    }
+                setUpDatabase(dataSnapshot)
+                setCurrentIncomePieChartData()
+                setCurrentExpensePieChartData()
+                setPreviousIncomePieChartData()
+                setPreviousExpensePieChartData()
+                if (checked) setUI()
+                fab.setOnClickListener {
+                    eventOnClickAddButton()
                 }
             }
             override fun onStart() {
@@ -181,6 +184,11 @@ class MainActivity : AppCompatActivity() {
         val textCategory = viewInflater.findViewById<AutoCompleteTextView>(R.id.textCategory)
         val editName = viewInflater.findViewById<TextInputEditText>(R.id.inputDetailTrans)
         val editMoney = viewInflater.findViewById<TextInputEditText>(R.id.inputMoneyTrans)
+        //---------------------------------------------------------------
+        val tlDetailTransaction = viewInflater.findViewById<TextInputLayout>(R.id.textloutDetailTransaction)
+        val tlMoney = viewInflater.findViewById<TextInputLayout>(R.id.textloutMoneyTransaction)
+        val tlCategory = viewInflater.findViewById<TextInputLayout>(R.id.category)
+        //---------------------------------------------------------------
         val itemsIncome = resources.getStringArray(R.array.categoriesIncome)
         val itemsExpense = resources.getStringArray(R.array.categoriesExpense)
         val date = Calendar.getInstance()
@@ -213,36 +221,57 @@ class MainActivity : AppCompatActivity() {
         textCategory.dropDownHeight = 500
         builder.setView(viewInflater)
         builder.setPositiveButton("OK"
-        ) { dialog, which ->
-            val name = editName.text.toString()
-            val money = editMoney.text.toString()
-            refTrans.child("day").setValue(day)
-            refTrans.child("money").setValue(money)
-            refTrans.child("name").setValue(name)
-            refTrans.child("time").setValue(time)
-            refTrans.child("inorout").setValue(inorout)
-            refTrans.child("index").setValue(totalTrans + 1)
-            refTrans.child("category").setValue(textCategory.text.toString())
-            refTrans.child("currentMonth").setValue((date.get(Calendar.MONTH) + 1).toString())
-            refTrans.child("currentYear").setValue(date.get(Calendar.YEAR).toString())
-            if (inorout == "true") {
-                ref1.child("income").setValue((income?.toLong()?.plus(money.toLong())).toString())
-                ref1.child("balance").setValue((balance?.toLong()?.plus(money.toLong())).toString())
-            }
-            else {
-                ref1.child("expense").setValue((expense?.toLong()?.plus(money.toLong())).toString())
-                ref1.child("balance").setValue((balance?.toLong()?.minus(money.toLong())).toString())
-                val tmp = checkIfHasLimit(textCategory.text.toString())
-                if (tmp != 0) {
-                    val curruntLimit = limitList[tmp - 1].current!!.toInt()
-                    Log.d("khaidff", limitList[tmp - 1].toString())
-                    ref1.child("limits").child("limit" + tmp).child("currentLimit").setValue((curruntLimit + money.toInt()).toString())
+        ) { dialog, which -> }
+        builder.setNegativeButton("Cancel"
+        ) { dialog, which -> dialog.dismiss() }
+        val dialog = builder.create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            if (textCategory.text.toString() != "" && editName.text.toString() != "" && editMoney.text.toString() != "") {
+                val name = editName.text.toString()
+                val money = editMoney.text.toString()
+                refTrans.child("day").setValue(day)
+                refTrans.child("money").setValue(money)
+                refTrans.child("name").setValue(name)
+                refTrans.child("time").setValue(time)
+                refTrans.child("inorout").setValue(inorout)
+                refTrans.child("index").setValue(totalTrans + 1)
+                refTrans.child("category").setValue(textCategory.text.toString())
+                refTrans.child("currentMonth").setValue((date.get(Calendar.MONTH) + 1).toString())
+                refTrans.child("currentYear").setValue(date.get(Calendar.YEAR).toString())
+                if (inorout == "true") {
+                    ref1.child("income").setValue((income?.toLong()?.plus(money.toLong())).toString())
+                    ref1.child("balance").setValue((balance?.toLong()?.plus(money.toLong())).toString())
+                }
+                else {
+                    ref1.child("expense").setValue((expense?.toLong()?.plus(money.toLong())).toString())
+                    ref1.child("balance").setValue((balance?.toLong()?.minus(money.toLong())).toString())
+                    val tmp = checkIfHasLimit(textCategory.text.toString())
+                    if (tmp != 0) {
+                        val curruntLimit = limitList[tmp - 1].current!!.toInt()
+                        ref1.child("limits").child("limit" + tmp).child("currentLimit").setValue((curruntLimit + money.toInt()).toString())
+                    }
+                }
+                dialog.dismiss()
+            } else {
+                if (editName.text.toString() == "") {
+                    tlDetailTransaction.error = "Please enter name of transaction"
+                } else {
+                    tlDetailTransaction.error = null
+                }
+                if (editMoney.text.toString() == "") {
+                    tlMoney.error = "Please enter money of transaction"
+                } else {
+                    tlMoney.error = null
+                }
+                if (textCategory.text.toString() == "") {
+                    tlCategory.error = "Please choose field of category"
+                } else {
+                    tlCategory.error = null
                 }
             }
         }
-        builder.setNegativeButton("Cancel"
-        ) { dialog, which -> dialog.cancel() }
-        builder.show()
+
     }
     fun checkIfHasLimit(str: String): Int {
         for (data in limitList) {
@@ -353,7 +382,6 @@ class MainActivity : AppCompatActivity() {
         })
 
         getDatabase(transactionDb.orderByChild("index"), object : OnGetDataListener {
-
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 totalTrans = 0
                 transactionList.clear()
@@ -753,4 +781,5 @@ class MainActivity : AppCompatActivity() {
     fun getSavingAdapter(): SavingAdapter {
         return savingAdapter
     }
+
 }

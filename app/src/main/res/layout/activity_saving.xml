@@ -44,8 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="90dp"
-        android:padding="60dp"
         android:background="@drawable/card_saving"
+        android:padding="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -56,25 +56,28 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/gotham_bold"
+            android:text="Buy Iphone 13"
             android:textColor="@color/white"
-            android:textSize="24sp"
-            android:text="Buy Iphone 13"/>
+            android:textSize="24sp" />
+
         <LinearLayout
-            android:layout_below="@+id/nameOfSavingProduct"
-            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nameOfSavingProduct"
+            android:layout_marginTop="30dp">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <TextView
                     android:id="@+id/balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Balance"
                     android:fontFamily="@font/gotham_bold"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"/>
+                    android:text="Balance"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/percentage"
@@ -85,19 +88,21 @@
                     android:text="56%"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
+
                 <ProgressBar
-                    android:layout_marginTop="10dp"
                     android:id="@+id/progressSavings"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_below="@+id/balance"
-                    android:progress="50"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/balance"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@+id/progressSavings"
+                    android:progress="50" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/progressSavings"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/currentSaving"
@@ -119,20 +124,30 @@
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
-
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/notifyCompleted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gotham_bold"
+        android:text="You need to save ... to complete this saving"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_card_saving" />
 
     <TextView
         android:id="@+id/recentTransaction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_card_saving"
         android:layout_marginStart="25dp"
-        android:text="Recent Transaction"
-        android:textSize="20sp"
         android:fontFamily="@font/gotham_bold"
-        android:textColor="#2F2543"/>
+        android:text="Recent Transaction"
+        android:layout_marginTop="10dp"
+        android:textColor="#2F2543"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notifyCompleted" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerTransactionSaving"
         android:layout_width="match_parent"
@@ -148,6 +163,7 @@
         android:backgroundTint="#29B12E"
         android:layout_margin="30dp"
         android:src="@drawable/ic_add_24dp"
+        app:rippleColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
