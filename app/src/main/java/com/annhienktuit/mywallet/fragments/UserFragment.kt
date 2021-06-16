@@ -5,21 +5,22 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import com.annhienktuit.mywallet.*
+import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.activity.*
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -72,10 +73,16 @@ class UserFragment : Fragment() {
         val btnSignOut = view?.findViewById<Button>(R.id.btnLogOut)
         btnSignOut?.setOnClickListener {
             firebaseAuth.signOut()
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build()
+            val mGoogleSignInClient = GoogleSignIn.getClient(it.context, gso)
+            mGoogleSignInClient.signOut()
             Toast.makeText(activity, "Signed Out", Toast.LENGTH_LONG).show()
             activity?.let {
                 val intent = Intent(it, LoginActivity::class.java)
                 it.startActivity(intent)
+                it.finish()
             }
 
         }

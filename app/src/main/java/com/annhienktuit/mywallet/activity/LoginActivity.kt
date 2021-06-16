@@ -1,10 +1,11 @@
 package com.annhienktuit.mywallet.activity
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.text.InputType
 import android.util.Log
 import android.view.Window
@@ -12,7 +13,7 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.AppCompatActivity
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
@@ -30,6 +31,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.edtEmail
 import kotlinx.android.synthetic.main.activity_login.edtPassword
 import kotlinx.android.synthetic.main.activity_sign_up.*
+
 
 class LoginActivity : AppCompatActivity() {
     lateinit var signInEmail: String
@@ -119,8 +121,18 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        val a = Intent(Intent.ACTION_MAIN)
+        a.addCategory(Intent.CATEGORY_HOME)
+        a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(a)
+    }
+
     private fun firebaseAuthWithGoogle(idToken: String, name: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
+        val dialog = ProgressDialog.show(this@LoginActivity, "",
+            "Loading. Please wait...", true)
+        dialog.show()
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -147,8 +159,10 @@ class LoginActivity : AppCompatActivity() {
                         override fun onFailure() {
                         }
                     })
-                    val intent = Intent(this, MainActivity::class.java)
+                    
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
+
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)

@@ -27,6 +27,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.util.*
 
 
@@ -45,6 +47,12 @@ class CurrentMonthFragment : Fragment() {
     lateinit var currentLoan: TextView
     lateinit var progressIncomeBar: ProgressBar
     lateinit var progressExpenseBar: ProgressBar
+    //---------------------------------------------
+    var amountCurrentExpense: Long = 0
+    var amountCurrentIncome: Long = 0
+    var amountCurrentDebt: Long = 0
+    var amountCurrentLoan: Long = 0
+    //---------------------------------------------
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,13 +84,15 @@ class CurrentMonthFragment : Fragment() {
         val data = (activity as MainActivity)
 
         var listPieChartData = data.getCurrentIncomeData()
-        var amountCurrentDebt = data.getCurrentDebt()
-        var amountCurrentIncome = data.getCurrentIncome()
+        amountCurrentDebt = data.getCurrentDebt()
+        amountCurrentIncome = data.getCurrentIncome()
 
-        currentIncome.text = amountCurrentIncome.toString()
-        currentDebt.text = amountCurrentDebt.toString()
-        currentBalance.text = (currentIncome.text.toString().toLong() - currentExpense.text.toString().toLong()).toString()
+        currentIncome.text = changeToMoney(amountCurrentIncome.toString())
+        currentDebt.text = changeToMoney(amountCurrentDebt.toString())
+        currentBalance.text = changeToMoney((amountCurrentIncome - amountCurrentExpense).toString())
         currentBalance.append(" VND")
+        currentIncome.append(" VND")
+        currentDebt.append(" VND")
 
         pieIncomeChart.setProgressBar(progressIncomeBar)
         APIlib.getInstance().setActiveAnyChartView(pieIncomeChart)
@@ -113,13 +123,15 @@ class CurrentMonthFragment : Fragment() {
         val data = (activity as MainActivity)
 
         var listPieChartData = data.getCurrentExpenseData()
-        var amountCurrentLoan = data.getCurrentLoan()
-        var amountCurrentExpense = data.getCurrentExpense()
+        amountCurrentLoan = data.getCurrentLoan()
+        amountCurrentExpense = data.getCurrentExpense()
 
-        currentExpense.text = amountCurrentExpense.toString()
-        currentLoan.text = amountCurrentLoan.toString()
-        currentBalance.text = (currentIncome.text.toString().toLong() - currentExpense.text.toString().toLong()).toString()
+        currentExpense.text = changeToMoney(amountCurrentExpense.toString())
+        currentLoan.text = changeToMoney(amountCurrentLoan.toString())
+        currentBalance.text = changeToMoney((amountCurrentIncome - amountCurrentExpense).toString())
         currentBalance.append(" VND")
+        currentLoan.append(" VND")
+        currentExpense.append(" VND")
 
         pieExpenseChart.setProgressBar(progressExpenseBar)
         APIlib.getInstance().setActiveAnyChartView(pieExpenseChart)
@@ -143,5 +155,21 @@ class CurrentMonthFragment : Fragment() {
             .align(Align.CENTER)
 
         pieExpenseChart.setChart(pie)
+    }
+    fun changeToMoney(str: String?): String {
+        var result = "0"
+        try {
+            val formatter: NumberFormat = DecimalFormat("#,###")
+            if (str != null) {
+                val myNumber = str.toDouble()
+                if (myNumber < 0)
+                    result = "-" + formatter.format(-myNumber)
+                else
+                    result = formatter.format(myNumber)
+            }
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+        return result
     }
 }
