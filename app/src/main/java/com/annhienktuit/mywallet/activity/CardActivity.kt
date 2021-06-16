@@ -26,11 +26,6 @@ class CardActivity : AppCompatActivity() {
         .getReference("datas").child(user?.uid.toString()).child("cards")
     var card: Card? = null
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val window: Window = window
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = Color.parseColor("#FFFFFF")
-        }
         var pos = intent.getIntExtra("position", 1)
         ref.keepSynced(true)
         getDatabase(ref.child("card" + (pos)),object : OnGetDataListener{

@@ -2,10 +2,13 @@ package com.annhienktuit.mywallet.activity
 
 
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -32,13 +35,23 @@ class SavingActivity : AppCompatActivity() {
     var ref = FirebaseDatabase
         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
         .getReference("datas").child(user?.uid.toString()).child("savings")
+    val ref1 = FirebaseDatabase
+        .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        .getReference("datas").child(user?.uid.toString())
+    var refTrans = ref1.child("transactions")
+    //-----------------------------------------------
     var saving: Saving? = null
     var totalDetail: Int = 0
     //---------------------------------------------
     var pos: Int = 0
     var current: String? = null
     var total: String? = null
-    var name: String? = null
+    var nameProduct: String? = null
+    //---------------------------------------------
+    var expense: String? = null
+    var balance: String? = null
+    var totalTrans: Int = 0
+    var left: Long = 0
     //---------------------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +59,32 @@ class SavingActivity : AppCompatActivity() {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         ref.keepSynced(true)
         pos = intent.getIntExtra("position", 0)
-        current = intent.getStringExtra("current")
-        total = intent.getStringExtra("total")
-        name = intent.getStringExtra("name")
+        //Get total expense
+        getDatabase(ref1, object : OnGetDataListener {
+            override fun onSuccess(dataSnapshot: DataSnapshot) {
+                expense = dataSnapshot.child("expense").value.toString()
+                balance = dataSnapshot.child("balance").value.toString()
+            }
+            override fun onStart() {
+            }
+            override fun onFailure() {
+            }
+        })
+        //Get total transaction
+        getDatabase(ref1.child("transactions"), object : OnGetDataListener {
+            override fun onSuccess(dataSnapshot: DataSnapshot) {
+                totalTrans = 0
+                for (data in dataSnapshot.children) {
+                    totalTrans++
+                }
+                refTrans = ref1.child("transactions").child("transaction" + (totalTrans + 1))
+            }
+            override fun onStart() {
+            }
+            override fun onFailure() {
+            }
+        })
+        //Get detail transaction
         getDatabase(ref.child("saving" + pos).child("details").orderByChild("day"), object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 totalDetail = 0
@@ -87,6 +123,10 @@ class SavingActivity : AppCompatActivity() {
                 val tmp1 = dataSnapshot.child("current").value.toString()
                 val tmp2 = dataSnapshot.child("price").value.toString()
                 val tmp3 = dataSnapshot.child("product").value.toString()
+                current = tmp1
+                total = tmp2
+                nameProduct = tmp3
+                left = tmp2.toLong() - tmp1.toLong()
                 saving = Saving(index.toIntOrNull(), tmp1, savingDetailList, tmp2, tmp3)
                 setData(saving)
             }
@@ -116,7 +156,8 @@ class SavingActivity : AppCompatActivity() {
         builder.setPositiveButton("OK"
         ) { dialog, which ->
             val name = editName.text.toString()
-            val money = editMoney.text.toString()
+            var money = editMoney.text.toString()
+            if (money.toLong() > left) money = left.toString()
             var date = Calendar.getInstance()
             var dayFormatter = SimpleDateFormat("yyyy/MM/dd")
             var timeFormatter = SimpleDateFormat("HH:mm")
@@ -124,6 +165,19 @@ class SavingActivity : AppCompatActivity() {
             var time = timeFormatter.format(date.time)
             val ref3 = ref.child("saving" + pos)
             val ref2 = ref.child("saving" + pos).child("details").child("detail" + (totalDetail + 1))
+            //Set data in main activity recent transaction
+            ref1.child("expense").setValue((expense?.toLong()?.plus(money.toLong())).toString())
+            ref1.child("balance").setValue((balance?.toLong()?.minus(money.toLong())).toString())
+            refTrans.child("day").setValue(day)
+            refTrans.child("money").setValue(money)
+            refTrans.child("name").setValue("Saving for " + nameProduct)
+            refTrans.child("time").setValue(time)
+            refTrans.child("inorout").setValue("false")
+            refTrans.child("index").setValue(totalTrans + 1)
+            refTrans.child("category").setValue("Saving")
+            refTrans.child("currentMonth").setValue((date.get(Calendar.MONTH) + 1).toString())
+            refTrans.child("currentYear").setValue(date.get(Calendar.YEAR).toString())
+            //Set data in saving transaction
             ref2.child("cost").setValue(money)
             ref2.child("day").setValue(day)
             ref2.child("time").setValue(time)
@@ -141,7 +195,6 @@ class SavingActivity : AppCompatActivity() {
         recyclerTransactionSaving.adapter = SavingDetailAdapter(savingDetailList)
         recyclerTransactionSaving.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerTransactionSaving.setHasFixedSize(true)
-
         nameOfSavingProduct.text = saving?.nameOfProduct.toString()
         if (total != null && current != null) {
             totalSaving.text = "of " + changeToMoney(total) + " VND"
@@ -149,6 +202,13 @@ class SavingActivity : AppCompatActivity() {
         }
         val tmp1 = current?.toInt()
         val tmp2 = total?.toInt()
+        if (tmp1 == tmp2) {
+            notifyCompleted.text = "You have enough money to buy this product"
+            floatingAdd.isEnabled = false
+        } else {
+            notifyCompleted.text = "You need to save " + changeToMoney((tmp2!! - tmp1!!).toString()) + " VND"
+            floatingAdd.isEnabled = true
+        }
         val per = tmp1!! * 100 / tmp2!!
         percentage.text = per.toString() + "%"
         progressSavings.progress = per

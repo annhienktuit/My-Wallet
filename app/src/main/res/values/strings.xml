@@ -48,6 +48,7 @@
         <item>Travel money</item>
         <item>House renting</item>
         <item>Loan</item>
+        <item>Saving</item>
         <item>Others</item>
     </string-array>
 </resources>
