@@ -1,13 +1,18 @@
 package com.annhienktuit.mywallet.activity
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
+import android.location.LocationManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.annhienktuit.mywallet.R
@@ -28,15 +33,41 @@ class MapActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        fetchLocation() //innitialize location
-        btnfindATM.setOnClickListener {
-            isFindingBank = false
-            fetchLocationandOpenMap() //get location
+        if (getSupportActionBar() != null) {
+            getSupportActionBar()?.hide();
         }
-        btnfindBank.setOnClickListener { 
-            isFindingBank = true
-            fetchLocationandOpenMap()
+        if(isLocationEnabled(this) == false){
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("No location services")
+            builder.setMessage("Make sure you have turned on and allowed location services")
+            builder.setIcon(R.drawable.ic_baseline_warning_24)
+            builder.setPositiveButton("Okay") { dialog, which ->
+            }
+            builder.show()
+        }
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+            fetchLocation() //innitialize location
+            btnfindATM.setOnClickListener {
+                isFindingBank = false
+                fetchLocationandOpenMap() //get location
+            }
+            btnfindBank.setOnClickListener {
+                isFindingBank = true
+                fetchLocationandOpenMap()
+            }
+
+    }
+
+    fun isLocationEnabled(context: Context): Boolean? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            lm.isLocationEnabled
+        } else {
+            val mode: Int = Settings.Secure.getInt(
+                context.getContentResolver(), Settings.Secure.LOCATION_MODE,
+                Settings.Secure.LOCATION_MODE_OFF
+            )
+            mode != Settings.Secure.LOCATION_MODE_OFF
         }
     }
 

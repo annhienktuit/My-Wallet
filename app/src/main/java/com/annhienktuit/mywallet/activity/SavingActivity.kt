@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -42,6 +43,7 @@ class SavingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_saving)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         ref.keepSynced(true)
         pos = intent.getIntExtra("position", 0)
         current = intent.getStringExtra("current")
