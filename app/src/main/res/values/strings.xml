@@ -12,24 +12,18 @@
         <item>EUR</item>
         <item>GBP</item>
         <item>USD</item>
-        <item>DKK</item>
-        <item>SEK</item>
         <item>AUD</item>
         <item>CAD</item>
         <item>JPY</item>
-        <item>VND</item>
     </string-array>
 
     <string-array name="currencies2">
-        <item>USD</item>
-        <item>DKK</item>
         <item>EUR</item>
         <item>GBP</item>
-        <item>SEK</item>
+        <item>USD</item>
         <item>AUD</item>
         <item>CAD</item>
         <item>JPY</item>
-        <item>VND</item>
 
     </string-array>
     <string-array name="categoriesIncome">
