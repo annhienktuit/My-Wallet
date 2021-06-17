@@ -90,9 +90,6 @@ class CurrentMonthFragment : Fragment() {
         currentIncome.text = changeToMoney(amountCurrentIncome.toString())
         currentDebt.text = changeToMoney(amountCurrentDebt.toString())
         currentBalance.text = changeToMoney((amountCurrentIncome - amountCurrentExpense).toString())
-        currentBalance.append(" VND")
-        currentIncome.append(" VND")
-        currentDebt.append(" VND")
 
         pieIncomeChart.setProgressBar(progressIncomeBar)
         APIlib.getInstance().setActiveAnyChartView(pieIncomeChart)
@@ -129,9 +126,6 @@ class CurrentMonthFragment : Fragment() {
         currentExpense.text = changeToMoney(amountCurrentExpense.toString())
         currentLoan.text = changeToMoney(amountCurrentLoan.toString())
         currentBalance.text = changeToMoney((amountCurrentIncome - amountCurrentExpense).toString())
-        currentBalance.append(" VND")
-        currentLoan.append(" VND")
-        currentExpense.append(" VND")
 
         pieExpenseChart.setProgressBar(progressExpenseBar)
         APIlib.getInstance().setActiveAnyChartView(pieExpenseChart)

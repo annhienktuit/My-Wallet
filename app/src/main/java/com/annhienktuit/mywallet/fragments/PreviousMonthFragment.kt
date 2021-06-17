@@ -87,9 +87,6 @@ class PreviousMonthFragment : Fragment() {
         previousIncome.text = amountPreviousIncome.toString()
         previousDebt.text = amountPreviousDebt.toString()
         previousBalance.text = changeToMoney((amountPreviousIncome - amountPreviousExpense).toString())
-        previousBalance.append(" VND")
-        previousDebt.append(" VND")
-        previousIncome.append(" VND")
 
         pieIncomeChart.setProgressBar(progressIncomeBar)
         APIlib.getInstance().setActiveAnyChartView(pieIncomeChart)
@@ -124,9 +121,6 @@ class PreviousMonthFragment : Fragment() {
         previousExpense.text = amountPreviousExpense.toString()
         previousLoan.text = amountPreviousLoan.toString()
         previousBalance.text = changeToMoney((amountPreviousIncome - amountPreviousExpense).toString())
-        previousBalance.append(" VND")
-        previousLoan.append(" VND")
-        previousExpense.append(" VND")
 
         pieExpenseChart.setProgressBar(progressExpenseBar)
         APIlib.getInstance().setActiveAnyChartView(pieExpenseChart)
