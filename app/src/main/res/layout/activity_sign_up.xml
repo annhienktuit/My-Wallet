@@ -9,12 +9,13 @@
         android:id="@+id/cover"
         android:layout_width="wrap_content"
         android:layout_height="250dp"
-        android:src="@drawable/cover"/>
+        android:src="@drawable/ic_online_transactions_signup"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/cover"
         android:background="@drawable/corner_radius"
+        android:elevation="16dp"
         android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -107,6 +108,7 @@
             android:textAlignment="center"
             android:layout_gravity="center"
             android:textColor="@color/blue500"
+            android:textStyle="bold"
             android:text="Already have an account? Sign in now"/>
 
 

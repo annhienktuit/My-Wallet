@@ -3,12 +3,12 @@ package com.annhienktuit.mywallet.activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.FirebaseInstance
@@ -16,8 +16,8 @@ import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.activity_login.edtPassword
 import kotlinx.android.synthetic.main.activity_login.edtEmail
+import kotlinx.android.synthetic.main.activity_login.edtPassword
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.fragment_user.*
 import java.security.MessageDigest
@@ -57,6 +57,13 @@ class SignUpActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
         hash("annhienkt")
+    }
+    override fun onBackPressed() {
+        //do nothing to avoid bugs
+        // that user can get into main activty
+        // without login in
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
     fun hash(pw: String): String {
         val bytes = this.toString().toByteArray()
