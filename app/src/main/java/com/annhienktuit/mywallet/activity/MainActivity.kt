@@ -285,26 +285,28 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         checked = true
-        getDatabase(ref, object : OnGetDataListener {
-            override fun onSuccess(dataSnapshot: DataSnapshot) {
-                setUpDatabase(dataSnapshot)
-                setCurrentIncomePieChartData()
-                setCurrentExpensePieChartData()
-                setPreviousIncomePieChartData()
-                setPreviousExpensePieChartData()
-                if (checked) {
-                    setUI()
+        if (user != null) {
+            getDatabase(ref, object : OnGetDataListener {
+                override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    setUpDatabase(dataSnapshot)
+                    setCurrentIncomePieChartData()
+                    setCurrentExpensePieChartData()
+                    setPreviousIncomePieChartData()
+                    setPreviousExpensePieChartData()
+                    if (checked) {
+                        setUI()
+                    }
+                    fab.setOnClickListener {
+                        eventOnClickAddButton()
+                    }
                 }
-                fab.setOnClickListener {
-                    eventOnClickAddButton()
-                }
-            }
-            override fun onStart() {
+                override fun onStart() {
 
-            }
-            override fun onFailure() {
-            }
-        })
+                }
+                override fun onFailure() {
+                }
+            })
+        }
     }
 
     override fun onPause() {
