@@ -145,7 +145,7 @@ class LoginActivity : AppCompatActivity() {
                     getDatabase(ref, object : OnGetDataListener {
                         override fun onSuccess(dataSnapshot: DataSnapshot) {
                             if (!dataSnapshot.hasChild(user!!.uid)) {
-                                ref.child(user!!.uid).child("name").setValue(edtLastName.text.toString() + " " + edtFirstName.text.toString())
+                                ref.child(user.uid).child("name").setValue(name)
                                 ref.child(user.uid).child("limits").child("total").setValue(0)
                                 ref.child(user.uid).child("savings").child("total").setValue(0)
                                 ref.child(user.uid).child("cards").child("total").setValue(0)
