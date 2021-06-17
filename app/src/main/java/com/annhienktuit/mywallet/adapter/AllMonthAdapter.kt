@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.DetailTransaction
+import com.annhienktuit.mywallet.utils.Extensions
 
 class AllMonthAdapter(private val context: Context, private val dataSource: MutableList<DetailTransaction>) : BaseAdapter() {
     private val inflater: LayoutInflater
@@ -34,16 +35,18 @@ class AllMonthAdapter(private val context: Context, private val dataSource: Muta
         val month = rowView.findViewById<TextView>(R.id.tvMonth)
         val balance = rowView.findViewById<TextView>(R.id.tvBalance)
         val mood = rowView.findViewById<ImageView>(R.id.ivMood)
+        val vndText = rowView.findViewById<TextView>(R.id.tvVND)
 
         val trans = getItem(position) as DetailTransaction
 
         month.text = trans.currentMonth
         year.text = trans.currentYear
 
-        balance.text = trans.moneyAmount
+        balance.text = Extensions.changeToMoney(trans.moneyAmount)
         if(trans.moneyAmount.toLong() < 0){
             mood.setImageResource(R.drawable.ic_baseline_mood_bad_24)
             balance.setTextColor(Color.parseColor("#f44336"))
+            vndText.setTextColor(Color.parseColor("#f44336"))
         }
         else{
             mood.setImageResource(R.drawable.ic_baseline_mood_24)

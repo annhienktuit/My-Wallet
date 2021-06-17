@@ -7,6 +7,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.DetailTransaction
+import com.annhienktuit.mywallet.utils.Extensions
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.anychart.APIlib
 import com.anychart.AnyChart
@@ -102,10 +103,9 @@ class AllMonthDetailReport : AppCompatActivity() {
                     amountCurrentIncome += item.moneyAmount.toLong()
                 }
 
-                income.text = amountCurrentIncome.toString()
-                debt.text = amountCurrentDebt.toString()
-                balance.text = (income.text.toString().toLong() - expense.text.toString().toLong()).toString()
-                balance.append(" VND")
+                income.text = Extensions.changeToMoney(amountCurrentIncome.toString())
+                debt.text = Extensions.changeToMoney(amountCurrentDebt.toString())
+                balance.text = Extensions.changeToMoney((income.text.toString().toLong() - expense.text.toString().toLong()).toString())
 
                 pieChartIncome.setProgressBar(progressIncomeBar)
                 APIlib.getInstance().setActiveAnyChartView(pieChartIncome)
@@ -171,15 +171,13 @@ class AllMonthDetailReport : AppCompatActivity() {
                     amountCurrentExpense += item.moneyAmount.toLong()
                 }
 
-                expense.text = amountCurrentExpense.toString()
-                loan.text = amountCurrentLoan.toString()
-                balance.text = (income.text.toString().toLong() - expense.text.toString().toLong()).toString()
-                balance.append(" VND")
+                expense.text = Extensions.changeToMoney(amountCurrentExpense.toString())
+                loan.text = Extensions.changeToMoney(amountCurrentLoan.toString())
+                balance.text = Extensions.changeToMoney((income.text.toString().toLong() - expense.text.toString().toLong()).toString())
 
                 pieChartExpense.setProgressBar(progressExpenseBar)
                 APIlib.getInstance().setActiveAnyChartView(pieChartExpense)
                 var pie: Pie = AnyChart.pie()
-
 
                 pie.data(listCurrentExpenseData)
 
