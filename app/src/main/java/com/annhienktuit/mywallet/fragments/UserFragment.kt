@@ -38,8 +38,7 @@ class UserFragment : Fragment() {
     var ref = FirebaseDatabase
         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
         .getReference("datas")
-    //Get account google
-    lateinit var mGoogleSignInClient: GoogleSignInClient
+
     //---------------------------------------------------
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -116,7 +115,13 @@ class UserFragment : Fragment() {
                 it.startActivity(intent)
             }
         }
-
+        val btnSetting = view?.findViewById<Button>(R.id.btnSettings)
+        btnSetting?.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it, SettingActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
         val btnExport = view.findViewById<Button>(R.id.btnExport)
         btnExport.setOnClickListener {
             export()
