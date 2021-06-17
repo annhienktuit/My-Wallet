@@ -33,14 +33,30 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"/>
 
-        <TextView
-            android:id="@+id/balance"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="#2F2543"
-            android:textStyle="bold"
-            android:layout_marginLeft="10dp"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="#2F2543"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" VND"
+                android:textColor="#2F2543"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
 
         <View
             android:layout_width="match_parent"
@@ -111,26 +127,62 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp">
 
-            <TextView
-                android:id="@+id/income"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textColor="#43D149"
-                android:textStyle="bold"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/expense"
+                <TextView
+                    android:id="@+id/income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="#43D149"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" VND"
+                    android:textColor="#43D149"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginLeft="224dp"
-                android:text="0"
-                android:textColor="#F2884D"
-                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <TextView
+                    android:id="@+id/expense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="#F2884D"
+                    android:textStyle="bold"
+                     />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" VND"
+                    android:textColor="#F2884D"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
@@ -200,26 +252,58 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp">
 
-            <TextView
-                android:id="@+id/debt"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textColor="#43D149"
-                android:textStyle="bold"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
 
-            <TextView
-                android:id="@+id/loan"
+                <TextView
+                    android:id="@+id/debt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="#43D149"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" VND"
+                    android:textColor="#43D149"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="232dp"
-                android:text="0"
-                android:textColor="#F2884D"
-                android:textStyle="bold"
+                android:orientation="horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginLeft="232dp"
+                >
+
+                <TextView
+                    android:id="@+id/loan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="#F2884D"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" VND"
+                    android:textColor="#F2884D"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
