@@ -156,7 +156,9 @@ class MainActivity : AppCompatActivity() {
                 setCurrentExpensePieChartData()
                 setPreviousIncomePieChartData()
                 setPreviousExpensePieChartData()
-                if (checked) setUI()
+                if (checked) {
+                    setUI()
+                }
                 fab.setOnClickListener {
                     eventOnClickAddButton()
                 }
@@ -283,6 +285,26 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         checked = true
+        getDatabase(ref, object : OnGetDataListener {
+            override fun onSuccess(dataSnapshot: DataSnapshot) {
+                setUpDatabase(dataSnapshot)
+                setCurrentIncomePieChartData()
+                setCurrentExpensePieChartData()
+                setPreviousIncomePieChartData()
+                setPreviousExpensePieChartData()
+                if (checked) {
+                    setUI()
+                }
+                fab.setOnClickListener {
+                    eventOnClickAddButton()
+                }
+            }
+            override fun onStart() {
+
+            }
+            override fun onFailure() {
+            }
+        })
     }
 
     override fun onPause() {
@@ -314,7 +336,7 @@ class MainActivity : AppCompatActivity() {
         }
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container_fragment, fragment)
-        transaction.addToBackStack(null)
+        //transaction.addToBackStack(null)
         transaction.commit()
         bottomNavigationView.setOnItemSelectedListener(mOnBottomNavigationView)
     }
@@ -359,7 +381,6 @@ class MainActivity : AppCompatActivity() {
         income = data.child(user?.uid.toString()).child("income").value.toString()
         expense = data.child(user?.uid.toString()).child("expense").value.toString()
         balance = data.child(user?.uid.toString()).child("balance").value.toString()
-
         getDatabase(savingDb, object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 savingList.clear()
