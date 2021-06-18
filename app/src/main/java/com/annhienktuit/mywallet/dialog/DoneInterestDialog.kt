@@ -34,8 +34,8 @@ class DoneInterestDialog: DialogFragment() {
         //Đổi text view tương ứng theo giá trị vừa cập nhật
         tvNumberOfPeriod.text = numberOfPeriods.toString()
         tvAmountOfMoney.text = amountOfMoney.toString()
-        tvProfitAmount.text = profitAmount.toString()
-        tvTotal.text = total.toString()
+        tvProfitAmount.text = String.format("%.2f", profitAmount)
+        tvTotal.text = String.format("%.2f", total)
 
         closeBtn.setOnClickListener{
             dismiss()
