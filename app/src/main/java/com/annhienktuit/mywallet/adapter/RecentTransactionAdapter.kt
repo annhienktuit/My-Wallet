@@ -91,4 +91,5 @@ class RecentTransactionAdapter(private val transactionList: List<RecentTransacti
         }
         return null
     }
+
 }

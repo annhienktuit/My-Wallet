@@ -8,6 +8,7 @@ import com.annhienktuit.mywallet.dialog.DoneInterestDialog
 import com.annhienktuit.mywallet.dialog.PeriodOfTimeDialog
 import com.annhienktuit.mywallet.dialog.TypeOfInterestDialog
 import com.annhienktuit.mywallet.dialog.TypeOfTimeDialog
+import com.annhienktuit.mywallet.utils.Extensions.toast
 import com.annhienktuit.mywallet.utils.InterestRate
 //<<<<<<< HEAD:app/src/main/java/com/annhienktuit/mywallet/activity/InterestRateActivity.kt
 //import com.annhienktuit.mywallet.*
@@ -114,6 +115,7 @@ class InterestRateActivity : AppCompatActivity() {
     // Kiểm tra người dùng đã nhập đầy đủ các fields hay chưa
     private fun checkProperties(): Boolean{
         if(rootMoney == -1L || interestRate == -1.0 || period == -1 || interestType == "null" || timeType == "null"){
+            toast("Please fill in all field")
             return false
         }
         return true

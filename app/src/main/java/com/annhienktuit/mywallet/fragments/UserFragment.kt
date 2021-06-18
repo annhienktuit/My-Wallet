@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -125,6 +126,20 @@ class UserFragment : Fragment() {
         val btnExport = view.findViewById<Button>(R.id.btnExport)
         btnExport.setOnClickListener {
             export()
+        }
+        val btnUserName = view?.findViewById<TextView>(R.id.nameOfUser)
+        btnUserName?.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it, UserActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
+        val avatar = view?.findViewById<ImageView>(R.id.avatar)
+        avatar?.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it, UserActivity::class.java)
+                it.startActivity(intent)
+            }
         }
 
         return view
