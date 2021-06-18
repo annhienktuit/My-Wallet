@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="15dp"
+    app:cardCornerRadius="10dp"
     app:cardElevation="8dp"
     app:cardMaxElevation="5dp"
     android:layout_margin="10dp">
@@ -11,7 +11,11 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            >
 
             <LinearLayout
                 android:id="@+id/lnTitle"
@@ -21,8 +25,8 @@
                     android:id="@+id/tvTitle"
                     android:text="Title"
                     android:textColor="@color/black"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/gotham_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <View
@@ -34,15 +38,13 @@
                     android:id="@+id/tvTarget"
                     android:text="0"
                     android:textColor="@color/mainColor"
-                    android:textSize="24sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_below="@id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
-
-
 
             <TextView
                 android:id="@+id/tvSubTitle"
@@ -51,16 +53,17 @@
                 android:layout_below="@+id/lnTitle"
                 android:text="SubTitle"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/gotham_bold"
+                android:textSize="14sp"
+                />
 
             <ImageView
                 android:id="@+id/ivMore"
                 android:src="@drawable/ic_baseline_more_horiz_24"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginTop="15dp"
                 />
             <com.sasank.roundedhorizontalprogress.RoundedHorizontalProgressBar
@@ -70,8 +73,8 @@
                 android:layout_height="wrap_content"
                 android:indeterminate="false"
                 android:layout_marginTop="10dp"
-                android:maxHeight="12dp"
-                android:minHeight="12dp"
+                android:maxHeight="4dp"
+                android:minHeight="4dp"
                 android:layout_below="@+id/tvSubTitle"
                 android:progress="40"
                 app:backgroundColor="#ddffbc"
