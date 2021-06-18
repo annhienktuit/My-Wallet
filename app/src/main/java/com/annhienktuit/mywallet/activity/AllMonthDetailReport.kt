@@ -103,8 +103,8 @@ class AllMonthDetailReport : AppCompatActivity() {
                     amountCurrentIncome += item.moneyAmount.toLong()
                 }
 
-                income.text = Extensions.changeToMoney(amountCurrentIncome.toString())
-                debt.text = Extensions.changeToMoney(amountCurrentDebt.toString())
+                income.text = amountCurrentIncome.toString()
+                debt.text = amountCurrentDebt.toString()
                 balance.text = Extensions.changeToMoney((income.text.toString().toLong() - expense.text.toString().toLong()).toString())
 
                 pieChartIncome.setProgressBar(progressIncomeBar)
@@ -171,9 +171,10 @@ class AllMonthDetailReport : AppCompatActivity() {
                     amountCurrentExpense += item.moneyAmount.toLong()
                 }
 
-                expense.text = Extensions.changeToMoney(amountCurrentExpense.toString())
-                loan.text = Extensions.changeToMoney(amountCurrentLoan.toString())
+                expense.text = amountCurrentExpense.toString()
+                loan.text = amountCurrentLoan.toString()
                 balance.text = Extensions.changeToMoney((income.text.toString().toLong() - expense.text.toString().toLong()).toString())
+
 
                 pieChartExpense.setProgressBar(progressExpenseBar)
                 APIlib.getInstance().setActiveAnyChartView(pieChartExpense)
