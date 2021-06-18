@@ -7,16 +7,33 @@
     android:background="#FFFFFF"
     tools:context=".activity.AboutActivity">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/mainColor"
-        android:textStyle="bold"
-        android:textSize="32sp"
-        android:text="MY WALLET TEAM"
-        android:fontFamily="@font/gotham_bold"
-        android:gravity="center"/>
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="16dp"
+        android:background="@color/white"
+        >
+
+        <Button
+            android:id="@+id/btnArrowBack"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/ic_back"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center"
+            android:textColor="@color/mainColor"
+            android:fontFamily="@font/gotham_bold"
+            android:layout_centerHorizontal="true"
+            android:textSize="24sp"
+            android:text="My Wallet Team"
+            />
+    </RelativeLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"

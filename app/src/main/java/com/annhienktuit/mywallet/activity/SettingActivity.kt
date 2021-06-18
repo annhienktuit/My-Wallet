@@ -1,11 +1,15 @@
 package com.annhienktuit.mywallet.activity
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.annhienktuit.mywallet.R
@@ -79,6 +83,30 @@ class SettingActivity : AppCompatActivity() {
                 dateSetListener, 2021, 0, 1
             )
             datePickerDialog.show()
+        }
+
+        btnReset.setOnClickListener {
+            val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
+
+            alertDialog.setTitle("Warning")
+            alertDialog.setMessage("Are you sure to reset your transactions ?")
+            alertDialog.setIcon(R.drawable.ic_yellow_warning)
+
+            alertDialog.setPositiveButton("Yes") { dialog, id ->
+                ref.child("balance").setValue("0")
+                ref.child("expense").setValue("0")
+                ref.child("income").setValue("0")
+                ref.child("transactions").setValue(null)
+
+                Toast.makeText(this, "successful reset!", Toast.LENGTH_SHORT).show()
+            }
+            alertDialog.setNegativeButton("Cancel") { dialog, id ->
+                dialog.cancel()
+            }
+
+            val alert = alertDialog.create()
+            alert.setCanceledOnTouchOutside(true)
+            alert.show()
         }
     }
 

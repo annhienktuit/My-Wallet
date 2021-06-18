@@ -52,6 +52,9 @@ class AboutActivity : AppCompatActivity() {
             }
         })
 
+        btnArrowBack.setOnClickListener {
+            finish()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
