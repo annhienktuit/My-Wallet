@@ -57,6 +57,7 @@ Install with APK file here
 ![](https://i.imgur.com/vgn4au8.png)
 ![](https://i.imgur.com/8iv2Ph6.png)
 ![](https://i.imgur.com/UGPbrSn.png)
+![](https://i.imgur.com/MXsxTSf.png)
 ![](https://i.imgur.com/RZoLyrd.png)
 ![](https://i.imgur.com/8qkNZ3v.png)
 ![](https://i.imgur.com/YjvnI2Y.jpg)
