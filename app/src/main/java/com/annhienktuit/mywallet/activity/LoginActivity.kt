@@ -96,25 +96,30 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signInGoogle() {
+        Log.i("signin: ","signInGoogle")
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, 1)
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        Log.i("signin: ","onActivityResult + $requestCode")
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == 1) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             val exception = task.exception
+            Log.i("tasksuccesful: ","${task.isSuccessful}")
             if (task.isSuccessful) {
                 try {
+                    Log.i("signin: ","try")
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
                     Log.d(TAG, "firebaseAuthWithGoogle:" + account.email)
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    startctivity(intent)
                     firebaseAuthWithGoogle(account.idToken!!, account.displayName.toString())
                 } catch (e: ApiException) {
                     // Google Sign In failed, update UI appropriately
-                    Log.w(TAG, "Google sign in failed", e)
+                    Log.i(TAG, "Google sign in failed", e)
                 }
             }
 
@@ -129,6 +134,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun firebaseAuthWithGoogle(idToken: String, name: String) {
+        Log.i("signin: ","firebaseAuthwGoogle")
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         val dialog = ProgressDialog.show(this@LoginActivity, "",
             "Loading. Please wait...", true)
@@ -159,8 +165,8 @@ class LoginActivity : AppCompatActivity() {
                         override fun onFailure() {
                         }
                     })
-                    
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+
+                    val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
 
                 } else {
@@ -175,7 +181,6 @@ class LoginActivity : AppCompatActivity() {
         val user: FirebaseUser? = firebaseAuth.currentUser
         if(user !== null) {
             toast("Already Logged In")
-            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 

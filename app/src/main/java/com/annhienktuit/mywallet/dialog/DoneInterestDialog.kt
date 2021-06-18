@@ -1,6 +1,7 @@
 package com.annhienktuit.mywallet.dialog
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.annhienktuit.mywallet.R
+import java.text.DecimalFormat
+import kotlin.math.round
 
 class DoneInterestDialog: DialogFragment() {
     private var numberOfPeriods: Int = 0
@@ -49,13 +52,18 @@ class DoneInterestDialog: DialogFragment() {
             numberOfPeriods = requireArguments().getInt("numberOfPeriods")
             amountOfMoney = requireArguments().getLong("amountOfMoney")
             profitAmount = requireArguments().getDouble("compoundProfit")
-            total = requireArguments().getDouble("compoundTotal")
+            total = roundTwoDecimals(requireArguments().getDouble("compoundTotal"))
         }
         else if(arguments?.getString("type") == "Simple"){
             numberOfPeriods = requireArguments().getInt("numberOfPeriods")
             amountOfMoney = requireArguments().getLong("amountOfMoney")
             profitAmount = requireArguments().getDouble("simpleProfit")
-            total = requireArguments().getDouble("simpleTotal")
+            total = roundTwoDecimals(requireArguments().getDouble("simpleTotal"))
+            Log.i("total", "$total")
         }
+    }
+    fun roundTwoDecimals(d: Double): Double {
+        val twoDForm = DecimalFormat("#.##")
+        return java.lang.Double.valueOf(twoDForm.format(d))
     }
 }
