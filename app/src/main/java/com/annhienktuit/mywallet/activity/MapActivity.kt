@@ -56,6 +56,10 @@ class MapActivity : AppCompatActivity() {
                 fetchLocationandOpenMap()
             }
 
+            btn_back.setOnClickListener {
+                finish()
+            }
+
     }
 
     fun isLocationEnabled(context: Context): Boolean? {

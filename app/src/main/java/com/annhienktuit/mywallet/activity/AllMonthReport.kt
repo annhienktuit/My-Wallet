@@ -102,7 +102,7 @@ class AllMonthReport : AppCompatActivity() {
             }
 
         //sort by month and year descending
-        //listMonthlyTrans.sortByDescending { it. }
+        listMonthlyTrans.reverse()
 
         return listMonthlyTrans
     }

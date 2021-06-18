@@ -8,9 +8,10 @@
     tools:context=".activity.SettingActivity">
 
     <RelativeLayout
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_back_setting"
             android:layout_width="52dp"
@@ -225,6 +226,16 @@
                     android:src="@drawable/ic_edit"/>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btnReset"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_yellow_warning"
+            android:text="Reset your transactions"
+            android:background="@drawable/corner_radius_full"/>
 
     </LinearLayout>
 </LinearLayout>
