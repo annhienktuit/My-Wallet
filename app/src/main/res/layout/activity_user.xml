@@ -83,6 +83,15 @@
                 android:layout_gravity="center"
                 android:text="Share our app"
                 android:background="@drawable/share_button_radius"/>
+
+            <Button
+                android:id="@+id/btnDevTeam"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:text="Our developer team"
+                android:background="@drawable/share_button_radius"/>
         </LinearLayout>
     </ScrollView>
 

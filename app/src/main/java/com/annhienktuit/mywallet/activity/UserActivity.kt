@@ -47,6 +47,10 @@ class UserActivity : AppCompatActivity() {
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
             startActivity(Intent.createChooser(sharingIntent, "Share via"))
         }
+        btnDevTeam.setOnClickListener {
+            val intent = Intent(this, AboutActivity::class.java)
+            startActivity(intent)
+        }
     }
     interface OnGetDataListener {
         fun onSuccess(dataSnapshot: DataSnapshot)
