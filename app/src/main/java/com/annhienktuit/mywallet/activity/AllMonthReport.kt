@@ -3,6 +3,7 @@ package com.annhienktuit.mywallet.activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.util.Log
 import android.widget.AdapterView.OnItemClickListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
@@ -49,20 +50,29 @@ class AllMonthReport : AppCompatActivity() {
                 var monthlyTransaction = mutableListOf<DetailTransaction>()
 
                 monthlyTransaction.removeAll(monthlyTransaction)
-                for(childBranch in snapshot.children) {
-                    monthlyTransaction.add(
-                        DetailTransaction(
-                            childBranch.child("category").value.toString(),
-                            childBranch.child("money").value.toString(),
-                            childBranch.child("currentMonth").value.toString(),
-                            childBranch.child("currentYear").value.toString(),
-                            childBranch.child("inorout").value.toString()
-                        )
-                    )
-                }
+                    for(childBranch in snapshot.children) {
+                        if(childBranch.key.toString() != "total"){
+                            monthlyTransaction.add(
+                                DetailTransaction(
+                                    childBranch.child("category").value.toString(),
+                                    childBranch.child("money").value.toString(),
+                                    childBranch.child("currentMonth").value.toString(),
+                                    childBranch.child("currentYear").value.toString(),
+                                    childBranch.child("inorout").value.toString()
+                                )
+                            )
+                        }
 
-                monthlyTransaction = handleMonthlyTransaction(monthlyTransaction)
-                setReportAdapter(monthlyTransaction)
+                    }
+
+
+
+                Log.d("monthlyTrans", monthlyTransaction.toString())
+
+                    monthlyTransaction = handleMonthlyTransaction(monthlyTransaction)
+                    setReportAdapter(monthlyTransaction)
+
+
             }
 
             override fun onCancelled(error: DatabaseError) {
