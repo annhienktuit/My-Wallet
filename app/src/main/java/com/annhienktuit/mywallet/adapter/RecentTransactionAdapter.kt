@@ -9,12 +9,19 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.RecentTransaction
+import com.annhienktuit.mywallet.utils.FirebaseUtils
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.layout_recent_transaction_1.view.*
 import kotlinx.android.synthetic.main.layout_recent_transaction_2.view.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import kotlin.math.exp
 
 class RecentTransactionAdapter(private val transactionList: List<RecentTransaction>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
+    var ref = FirebaseDatabase.getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        .getReference("datas").child(user?.uid.toString())
     class TransactionViewHolder1(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name1: TextView = itemView.txtNameTransaction1
         val date1: TextView = itemView.txtDateAndName1
@@ -91,5 +98,15 @@ class RecentTransactionAdapter(private val transactionList: List<RecentTransacti
         }
         return null
     }
-
+    fun deleteItem(pos: Int, balance: String, income: String, expense: String) {
+        val currentItem = transactionList[pos]
+        ref.child("transactions").child("transaction" + currentItem.index).removeValue()
+        if (currentItem.inOrOut == "true") {
+            ref.child("income").setValue((income.toLong() - currentItem.moneyOfTrans!!.toLong()).toString())
+            ref.child("balance").setValue((balance.toLong() - currentItem.moneyOfTrans.toLong()).toString())
+        } else {
+            ref.child("expense").setValue((expense.toLong() - currentItem.moneyOfTrans!!.toLong()).toString())
+            ref.child("balance").setValue((balance.toLong() + currentItem.moneyOfTrans.toLong()).toString())
+        }
+    }
 }

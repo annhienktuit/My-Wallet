@@ -1,10 +1,13 @@
 package com.annhienktuit.mywallet.activity
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.RecentTransaction
 import com.annhienktuit.mywallet.adapter.RecentTransactionAdapter
@@ -23,6 +26,9 @@ class TransactionActivity : AppCompatActivity() {
         .getReference("datas").child(user?.uid.toString())
 
     val transactionList = ArrayList<RecentTransaction>()
+    lateinit var balance: String
+    lateinit var income: String
+    lateinit var expense: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,21 +37,29 @@ class TransactionActivity : AppCompatActivity() {
         val format = SimpleDateFormat("dd/MM/yyyy")
         val currentDay = format.format(Date().time)
         btn_pick_day_transaction.text = currentDay
+        getDatabase(ref, object : OnGetDataListener {
+            override fun onSuccess(dataSnapshot: DataSnapshot) {
+                balance = dataSnapshot.child("balance").value.toString()
+                income = dataSnapshot.child("income").value.toString()
+                expense = dataSnapshot.child("expense").value.toString()
+            }
+            override fun onStart() {
+            }
+            override fun onFailure() {
+            }
+        })
         getDatabase(ref.child("transactions").orderByChild("day")
-            .equalTo(changeDate(btn_pick_day_transaction.text.toString())), object : OnGetDataListener {
+            .equalTo(btn_pick_day_transaction.text.toString()), object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
                 transactionList.clear()
                 for (data in dataSnapshot.children) {
                     val day = data.child("day").value.toString()
-                    val originalDay = SimpleDateFormat("yyyy/MM/dd")
-                    val targetDay = SimpleDateFormat("dd/MM/yyyy")
-                    val tmpDayOriginal = originalDay.parse(day)
-                    val tmpDayTarget = targetDay.format(tmpDayOriginal)
+                    val index = data.child("index").value.toString()
                     var inorout = data.child("inorout").value.toString()
                     var money = data.child("money").value.toString()
                     var name = data.child("name").value.toString()
                     var time = data.child("time").value.toString()
-                    transactionList.add(RecentTransaction(tmpDayTarget, inorout, money, name, time))
+                    transactionList.add(RecentTransaction( index.toIntOrNull(), day, inorout, money, name, time))
                 }
                 transactionList.reverse()
                 setData()
@@ -70,22 +84,19 @@ class TransactionActivity : AppCompatActivity() {
                     val tmp2 = formatter.format(tmp1)
                     btn_pick_day_transaction.text = tmp2.toString()
                     getDatabase(ref.child("transactions").orderByChild("day")
-                        .equalTo(changeDate(btn_pick_day_transaction.text.toString())), object : OnGetDataListener {
+                        .equalTo(btn_pick_day_transaction.text.toString()), object : OnGetDataListener {
                         override fun onSuccess(dataSnapshot: DataSnapshot) {
                             transactionList.clear()
                             for (data in dataSnapshot.children) {
                                 val day = data.child("day").value.toString()
-                                val originalDay = SimpleDateFormat("yyyy/MM/dd")
-                                val targetDay = SimpleDateFormat("dd/MM/yyyy")
-                                val tmpDayOriginal = originalDay.parse(day)
-                                val tmpDayTarget = targetDay.format(tmpDayOriginal)
+                                val index = data.child("index").value.toString()
                                 var inorout = data.child("inorout").value.toString()
                                 var money = data.child("money").value.toString()
                                 var name = data.child("name").value.toString()
                                 var time = data.child("time").value.toString()
-                                transactionList.add(RecentTransaction(tmpDayTarget, inorout, money, name, time))
+                                transactionList.add(RecentTransaction(index.toIntOrNull(), day, inorout, money, name, time))
                             }
-                            Collections.reverse(transactionList)
+                            transactionList.reverse()
                             setData()
                         }
                         override fun onStart() {
@@ -106,6 +117,7 @@ class TransactionActivity : AppCompatActivity() {
         recyclerDetailTransaction.adapter = RecentTransactionAdapter(transactionList)
         recyclerDetailTransaction.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerDetailTransaction.setHasFixedSize(true)
+        setSwipeToDelete(recyclerDetailTransaction, RecentTransactionAdapter(transactionList))
     }
 
     interface OnGetDataListener {
@@ -135,10 +147,36 @@ class TransactionActivity : AppCompatActivity() {
             }
         })
     }
-    private fun changeDate(str: String): String {
-        val formatter = SimpleDateFormat("yyyy/MM/dd")
-        val formatter1 = SimpleDateFormat("dd/MM/yyyy")
-        val tmp1 = formatter1.parse(str)
-        return formatter.format(tmp1)
+
+    private fun setSwipeToDelete(rv: RecyclerView, adapter: RecentTransactionAdapter) {
+        val simpleItemTouchCallback: ItemTouchHelper.SimpleCallback = object :
+            ItemTouchHelper.SimpleCallback(30, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+                //Remove swiped item from list and notify the RecyclerView
+                val position = viewHolder.adapterPosition
+                val dialog = AlertDialog.Builder(this@TransactionActivity)
+                dialog.setTitle("Confirm")
+                dialog.setIcon(R.drawable.ic_baseline_warning_24)
+                dialog.setMessage("Do you want to delete this transaction?")
+                dialog.setPositiveButton("OK") { dialog, which ->
+                    adapter.deleteItem(position, balance, income, expense)
+                }
+                dialog.setNegativeButton("Cancel") { dialog, which ->
+                    dialog.dismiss()
+                    rv.adapter!!.notifyDataSetChanged()
+                }
+                dialog.show()
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(rv)
     }
 }

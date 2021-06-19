@@ -1,7 +1,8 @@
 package com.annhienktuit.mywallet.fragments
 
+import android.app.ProgressDialog
 import android.os.Bundle
-import android.util.Log
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,10 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
-import com.annhienktuit.mywallet.`object`.Card
-import com.annhienktuit.mywallet.`object`.Limitation
-import com.annhienktuit.mywallet.`object`.Saving
 import com.annhienktuit.mywallet.activity.MainActivity
 import com.annhienktuit.mywallet.adapter.CardAdapter
 import com.annhienktuit.mywallet.adapter.LimitationAdapter
@@ -27,7 +26,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.dialog_done_interest_rate.*
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -40,9 +38,6 @@ class PlanningFragment() : Fragment() {
 
     private var param1: String? = null
     private var param2: String? = null
-    var savingList = ArrayList<Saving>()
-    var cardList = ArrayList<Card>()
-    var limitationList = ArrayList<Limitation>()
     lateinit var data: MainActivity
     //-----------------------------------------------
     val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
@@ -61,6 +56,8 @@ class PlanningFragment() : Fragment() {
     lateinit var btnAddLimitation: MaterialButton
     lateinit var btnAddSaving: MaterialButton
     lateinit var btnAddCard: MaterialButton
+    //------------------------------------
+    var totalTrans: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +75,7 @@ class PlanningFragment() : Fragment() {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_planning, container, false)
         data = activity as MainActivity
+        totalTrans = data.getIndexTransaction()
         setData(view)
 
         //open add saving dialog
@@ -127,11 +125,13 @@ class PlanningFragment() : Fragment() {
 
         //------------------------------------------
         recyclerSaving.adapter = savingAdapter
+        setSwipeToDeleteSaving(recyclerSaving)
         recyclerSaving.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerSaving.setHasFixedSize(true)
 
         recyclerCard.adapter = cardAdapter
+        setSwipeToDeleteCard(recyclerCard)
         recyclerCard.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recyclerCard.setHasFixedSize(true)
@@ -318,5 +318,67 @@ class PlanningFragment() : Fragment() {
                 else tlTarget.error = null
             }
         }
+    }
+    private fun setSwipeToDeleteSaving(rv: RecyclerView) {
+        val simpleItemTouchCallback: ItemTouchHelper.SimpleCallback = object :
+            ItemTouchHelper.SimpleCallback(30, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+                //Remove swiped item from list and notify the RecyclerView
+                val position = viewHolder.adapterPosition
+                val dialog = AlertDialog.Builder(context!!)
+                dialog.setTitle("Confirm")
+                dialog.setIcon(R.drawable.ic_baseline_warning_24)
+                dialog.setMessage("Do you want to delete this saving?")
+                dialog.setPositiveButton("OK") { dialog, which ->
+                    savingAdapter.deleteItemSaving(position, totalTrans)
+                }
+                dialog.setNegativeButton("Cancel") { dialog, which ->
+                    dialog.dismiss()
+                    rv.adapter!!.notifyDataSetChanged()
+                }
+                dialog.show()
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(rv)
+    }
+    private fun setSwipeToDeleteCard(rv: RecyclerView) {
+        val simpleItemTouchCallback: ItemTouchHelper.SimpleCallback = object :
+            ItemTouchHelper.SimpleCallback(30, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+                //Remove swiped item from list and notify the RecyclerView
+                val position = viewHolder.adapterPosition
+                val dialog = AlertDialog.Builder(context!!)
+                dialog.setTitle("Confirm")
+                dialog.setIcon(R.drawable.ic_baseline_warning_24)
+                dialog.setMessage("Do you want to delete this card?")
+                dialog.setPositiveButton("OK") { dialog, which ->
+                    cardAdapter.deleteItem(position)
+                }
+                dialog.setNegativeButton("Cancel") { dialog, which ->
+                    dialog.dismiss()
+                    rv.adapter!!.notifyDataSetChanged()
+                }
+                dialog.show()
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(rv)
     }
 }

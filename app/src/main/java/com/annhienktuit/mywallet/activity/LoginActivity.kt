@@ -155,6 +155,7 @@ class LoginActivity : AppCompatActivity() {
                                 ref.child(user.uid).child("limits").child("total").setValue(0)
                                 ref.child(user.uid).child("savings").child("total").setValue(0)
                                 ref.child(user.uid).child("cards").child("total").setValue(0)
+                                ref.child(user.uid).child("transactions").child("total").setValue(0)
                                 ref.child(user.uid).child("balance").setValue("0")
                                 ref.child(user.uid).child("income").setValue("0")
                                 ref.child(user.uid).child("expense").setValue("0")

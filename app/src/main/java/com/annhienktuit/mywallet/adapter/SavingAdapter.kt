@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.Saving
+import com.annhienktuit.mywallet.activity.MainActivity
 import com.annhienktuit.mywallet.activity.SavingActivity
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.google.firebase.auth.FirebaseUser
@@ -21,6 +22,8 @@ import kotlinx.android.synthetic.main.layout_saving_1.view.*
 import kotlinx.android.synthetic.main.layout_saving_2.view.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
@@ -84,21 +87,6 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
             intent.putExtra("position", currentItem.index)
             holder.itemView.context.startActivity(intent)
         }
-        holder.itemView.setOnLongClickListener {
-            val builder = AlertDialog.Builder(holder.itemView.context)
-            builder.setMessage("Do you want to delete this item?")
-            builder.setPositiveButton("Yes")
-            { dialog, which ->
-                ref.child("savings").child("saving" + currentItem.index).removeValue()
-            }
-            builder.setNegativeButton("No")
-            { dialog, which ->
-                dialog.dismiss()
-            }
-            builder.create()
-            builder.show()
-            false
-        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -124,6 +112,27 @@ class SavingAdapter(private val savingList: List<Saving>) : RecyclerView.Adapter
 
         }
         return null
+    }
+    fun deleteItemSaving(pos: Int, totalTrans: Int) {
+        val currentItem = savingList[pos]
+        ref.child("savings").child("saving" + currentItem.index).removeValue()
+        ref.child("transactions").child("total").setValue(totalTrans + 1)
+        val ref2 = ref.child("transactions").child("transaction" + (totalTrans + 1))
+        val date = Calendar.getInstance()
+        val dayFormatter = SimpleDateFormat("dd/MM/yyyy")
+        val timeFormatter = SimpleDateFormat("HH:mm")
+        val day = dayFormatter.format(date.time)
+        val time = timeFormatter.format(date.time)
+        ref2.child("name").setValue("Refund for " + currentItem.nameOfProduct)
+        ref2.child("index").setValue(totalTrans + 1)
+        ref2.child("day").setValue(day)
+        ref2.child("time").setValue(time)
+        ref2.child("money").setValue(currentItem.currentSaving)
+        ref2.child("inorout").setValue("true")
+        ref2.child("category").setValue("Refund")
+        ref2.child("currentMonth").setValue((date.get(Calendar.MONTH) + 1).toString())
+        ref2.child("currentYear").setValue(date.get(Calendar.YEAR).toString())
+
     }
 }
 

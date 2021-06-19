@@ -40,14 +40,17 @@ class SavingActivity : AppCompatActivity() {
         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
         .getReference("datas").child(user?.uid.toString())
     var refTrans = ref1.child("transactions")
+
     //-----------------------------------------------
     var saving: Saving? = null
     var totalDetail: Int = 0
+
     //---------------------------------------------
     var pos: Int = 0
     var current: String? = null
     var total: String? = null
     var nameProduct: String? = null
+
     //---------------------------------------------
     var expense: String? = null
     var balance: String? = null
@@ -66,70 +69,65 @@ class SavingActivity : AppCompatActivity() {
                 expense = dataSnapshot.child("expense").value.toString()
                 balance = dataSnapshot.child("balance").value.toString()
             }
+
             override fun onStart() {
             }
+
             override fun onFailure() {
             }
         })
         //Get total transaction
         getDatabase(ref1.child("transactions"), object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                totalTrans = 0
-                for (data in dataSnapshot.children) {
-                    totalTrans++
-                }
+                totalTrans = dataSnapshot.child("total").value.toString().toInt()
                 refTrans = ref1.child("transactions").child("transaction" + (totalTrans + 1))
             }
+
             override fun onStart() {
             }
+
             override fun onFailure() {
             }
         })
         //Get detail transaction
-        getDatabase(ref.child("saving" + pos).child("details").orderByChild("day"), object : OnGetDataListener {
-            override fun onSuccess(dataSnapshot: DataSnapshot) {
-                totalDetail = 0
-                savingDetailList.clear()
-                for (data in dataSnapshot.children) {
-                    var tmp1 = data.child("cost").value.toString()
-                    var tmp2 = data.child("day").value.toString()
-                    var tmp3 = data.child("time").value.toString()
-                    var tmp4 = data.child("transName").value.toString()
-                    try {
-                        val originalDay = SimpleDateFormat("yyyy/MM/dd")
-                        val targetDay = SimpleDateFormat("dd/MM/yyyy")
-                        val tmpDayOriginal = originalDay.parse(tmp2)
-                        val tmpDayTarget = targetDay.format(tmpDayOriginal)
-                        savingDetailList.add(SavingDetail(tmp1, tmpDayTarget, tmp3, tmp4))
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+        getDatabase(ref.child("saving" + pos).child("details").orderByChild("day"),
+            object : OnGetDataListener {
+                override fun onSuccess(dataSnapshot: DataSnapshot) {
+                    totalDetail = 0
+                    savingDetailList.clear()
+                    for (data in dataSnapshot.children) {
+                        var tmp1 = data.child("cost").value.toString()
+                        var tmp2 = data.child("day").value.toString()
+                        var tmp3 = data.child("time").value.toString()
+                        var tmp4 = data.child("transName").value.toString()
+                        savingDetailList.add(SavingDetail(tmp1, tmp2, tmp3, tmp4))
+                        totalDetail++;
                     }
-                    totalDetail++;
+                    savingDetailList.reverse()
+                }
+
+                override fun onStart() {
 
                 }
-                savingDetailList.reverse()
-            }
 
-            override fun onStart() {
+                override fun onFailure() {
 
-            }
-
-            override fun onFailure() {
-
-            }
-        })
+                }
+            })
         getDatabase(ref.child("saving" + pos), object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                val index = dataSnapshot.child("index").value.toString()
-                val tmp1 = dataSnapshot.child("current").value.toString()
-                val tmp2 = dataSnapshot.child("price").value.toString()
-                val tmp3 = dataSnapshot.child("product").value.toString()
-                current = tmp1
-                total = tmp2
-                nameProduct = tmp3
-                left = tmp2.toLong() - tmp1.toLong()
-                saving = Saving(index.toIntOrNull(), tmp1, savingDetailList, tmp2, tmp3)
-                setData(saving)
+                if (dataSnapshot.exists()) {
+                    val index = dataSnapshot.child("index").value.toString()
+                    val tmp1 = dataSnapshot.child("current").value.toString()
+                    val tmp2 = dataSnapshot.child("price").value.toString()
+                    val tmp3 = dataSnapshot.child("product").value.toString()
+                    current = tmp1
+                    total = tmp2
+                    nameProduct = tmp3
+                    left = tmp2.toLong() - tmp1.toLong()
+                    saving = Saving(index.toIntOrNull(), tmp1, savingDetailList, tmp2, tmp3)
+                    setData(saving)
+                }
             }
 
             override fun onStart() {
@@ -146,27 +144,32 @@ class SavingActivity : AppCompatActivity() {
         floatingAdd.setOnClickListener {
             eventOnClickAddButton()
         }
+
     }
 
     private fun eventOnClickAddButton() {
         val builder = AlertDialog.Builder(this)
-        val viewInflater = LayoutInflater.from(this).inflate(R.layout.dialog_add_saving_detail, null, false)
+        val viewInflater =
+            LayoutInflater.from(this).inflate(R.layout.dialog_add_saving_detail, null, false)
         val editName = viewInflater.findViewById<EditText>(R.id.editNameSaving)
         val editMoney = viewInflater.findViewById<EditText>(R.id.editMoneySaving)
         builder.setView(viewInflater)
-        builder.setPositiveButton("OK"
+        builder.setPositiveButton(
+            "OK"
         ) { dialog, which ->
             val name = editName.text.toString()
             var money = editMoney.text.toString()
             if (money.toLong() > left) money = left.toString()
             var date = Calendar.getInstance()
-            var dayFormatter = SimpleDateFormat("yyyy/MM/dd")
+            var dayFormatter = SimpleDateFormat("dd/MM/yyyy")
             var timeFormatter = SimpleDateFormat("HH:mm")
             var day = dayFormatter.format(date.time)
             var time = timeFormatter.format(date.time)
             val ref3 = ref.child("saving" + pos)
-            val ref2 = ref.child("saving" + pos).child("details").child("detail" + (totalDetail + 1))
+            val ref2 =
+                ref.child("saving" + pos).child("details").child("detail" + (totalDetail + 1))
             //Set data in main activity recent transaction
+            ref1.child("transactions").child("total").setValue(totalTrans + 1)
             ref1.child("expense").setValue((expense?.toLong()?.plus(money.toLong())).toString())
             ref1.child("balance").setValue((balance?.toLong()?.minus(money.toLong())).toString())
             refTrans.child("day").setValue(day)
@@ -183,10 +186,12 @@ class SavingActivity : AppCompatActivity() {
             ref2.child("day").setValue(day)
             ref2.child("time").setValue(time)
             ref2.child("transName").setValue(name)
-            ref3.child("current").setValue((saving!!.currentSaving!!.toLong() + money.toLong()).toString())
+            ref3.child("current")
+                .setValue((saving!!.currentSaving!!.toLong() + money.toLong()).toString())
             dialog.dismiss()
         }
-        builder.setNegativeButton("Cancel"
+        builder.setNegativeButton(
+            "Cancel"
         ) { dialog, which -> dialog.dismiss() }
         builder.create()
         builder.show()
@@ -194,7 +199,8 @@ class SavingActivity : AppCompatActivity() {
 
     private fun setData(saving: Saving?) {
         recyclerTransactionSaving.adapter = SavingDetailAdapter(savingDetailList)
-        recyclerTransactionSaving.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerTransactionSaving.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerTransactionSaving.setHasFixedSize(true)
         nameOfSavingProduct.text = saving?.nameOfProduct.toString()
         if (total != null && current != null) {
@@ -207,40 +213,44 @@ class SavingActivity : AppCompatActivity() {
             notifyCompleted.text = "You have enough money to buy this product"
             floatingAdd.isEnabled = false
         } else {
-            notifyCompleted.text = "You need to save " + changeToMoney((tmp2!! - tmp1!!).toString()) + " VND"
+            notifyCompleted.text =
+                "You need to save " + changeToMoney((tmp2!! - tmp1!!).toString()) + " VND"
             floatingAdd.isEnabled = true
         }
         val per = tmp1!! * 100 / tmp2!!
         percentage.text = per.toString() + "%"
         progressSavings.progress = per
     }
+
     interface OnGetDataListener {
         fun onSuccess(dataSnapshot: DataSnapshot)
         fun onStart()
         fun onFailure()
     }
+
     fun getDatabase(ref: DatabaseReference, listener: OnGetDataListener?) {
         listener?.onStart()
-        ref.addValueEventListener(object : ValueEventListener{
+        ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 listener?.onSuccess(snapshot)
             }
+
             override fun onCancelled(error: DatabaseError) {
                 listener?.onFailure()
             }
         })
     }
+
     fun getDatabase(ref: Query, listener: OnGetDataListener?) {
         listener?.onStart()
-        ref.addValueEventListener(object : ValueEventListener{
+        ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 listener?.onSuccess(snapshot)
             }
+
             override fun onCancelled(error: DatabaseError) {
                 listener?.onFailure()
             }
         })
     }
-
-
 }

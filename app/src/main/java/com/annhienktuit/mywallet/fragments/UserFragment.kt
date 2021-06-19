@@ -147,7 +147,7 @@ class UserFragment : Fragment() {
 
     fun export(){
         val refTrans = ref.child(user?.uid.toString()).child("transactions")
-        val sdf = SimpleDateFormat("dd/M/yyyy")
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
         val currentDate = sdf.format(Date())
         var default_name:String = currentDate
         Log.i("time",default_name)

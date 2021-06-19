@@ -1,6 +1,7 @@
 package com.annhienktuit.mywallet.`object`
 
 data class RecentTransaction(
+    val index: Int? = null,
     val dayOfTrans: String? = null,
     val inOrOut: String? = null,
     val moneyOfTrans: String? = null,

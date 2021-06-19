@@ -68,4 +68,8 @@ class CardAdapter(private val cardList: List<Card>) : RecyclerView.Adapter<Recyc
         if (cardList.size > 0) return cardList[0].index!!
         return 0
     }
+    fun deleteItem(pos: Int) {
+        val currentItem = cardList[pos]
+        ref.child("cards").child("card" + currentItem.index).removeValue()
+    }
 }

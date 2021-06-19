@@ -42,6 +42,7 @@ import kotlinx.android.synthetic.main.dialog_add_transaction.view.*
 import kotlinx.android.synthetic.main.dialog_done_interest_rate.*
 import kotlinx.android.synthetic.main.fragment_current_month.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -72,11 +73,11 @@ class MainActivity : AppCompatActivity() {
     private val transactionAdapter = RecentTransactionAdapter(transactionList)
     //-------------------------------------------------------
     private var name: String? = null
-    private var income: String? = null
-    private var expense: String? = null
-    private var balance: String? = null
-    private var totalTrans: Int = 0
+    private var income: String? = "0"
+    private var expense: String? = "0"
+    private var balance: String? = "0"
     //-----------------------------------
+    private var indexTransaction: Int = 0
     private var indexSaving: Int = 0
     private var indexCard: Int = 0
     private var indexLimitation: Int = 0
@@ -194,7 +195,7 @@ class MainActivity : AppCompatActivity() {
         val itemsIncome = resources.getStringArray(R.array.categoriesIncome)
         val itemsExpense = resources.getStringArray(R.array.categoriesExpense)
         val date = Calendar.getInstance()
-        val dayFormatter = SimpleDateFormat("yyyy/MM/dd")
+        val dayFormatter = SimpleDateFormat("dd/MM/yyyy")
         val timeFormatter = SimpleDateFormat("HH:mm")
         var inorout = "true"
         val day = dayFormatter.format(date.time)
@@ -218,7 +219,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val refTrans = ref.child(user?.uid.toString()).child("transactions").child("transaction" + (totalTrans + 1))
+        val refTrans = ref.child(user?.uid.toString()).child("transactions").child("transaction" + (indexTransaction + 1))
         val ref1 = ref.child(user?.uid.toString())
         textCategory.dropDownHeight = 500
         builder.setView(viewInflater)
@@ -232,12 +233,13 @@ class MainActivity : AppCompatActivity() {
             if (textCategory.text.toString() != "" && editName.text.toString() != "" && editMoney.text.toString() != "") {
                 val name = editName.text.toString()
                 val money = editMoney.text.toString()
+                ref1.child("transactions").child("total").setValue(indexTransaction + 1)
                 refTrans.child("day").setValue(day)
                 refTrans.child("money").setValue(money)
                 refTrans.child("name").setValue(name)
                 refTrans.child("time").setValue(time)
                 refTrans.child("inorout").setValue(inorout)
-                refTrans.child("index").setValue(totalTrans + 1)
+                refTrans.child("index").setValue(indexTransaction + 1)
                 refTrans.child("category").setValue(textCategory.text.toString())
                 refTrans.child("currentMonth").setValue((date.get(Calendar.MONTH) + 1).toString())
                 refTrans.child("currentYear").setValue(date.get(Calendar.YEAR).toString())
@@ -338,7 +340,6 @@ class MainActivity : AppCompatActivity() {
         }
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container_fragment, fragment)
-        //transaction.addToBackStack(null)
         transaction.commit()
         bottomNavigationView.setOnItemSelectedListener(mOnBottomNavigationView)
     }
@@ -406,23 +407,21 @@ class MainActivity : AppCompatActivity() {
 
         getDatabase(transactionDb.orderByChild("index"), object : OnGetDataListener {
             override fun onSuccess(dataSnapshot: DataSnapshot) {
-                totalTrans = 0
                 transactionList.clear()
+                indexTransaction = dataSnapshot.child("total").value.toString().toInt()
                 for (data in dataSnapshot.children) {
-                    val day = data.child("day").value.toString()
-                    val originalDay = SimpleDateFormat("yyyy/MM/dd")
-                    val targetDay = SimpleDateFormat("dd/MM/yyyy")
-                    val tmpDayOriginal = originalDay.parse(day)
-                    val tmpDayTarget = targetDay.format(tmpDayOriginal)
-                    val inorout = data.child("inorout").value.toString()
-                    val money = data.child("money").value.toString()
-                    val name = data.child("name").value.toString()
-                    val time = data.child("time").value.toString()
-                    transactionList.add(RecentTransaction(tmpDayTarget, inorout, money, name, time))
-                    totalTrans++
+                    if (data.key.toString() != "total") {
+                        var day = data.child("day").value.toString()
+                        val index = data.child("index").value.toString()
+                        val inorout = data.child("inorout").value.toString()
+                        val money = data.child("money").value.toString()
+                        val name = data.child("name").value.toString()
+                        val time = data.child("time").value.toString()
+                        transactionList.add(RecentTransaction(index.toIntOrNull(), day, inorout, money, name, time))
+                    }
                 }
-                transactionList.reverse()
                 transactionAdapter.notifyDataSetChanged()
+                transactionList.reverse()
             }
             override fun onStart() {
             }
@@ -782,6 +781,9 @@ class MainActivity : AppCompatActivity() {
     }
     fun getBalance(): String? {
         return balance
+    }
+    fun getIndexTransaction(): Int {
+        return indexTransaction
     }
     fun getIndexSaving(): Int {
         return indexSaving
