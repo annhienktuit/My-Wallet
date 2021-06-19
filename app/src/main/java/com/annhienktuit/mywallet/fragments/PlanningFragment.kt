@@ -163,8 +163,8 @@ class PlanningFragment() : Fragment() {
         val itemsMonth = listOf("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12")
         val itemsYear = ArrayList<String>()
         val date = Calendar.getInstance()
-        val start = date.get(Calendar.YEAR) - 20
-        val end = date.get(Calendar.YEAR) + 20
+        val start = date.get(Calendar.YEAR) -5
+        val end = date.get(Calendar.YEAR) + 10
         for (i in start..end) {
             itemsYear.add(i.toString())
         }
