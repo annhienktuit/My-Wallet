@@ -9,6 +9,37 @@
     android:layout_gravity="start"
     tools:context=".activity.MoneyExchangeActivity"
     android:background="#E8E8E8">
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        >
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_back_setting"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            app:iconGravity="textEnd"
+            android:insetLeft="0dp"
+            android:insetBottom="0dp"
+            android:insetRight="0dp"
+            android:insetTop="0dp"
+            app:icon="@drawable/ic_back"
+            app:iconTint="#4CAF50"
+            style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="MONEY EXCHANGE"
+            android:textSize="24sp"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/gotham_bold"
+            android:textColor="#4CAF50" />
+    </RelativeLayout>
+
+
     <!-- Thanh phan con 1-->
 
     android:layout_width="match_parent"

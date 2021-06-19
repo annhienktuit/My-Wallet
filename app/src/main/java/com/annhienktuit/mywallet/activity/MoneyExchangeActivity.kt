@@ -26,6 +26,10 @@ class MoneyExchangeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_money_exchange)
 
+        btn_back_setting.setOnClickListener {
+            finish()
+        }
+
         spinnerSetup()
         textChanged()
 
