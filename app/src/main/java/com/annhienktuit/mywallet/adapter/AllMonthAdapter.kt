@@ -43,14 +43,16 @@ class AllMonthAdapter(private val context: Context, private val dataSource: Muta
         year.text = trans.currentYear
 
         balance.text = Extensions.changeToMoney(trans.moneyAmount)
+
         if(trans.moneyAmount.toLong() < 0){
-            mood.setImageResource(R.drawable.ic_baseline_mood_bad_24)
-            balance.setTextColor(Color.parseColor("#f44336"))
-            vndText.setTextColor(Color.parseColor("#f44336"))
+                mood.setImageResource(R.drawable.ic_baseline_mood_bad_24)
+                balance.setTextColor(Color.parseColor("#f44336"))
+                vndText.setTextColor(Color.parseColor("#f44336"))
         }
         else{
-            mood.setImageResource(R.drawable.ic_baseline_mood_24)
-        }
+                mood.setImageResource(R.drawable.ic_baseline_mood_24)
+            }
+
 
         return rowView
     }
