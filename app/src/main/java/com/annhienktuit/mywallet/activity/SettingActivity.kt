@@ -85,29 +85,6 @@ class SettingActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        btnReset.setOnClickListener {
-            val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
-
-            alertDialog.setTitle("Warning")
-            alertDialog.setMessage("Are you sure to reset your transactions ?")
-            alertDialog.setIcon(R.drawable.ic_yellow_warning)
-
-            alertDialog.setPositiveButton("Yes") { dialog, id ->
-                ref.child("balance").setValue("0")
-                ref.child("expense").setValue("0")
-                ref.child("income").setValue("0")
-                ref.child("transactions").setValue(null)
-
-                Toast.makeText(this, "successful reset!", Toast.LENGTH_SHORT).show()
-            }
-            alertDialog.setNegativeButton("Cancel") { dialog, id ->
-                dialog.cancel()
-            }
-
-            val alert = alertDialog.create()
-            alert.setCanceledOnTouchOutside(true)
-            alert.show()
-        }
     }
 
     private fun editOccupation() {

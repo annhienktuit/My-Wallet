@@ -227,15 +227,5 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/btnReset"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/ic_yellow_warning"
-            android:text="Reset your transactions"
-            android:background="@drawable/corner_radius_full"/>
-
     </LinearLayout>
 </LinearLayout>
