@@ -93,13 +93,7 @@ class MapActivity : AppCompatActivity() {
                     android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
                 ), 101
             )
-            //this is the magic
-            magicError = true
-            Log.e("location: ", "Magic 1")
-            latitude = 108.00725808369043
-            latitude = 14.368876981493111
-            convertLocation() //convert latitude to address
-            openMap()
+            return
         } else {
 
         }
@@ -108,44 +102,43 @@ class MapActivity : AppCompatActivity() {
                 textViewLocation.text = "Latitude: ${it.latitude}" + "\nLongtitude: ${it.longitude}"
                 latitude = it.latitude
                 longtitude = it.longitude
+                Log.i("location: ","$latitude + $longtitude")
                 convertLocation() //convert latitude to address
                 openMap()
             } else {
                 Log.e("location: ", "Magic 2")
                 magicError = true
-                //this is the magic
-                latitude = 108.00725808369043
-                latitude = 14.368876981493111
-                convertLocation() //convert latitude to address
-                openMap()
+
             }
         }
         task.addOnFailureListener {
             Log.e("location: ","Failed to process location")
+            magicError = true
         }
     }
 
     fun convertLocation() {
+        if(magicError) {
+            latitude = 14.368876981493111
+            longtitude = 108.00725808369043
+        }
         val geocoder = Geocoder(this, Locale.ENGLISH)
         try {
             val addresses: List<Address>? = geocoder.getFromLocation(latitude, longtitude, 1)
             if (addresses != null) {
                 val returnedAddress: Address = addresses[0]
                 Log.i("location", addresses[0].toString())
-                if (!magicError) {
                     val strReturnedAddress =
                         StringBuilder("Your address:${returnedAddress.featureName}, ${returnedAddress.thoroughfare}, ${returnedAddress.locality}, ${returnedAddress.countryName}")
                     for (i in 0 until returnedAddress.getMaxAddressLineIndex()) {
                         strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
                     }
                     textViewLocation.setText(strReturnedAddress.toString())
-                } else {
-                    textViewLocation.setText("Your address: Tran Khanh Du, Kon Tum, Vietnam")
-                }
+
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            textViewLocation.setText("Your address: Tran Khanh Du, Kon Tum, Vietnam")
+            textViewLocation.setText("")
         }
     }
 
@@ -184,7 +177,6 @@ class MapActivity : AppCompatActivity() {
             )
             return
         } else {
-
         }
         task.addOnSuccessListener {
             if (it != null) {
@@ -192,6 +184,11 @@ class MapActivity : AppCompatActivity() {
                 longtitude = it.longitude
                 convertLocation() //covert latitude to address
             }
+        }
+        task.addOnFailureListener {
+            Log.e("location: ","Failed to process location")
+            magicError = true
+            convertLocation() //convert latitude to address
         }
     }
 }
