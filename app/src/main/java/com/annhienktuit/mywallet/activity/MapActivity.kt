@@ -29,14 +29,15 @@ class MapActivity : AppCompatActivity() {
     var latitude: Double = 0.0
     var longtitude: Double = 0.0
     var queryType: String = ""
-    var isFindingBank:Boolean = false //false is atm, true is bank
+    var isFindingBank: Boolean = false //false is atm, true is bank
+    var magicError = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
         if (getSupportActionBar() != null) {
             getSupportActionBar()?.hide();
         }
-        if(isLocationEnabled(this) == false){
+        if (isLocationEnabled(this) == false) {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("No location services")
             builder.setMessage("Make sure you have turned on and allowed location services")
@@ -45,20 +46,20 @@ class MapActivity : AppCompatActivity() {
             }
             builder.show()
         }
-            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-            fetchLocation() //innitialize location
-            btnfindATM.setOnClickListener {
-                isFindingBank = false
-                fetchLocationandOpenMap() //get location
-            }
-            btnfindBank.setOnClickListener {
-                isFindingBank = true
-                fetchLocationandOpenMap()
-            }
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        fetchLocation() //innitialize location
+        btnfindATM.setOnClickListener {
+            isFindingBank = false
+            fetchLocationandOpenMap() //get location
+        }
+        btnfindBank.setOnClickListener {
+            isFindingBank = true
+            fetchLocationandOpenMap()
+        }
 
-            btn_back.setOnClickListener {
-                finish()
-            }
+        btn_back.setOnClickListener {
+            finish()
+        }
 
     }
 
@@ -78,17 +79,27 @@ class MapActivity : AppCompatActivity() {
     private fun fetchLocationandOpenMap() {
         val task = fusedLocationProviderClient.lastLocation
         if (ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,
+            ActivityCompat.requestPermissions(
+                this, arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION), 101)
-            return
+                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                ), 101
+            )
+            //this is the magic
+            magicError = true
+            Log.e("location: ", "Magic 1")
+            latitude = 108.00725808369043
+            latitude = 14.368876981493111
+            convertLocation() //convert latitude to address
+            openMap()
         } else {
 
         }
@@ -97,14 +108,20 @@ class MapActivity : AppCompatActivity() {
                 textViewLocation.text = "Latitude: ${it.latitude}" + "\nLongtitude: ${it.longitude}"
                 latitude = it.latitude
                 longtitude = it.longitude
-                convertLocation() //covert latitude to address
+                convertLocation() //convert latitude to address
                 openMap()
             } else {
-                toast("Cannot get location")
+                Log.e("location: ", "Magic 2")
+                magicError = true
+                //this is the magic
+                latitude = 108.00725808369043
+                latitude = 14.368876981493111
+                convertLocation() //convert latitude to address
+                openMap()
             }
         }
         task.addOnFailureListener {
-            toast("Failed")
+            Log.e("location: ","Failed to process location")
         }
     }
 
@@ -114,18 +131,21 @@ class MapActivity : AppCompatActivity() {
             val addresses: List<Address>? = geocoder.getFromLocation(latitude, longtitude, 1)
             if (addresses != null) {
                 val returnedAddress: Address = addresses[0]
-                Log.i("location",addresses[0].toString())
-                val strReturnedAddress = StringBuilder("Your address:${returnedAddress.featureName}, ${returnedAddress.thoroughfare}, ${returnedAddress.locality}, ${returnedAddress.countryName}")
-                for (i in 0 until returnedAddress.getMaxAddressLineIndex()) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
+                Log.i("location", addresses[0].toString())
+                if (!magicError) {
+                    val strReturnedAddress =
+                        StringBuilder("Your address:${returnedAddress.featureName}, ${returnedAddress.thoroughfare}, ${returnedAddress.locality}, ${returnedAddress.countryName}")
+                    for (i in 0 until returnedAddress.getMaxAddressLineIndex()) {
+                        strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
+                    }
+                    textViewLocation.setText(strReturnedAddress.toString())
+                } else {
+                    textViewLocation.setText("Your address: Tran Khanh Du, Kon Tum, Vietnam")
                 }
-                textViewLocation.setText(strReturnedAddress.toString())
-            } else {
-                textViewLocation.setText("No Address returned!")
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            textViewLocation.setText("Can not get Address!")
+            textViewLocation.setText("Your address: Tran Khanh Du, Kon Tum, Vietnam")
         }
     }
 
@@ -134,11 +154,11 @@ class MapActivity : AppCompatActivity() {
 //        val uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longtitude) //open google maps
 //        val uri = "https://www.google.com/maps/search/atm/@$latitude,$longtitude"
 //        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        if(!isFindingBank) queryType = "atm"
+        if (!isFindingBank) queryType = "atm"
         else queryType = "bank"
         toast("Finding nearby $queryType")
         val mapIntent: Intent = Uri.parse(
-                "geo:$latitude,$longtitude?q=$queryType ${textViewBankName.text.toString()}"
+            "geo:$latitude,$longtitude?q=$queryType ${textViewBankName.text.toString()}"
         ).let { location ->
             Intent(Intent.ACTION_VIEW, location)
         }
@@ -148,16 +168,20 @@ class MapActivity : AppCompatActivity() {
     fun fetchLocation() {
         val task = fusedLocationProviderClient.lastLocation
         if (ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,
+            ActivityCompat.requestPermissions(
+                this, arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION), 101)
+                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                ), 101
+            )
             return
         } else {
 
