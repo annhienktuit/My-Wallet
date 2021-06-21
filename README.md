@@ -48,7 +48,7 @@ Install with APK file [here](https://apkfab.com/my-wallet/com.annhienktuit.mywal
    </p>
    
    <p align="center">
-   <img src="https://i.imgur.com/2Dqffea.png" height = "720" width="360"> 
+   <img src="https://i.imgur.com/NCS7GAl.png" height = "720" width="360"> 
    </p>
    
    <p align="center">
@@ -56,12 +56,13 @@ Install with APK file [here](https://apkfab.com/my-wallet/com.annhienktuit.mywal
    </p>
    
    <p align="center">
-   <img src="https://i.imgur.com/cK4eUu1.png" height = "720" width="360"> 
+   <img src="https://i.imgur.com/Qb2fe7F.png" height = "720" width="360"> 
    </p>
    
    <p align="center">
-   <img src="https://i.imgur.com/NCS7GAl.png" height = "720" width="360"> 
+   <img src="https://i.imgur.com/cK4eUu1.png" height = "720" width="360"> 
    </p>
+   
    
    <p align="center">
    <img src="https://i.imgur.com/h2oIQpL.png" height = "720" width="360"> 
@@ -114,7 +115,13 @@ Install with APK file [here](https://apkfab.com/my-wallet/com.annhienktuit.mywal
    <p align="center">
    <img src="https://i.imgur.com/J7DiYKJ.jpg" height = "720" width="360"> 
    </p>
+   
 
+   <p align="center">
+   <img src="https://i.imgur.com/28wCqh7.png" height = "720" width="360"> 
+   </p>
+   
+  
 
 
 
