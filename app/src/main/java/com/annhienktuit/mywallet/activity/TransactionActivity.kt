@@ -55,11 +55,12 @@ class TransactionActivity : AppCompatActivity() {
                 for (data in dataSnapshot.children) {
                     val day = data.child("day").value.toString()
                     val index = data.child("index").value.toString()
+                    val category = data.child("category").value.toString()
                     var inorout = data.child("inorout").value.toString()
                     var money = data.child("money").value.toString()
                     var name = data.child("name").value.toString()
                     var time = data.child("time").value.toString()
-                    transactionList.add(RecentTransaction( index.toIntOrNull(), day, inorout, money, name, time))
+                    transactionList.add(RecentTransaction( index.toIntOrNull(), day, inorout, money, name, time, category))
                 }
                 transactionList.reverse()
                 setData()
@@ -91,10 +92,11 @@ class TransactionActivity : AppCompatActivity() {
                                 val day = data.child("day").value.toString()
                                 val index = data.child("index").value.toString()
                                 var inorout = data.child("inorout").value.toString()
+                                val category = data.child("category").value.toString()
                                 var money = data.child("money").value.toString()
                                 var name = data.child("name").value.toString()
                                 var time = data.child("time").value.toString()
-                                transactionList.add(RecentTransaction(index.toIntOrNull(), day, inorout, money, name, time))
+                                transactionList.add(RecentTransaction(index.toIntOrNull(), day, inorout, money, name, time, category))
                             }
                             transactionList.reverse()
                             setData()
@@ -162,18 +164,28 @@ class TransactionActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                 //Remove swiped item from list and notify the RecyclerView
                 val position = viewHolder.adapterPosition
-                val dialog = AlertDialog.Builder(this@TransactionActivity)
-                dialog.setTitle("Confirm")
-                dialog.setIcon(R.drawable.ic_baseline_warning_24)
-                dialog.setMessage("Do you want to delete this transaction?")
-                dialog.setPositiveButton("OK") { dialog, which ->
-                    adapter.deleteItem(position, balance, income, expense)
+                if (!adapter.isSavingTran(position)) {
+                    val dialog = AlertDialog.Builder(this@TransactionActivity)
+                    dialog.setTitle("Confirm")
+                    dialog.setIcon(R.drawable.ic_baseline_warning_24)
+                    dialog.setMessage("Do you want to delete this transaction?")
+                    dialog.setPositiveButton("OK") { dialog, which ->
+                        adapter.deleteItem(position, balance, income, expense)
+                    }
+                    dialog.setNegativeButton("Cancel") { dialog, which ->
+                        dialog.dismiss()
+                        rv.adapter!!.notifyDataSetChanged()
+                    }
+                    dialog.show()
+                } else {
+                    val dialog = AlertDialog.Builder(this@TransactionActivity)
+                    dialog.setMessage("Please go to saving to delete this transaction!")
+                    dialog.setPositiveButton("OK") { dialog, which ->
+                        dialog.dismiss()
+                        rv.adapter!!.notifyDataSetChanged()
+                    }
+                    dialog.show()
                 }
-                dialog.setNegativeButton("Cancel") { dialog, which ->
-                    dialog.dismiss()
-                    rv.adapter!!.notifyDataSetChanged()
-                }
-                dialog.show()
             }
         }
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)

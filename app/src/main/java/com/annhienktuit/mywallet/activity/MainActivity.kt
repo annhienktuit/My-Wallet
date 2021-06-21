@@ -414,10 +414,11 @@ class MainActivity : AppCompatActivity() {
                         var day = data.child("day").value.toString()
                         val index = data.child("index").value.toString()
                         val inorout = data.child("inorout").value.toString()
+                        val category = data.child("category").value.toString()
                         val money = data.child("money").value.toString()
                         val name = data.child("name").value.toString()
                         val time = data.child("time").value.toString()
-                        transactionList.add(RecentTransaction(index.toIntOrNull(), day, inorout, money, name, time))
+                        transactionList.add(RecentTransaction(index.toIntOrNull(), day, inorout, money, name, time, category))
                     }
                 }
                 transactionAdapter.notifyDataSetChanged()

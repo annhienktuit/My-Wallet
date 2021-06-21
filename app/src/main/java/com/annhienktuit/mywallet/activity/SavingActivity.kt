@@ -176,7 +176,7 @@ class SavingActivity : AppCompatActivity() {
             refTrans.child("money").setValue(money)
             refTrans.child("name").setValue("Saving from " + nameProduct)
             refTrans.child("time").setValue(time)
-            refTrans.child("inorout").setValue("true")
+            refTrans.child("inorout").setValue("false")
             refTrans.child("index").setValue(totalTrans + 1)
             refTrans.child("category").setValue("Saving")
             refTrans.child("currentMonth").setValue((date.get(Calendar.MONTH) + 1).toString())

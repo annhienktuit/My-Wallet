@@ -109,4 +109,9 @@ class RecentTransactionAdapter(private val transactionList: List<RecentTransacti
             ref.child("balance").setValue((balance.toLong() + currentItem.moneyOfTrans.toLong()).toString())
         }
     }
+    fun isSavingTran(pos: Int): Boolean {
+        val currentItem = transactionList[pos]
+        if (currentItem.category == "Saving") return true
+        return false
+    }
 }

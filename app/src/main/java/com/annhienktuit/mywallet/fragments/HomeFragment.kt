@@ -100,18 +100,28 @@ class HomeFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                 //Remove swiped item from list and notify the RecyclerView
                 val position = viewHolder.adapterPosition
-                val dialog = AlertDialog.Builder(context)
-                dialog.setTitle("Confirm")
-                dialog.setIcon(R.drawable.ic_baseline_warning_24)
-                dialog.setMessage("Do you want to delete this transaction?")
-                dialog.setPositiveButton("OK") { dialog, which ->
-                    transactionAdapter.deleteItem(position, balance, income, expense)
+                if (!transactionAdapter.isSavingTran(position)) {
+                    val dialog = AlertDialog.Builder(context)
+                    dialog.setTitle("Confirm")
+                    dialog.setIcon(R.drawable.ic_baseline_warning_24)
+                    dialog.setMessage("Do you want to delete this transaction?")
+                    dialog.setPositiveButton("OK") { dialog, which ->
+                        transactionAdapter.deleteItem(position, balance, income, expense)
+                    }
+                    dialog.setNegativeButton("Cancel") { dialog, which ->
+                        dialog.dismiss()
+                        rv.adapter!!.notifyDataSetChanged()
+                    }
+                    dialog.show()
+                } else {
+                    val dialog = AlertDialog.Builder(context)
+                    dialog.setMessage("Please go to saving to delete this transaction!")
+                    dialog.setPositiveButton("OK") { dialog, which ->
+                        dialog.dismiss()
+                        rv.adapter!!.notifyDataSetChanged()
+                    }
+                    dialog.show()
                 }
-                dialog.setNegativeButton("Cancel") { dialog, which ->
-                    dialog.dismiss()
-                    rv.adapter!!.notifyDataSetChanged()
-                }
-                dialog.show()
             }
         }
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)

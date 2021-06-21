@@ -6,5 +6,6 @@ data class RecentTransaction(
     val inOrOut: String? = null,
     val moneyOfTrans: String? = null,
     val nameOfTrans: String? = null,
-    val timeOfTrans: String? = null
+    val timeOfTrans: String? = null,
+    val category: String? = null
 )
