@@ -518,12 +518,16 @@ class MainActivity : AppCompatActivity() {
                 listCurrentIncomeData.removeAll(listCurrentIncomeData)
 
                 for(childBranch in snapshot.children){
-                    listCurrentIncome.add(DetailTransaction(
-                        childBranch.child("category").value.toString(),
-                        childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString(),
-                        childBranch.child("currentYear").value.toString()
-                    ))
+                    if(childBranch.key.toString() != "total") {
+                        listCurrentIncome.add(
+                            DetailTransaction(
+                                childBranch.child("category").value.toString(),
+                                childBranch.child("money").value.toString(),
+                                childBranch.child("currentMonth").value.toString(),
+                                childBranch.child("currentYear").value.toString()
+                            )
+                        )
+                    }
                 }
 
                 listCurrentIncome = handleListForChart(listCurrentIncome, currentMonth)
@@ -560,12 +564,16 @@ class MainActivity : AppCompatActivity() {
                 listCurrentExpenseData.removeAll(listCurrentExpenseData)
 
                 for(childBranch in snapshot.children){
-                    listCurrentExpense.add(DetailTransaction(
-                        childBranch.child("category").value.toString(),
-                        childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString(),
-                        childBranch.child("currentYear").value.toString()
-                    ))
+                    if(childBranch.key.toString() != "total") {
+                        listCurrentExpense.add(
+                            DetailTransaction(
+                                childBranch.child("category").value.toString(),
+                                childBranch.child("money").value.toString(),
+                                childBranch.child("currentMonth").value.toString(),
+                                childBranch.child("currentYear").value.toString()
+                            )
+                        )
+                    }
                 }
 
                 listCurrentExpense = handleListForChart(listCurrentExpense, currentMonth)
@@ -604,12 +612,16 @@ class MainActivity : AppCompatActivity() {
                 listPreviousIncome.removeAll(listPreviousIncome)
                 listPreviousIncomeData.removeAll(listPreviousIncomeData)
                 for(childBranch in snapshot.children){
-                    listPreviousIncome.add(DetailTransaction(
-                        childBranch.child("category").value.toString(),
-                        childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString(),
-                        childBranch.child("currentYear").value.toString()
-                    ))
+                    if(childBranch.key.toString() != "total") {
+                        listPreviousIncome.add(
+                            DetailTransaction(
+                                childBranch.child("category").value.toString(),
+                                childBranch.child("money").value.toString(),
+                                childBranch.child("currentMonth").value.toString(),
+                                childBranch.child("currentYear").value.toString()
+                            )
+                        )
+                    }
                 }
 
                 listPreviousIncome = handleListForChart(listPreviousIncome, previousMonth)
@@ -649,12 +661,16 @@ class MainActivity : AppCompatActivity() {
                 listPreviousExpenseData.removeAll(listPreviousExpenseData)
                 listPreviousExpense.removeAll(listPreviousExpense)
                 for(childBranch in snapshot.children){
-                    listPreviousExpense.add(DetailTransaction(
-                        childBranch.child("category").value.toString(),
-                        childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString(),
-                        childBranch.child("currentYear").value.toString()
-                    ))
+                    if(childBranch.key.toString() != "total") {
+                        listPreviousExpense.add(
+                            DetailTransaction(
+                                childBranch.child("category").value.toString(),
+                                childBranch.child("money").value.toString(),
+                                childBranch.child("currentMonth").value.toString(),
+                                childBranch.child("currentYear").value.toString()
+                            )
+                        )
+                    }
                 }
 
                 listPreviousExpense = handleListForChart(listPreviousExpense, previousMonth)
