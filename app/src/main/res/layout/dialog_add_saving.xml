@@ -26,6 +26,7 @@
         android:hint="Name of saving">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputSavingName"
+            android:maxLength="16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_bold"
@@ -40,8 +41,10 @@
         app:errorEnabled="true"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:hint="Cost">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputSavingCost"
+            android:maxLength="11"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_bold"
