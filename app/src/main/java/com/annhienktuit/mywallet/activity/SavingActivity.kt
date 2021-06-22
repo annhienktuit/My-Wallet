@@ -214,8 +214,8 @@ class SavingActivity : AppCompatActivity() {
             totalSaving.text = "of " + changeToMoney(total) + " VND"
             currentSaving.text = changeToMoney(current) + " "
         }
-        val tmp1 = current?.toInt()
-        val tmp2 = total?.toInt()
+        val tmp1 = current?.toLong()
+        val tmp2 = total?.toLong()
         if (tmp1 == tmp2) {
             notifyCompleted.text = "You have enough money to buy this product"
             floatingAdd.isEnabled = false
@@ -225,8 +225,8 @@ class SavingActivity : AppCompatActivity() {
             floatingAdd.isEnabled = true
         }
         val per = tmp1!! * 100 / tmp2!!
-        percentage.text = per.toString() + "%"
-        progressSavings.progress = per
+        percentage.text = "$per%"
+        progressSavings.progress = per.toInt()
     }
 
     interface OnGetDataListener {
