@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Nearby Me"
+            android:text="NEARBY ME"
             android:textSize="24sp"
             android:layout_centerInParent="true"
             android:fontFamily="@font/gotham_bold"
