@@ -8,6 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
 import com.annhienktuit.mywallet.`object`.SavingDetail
+import com.annhienktuit.mywallet.utils.FirebaseUtils
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_saving.view.*
 import kotlinx.android.synthetic.main.layout_saving_transaction.view.*
 import java.text.DecimalFormat
@@ -15,6 +18,9 @@ import java.text.NumberFormat
 
 
 class SavingDetailAdapter(private val savingDetailList: List<SavingDetail>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
+    var ref = FirebaseDatabase.getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        .getReference("datas").child(user?.uid.toString())
     class SavingDetailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.kindOfSaving
         val date: TextView = itemView.dateOfSaving
@@ -60,5 +66,14 @@ class SavingDetailAdapter(private val savingDetailList: List<SavingDetail>) : Re
 
         }
         return null
+    }
+    fun deleteItem(pos: Int, balance: String, expense: String, saving: Int, current: String) {
+        val currentItem = savingDetailList[pos]
+        ref.child("savings").child("saving" + saving)
+            .child("details").child("detail" + currentItem.index).removeValue()
+        ref.child("savings").child("saving" + saving).child("current")
+            .setValue((current.toLong() - currentItem.costOfSaving!!.toLong()).toString())
+        ref.child("expense").setValue((expense.toLong() - currentItem.costOfSaving.toLong()).toString())
+        ref.child("balance").setValue((balance.toLong() + currentItem.costOfSaving.toLong()).toString())
     }
 }

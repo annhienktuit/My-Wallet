@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.annhienktuit.mywallet.R
@@ -32,6 +33,7 @@ import kotlin.collections.ArrayList
 
 class SavingActivity : AppCompatActivity() {
     var savingDetailList = ArrayList<SavingDetail>()
+    val savingDetailAdapter = SavingDetailAdapter(savingDetailList)
     val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser
     var ref = FirebaseDatabase
         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
@@ -40,7 +42,6 @@ class SavingActivity : AppCompatActivity() {
         .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
         .getReference("datas").child(user?.uid.toString())
     var refTrans = ref1.child("transactions")
-
     //-----------------------------------------------
     var saving: Saving? = null
     var totalDetail: Int = 0
@@ -90,18 +91,21 @@ class SavingActivity : AppCompatActivity() {
             }
         })
         //Get detail transaction
-        getDatabase(ref.child("saving" + pos).child("details").orderByChild("day"),
+        getDatabase(ref.child("saving" + pos).child("details").orderByChild("index"),
             object : OnGetDataListener {
                 override fun onSuccess(dataSnapshot: DataSnapshot) {
-                    totalDetail = 0
+                    if (dataSnapshot.hasChild("total"))
+                        totalDetail = dataSnapshot.child("total").value.toString().toIntOrNull()!!
                     savingDetailList.clear()
                     for (data in dataSnapshot.children) {
-                        var tmp1 = data.child("cost").value.toString()
-                        var tmp2 = data.child("day").value.toString()
-                        var tmp3 = data.child("time").value.toString()
-                        var tmp4 = data.child("transName").value.toString()
-                        savingDetailList.add(SavingDetail(tmp1, tmp2, tmp3, tmp4))
-                        totalDetail++;
+                        if (data.key.toString() != "total") {
+                            var tmp1 = data.child("cost").value.toString()
+                            var tmp2 = data.child("day").value.toString()
+                            var tmp3 = data.child("time").value.toString()
+                            var tmp4 = data.child("transName").value.toString()
+                            var tmp5 = data.child("index").value.toString()
+                            savingDetailList.add(SavingDetail(tmp1, tmp2, tmp3, tmp4, tmp5.toIntOrNull()))
+                        }
                     }
                     savingDetailList.reverse()
                 }
@@ -182,6 +186,8 @@ class SavingActivity : AppCompatActivity() {
             refTrans.child("currentMonth").setValue((date.get(Calendar.MONTH) + 1).toString())
             refTrans.child("currentYear").setValue(date.get(Calendar.YEAR).toString())
             //Set data in saving transaction
+            ref3.child("details").child("total").setValue(totalDetail + 1)
+            ref2.child("index").setValue(totalDetail + 1)
             ref2.child("cost").setValue(money)
             ref2.child("day").setValue(day)
             ref2.child("time").setValue(time)
@@ -199,6 +205,7 @@ class SavingActivity : AppCompatActivity() {
 
     private fun setData(saving: Saving?) {
         recyclerTransactionSaving.adapter = SavingDetailAdapter(savingDetailList)
+        setSwipeToDelete(recyclerTransactionSaving)
         recyclerTransactionSaving.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerTransactionSaving.setHasFixedSize(true)
@@ -252,5 +259,38 @@ class SavingActivity : AppCompatActivity() {
                 listener?.onFailure()
             }
         })
+    }
+    private fun setSwipeToDelete(rv: RecyclerView) {
+        val simpleItemTouchCallback: ItemTouchHelper.SimpleCallback = object :
+            ItemTouchHelper.SimpleCallback(30, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+                //Remove swiped item from list and notify the RecyclerView
+                val position = viewHolder.adapterPosition
+                val dialog = AlertDialog.Builder(this@SavingActivity)
+                dialog.setTitle("Confirm")
+                dialog.setIcon(R.drawable.ic_baseline_warning_24)
+                dialog.setMessage("Do you want to delete this transaction?")
+                dialog.setPositiveButton("OK") { dialog, which ->
+                    savingDetailAdapter.deleteItem(position, balance.toString(), expense.toString(), pos,
+                        current.toString()
+                    )
+                }
+                dialog.setNegativeButton("Cancel") { dialog, which ->
+                    dialog.dismiss()
+                    rv.adapter!!.notifyDataSetChanged()
+                }
+                dialog.show()
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(rv)
     }
 }
