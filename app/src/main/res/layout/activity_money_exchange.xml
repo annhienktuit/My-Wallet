@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     android:layout_gravity="start"
     tools:context=".activity.MoneyExchangeActivity"
-    android:background="#E8E8E8">
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_marginTop="10dp"
@@ -50,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         app:cardCornerRadius="10dp"
+        android:backgroundTint="@color/mainColor"
         >
 
         <LinearLayout
@@ -129,7 +130,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="107dp"
         android:gravity="center"
-        android:textColor="#C31212"
+        android:textColor="@color/mainColor"
         android:textSize="24sp" />
 
 
