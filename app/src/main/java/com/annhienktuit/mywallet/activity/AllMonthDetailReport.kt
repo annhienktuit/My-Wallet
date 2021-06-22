@@ -83,14 +83,16 @@ class AllMonthDetailReport : AppCompatActivity() {
                 listCurrentIncomeData.removeAll(listCurrentIncomeData)
 
                 for(childBranch in snapshot.children){
-                    listCurrentIncome.add(
-                        DetailTransaction(
-                        childBranch.child("category").value.toString(),
-                        childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString(),
-                        childBranch.child("currentYear").value.toString()
-                    )
-                    )
+                    if(childBranch.key.toString() != "total") {
+                        listCurrentIncome.add(
+                            DetailTransaction(
+                                childBranch.child("category").value.toString(),
+                                childBranch.child("money").value.toString(),
+                                childBranch.child("currentMonth").value.toString(),
+                                childBranch.child("currentYear").value.toString()
+                            )
+                        )
+                    }
                 }
 
                 listCurrentIncome = handleListForChart(listCurrentIncome, month.toInt())
@@ -151,14 +153,16 @@ class AllMonthDetailReport : AppCompatActivity() {
                 listCurrentExpenseData.removeAll(listCurrentExpenseData)
 
                 for(childBranch in snapshot.children){
-                    listCurrentExpense.add(
-                        DetailTransaction(
-                        childBranch.child("category").value.toString(),
-                        childBranch.child("money").value.toString(),
-                        childBranch.child("currentMonth").value.toString(),
-                        childBranch.child("currentYear").value.toString()
-                    )
-                    )
+                    if(childBranch.key.toString() != "total") {
+                        listCurrentExpense.add(
+                            DetailTransaction(
+                                childBranch.child("category").value.toString(),
+                                childBranch.child("money").value.toString(),
+                                childBranch.child("currentMonth").value.toString(),
+                                childBranch.child("currentYear").value.toString()
+                            )
+                        )
+                    }
                 }
 
                 listCurrentExpense = handleListForChart(listCurrentExpense, month.toInt())

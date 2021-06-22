@@ -159,14 +159,16 @@ class UserFragment : Fragment() {
                 //write data separated by colon
                 data.append("Date,Time,Name of Transaction, Type of Transaction(true is income),Category,Amount Of Money")
                 for(childBranch in snapshot.children){
-                    data.append("\n" +
-                            "${childBranch.child("day").value.toString()}," +
-                            "${childBranch.child("time").value.toString()}," +
-                            "${childBranch.child("name").value.toString()}," +
-                            "${childBranch.child("inorout").value.toString()}," +
-                            "${childBranch.child("category").value.toString()}," +
-                            childBranch.child("money").value.toString()
-                    )
+                    if(childBranch.key.toString() != "total"){
+                        data.append("\n" +
+                                "${childBranch.child("day").value.toString()}," +
+                                "${childBranch.child("time").value.toString()}," +
+                                "${childBranch.child("name").value.toString()}," +
+                                "${childBranch.child("inorout").value.toString()}," +
+                                "${childBranch.child("category").value.toString()}," +
+                                childBranch.child("money").value.toString()
+                        )
+                    }
                 }
 
                 try{
@@ -193,7 +195,7 @@ class UserFragment : Fragment() {
                     startActivity(Intent.createChooser(fileIntent, "Send Mail"))
                 }
                 catch (e: Exception){
-                    Toast.makeText(activity, "$e", Toast.LENGTH_SHORT).show()
+
                 }
             }
 
