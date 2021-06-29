@@ -49,6 +49,12 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Per 2 months"
+            android:textSize="15sp"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Per 3 months"
             android:textSize="15sp"/>
 

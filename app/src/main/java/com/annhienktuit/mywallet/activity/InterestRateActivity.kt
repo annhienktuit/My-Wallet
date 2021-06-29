@@ -96,7 +96,7 @@ class InterestRateActivity : AppCompatActivity() {
         }
 
         if(!tfInterestRate.text.isNullOrEmpty()){
-            this.interestRate = (tfInterestRate.text.toString()).toDouble()
+            this.interestRate = (tfInterestRate.text.toString()).toDouble() / 100
         }
 
         if(!invisiblePeriod.text.isNullOrEmpty()){
@@ -131,6 +131,9 @@ class InterestRateActivity : AppCompatActivity() {
             }
             "Per month" -> {
                 return period / 30
+            }
+            "Per 2 months"->{
+                return period / 60
             }
             "Per 3 months" -> {
                 return period / 90

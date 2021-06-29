@@ -101,7 +101,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
         app:startIconTint="#43D149"
-        app:startIconDrawable="@drawable/ic_baseline_calculate_24"
+        app:startIconDrawable="@drawable/ic_percentage"
         >
 
         <com.google.android.material.textfield.TextInputEditText
