@@ -119,7 +119,7 @@ class LimitationAdapter(private val limitationList: List<Limitation>) : Recycler
                     holder1.current.text = (changeToMoney(result2.toString()) + " VND left")
                     holder1.progress.progress = result
                 } else {
-                    holder1.current.text = ("Over" + changeToMoney(result3.toString()) + " VND")
+                    holder1.current.text = ("Over " + changeToMoney(result3.toString()) + " VND")
                     holder1.progress.progress = 100
                 }
             }

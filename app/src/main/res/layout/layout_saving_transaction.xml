@@ -30,16 +30,18 @@
                 android:fontFamily="@font/gotham_bold"
                 android:textColor="#828282"
                 android:layout_marginTop="10dp"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:text="Today - 2:43 PM"/>
             <TextView
                 android:id="@+id/moneyOfSaving"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="12,000"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/kindOfSaving"
                 android:textColor="#29B12E"
                 android:fontFamily="@font/gotham_bold"
-                android:textSize="20sp"
+                android:textSize="14sp"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
 

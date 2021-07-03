@@ -35,7 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham_bold"
-                    android:maxLength="17"
+                    android:maxLength="24"
                     android:textSize="18sp"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
@@ -51,7 +51,7 @@
                     android:id="@+id/inputCardholderName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLength="20"
+                    android:maxLength="24"
                     android:fontFamily="@font/gotham_bold"
                     android:textSize="18sp"/>
             </com.google.android.material.textfield.TextInputLayout>
