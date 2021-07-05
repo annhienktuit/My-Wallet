@@ -65,13 +65,13 @@ class AboutActivity : AppCompatActivity() {
         coderModelList = ArrayList()
         coderModelList.add(
             CoderModel("Nhien Nguyen",
-            "SE faculty\n Intern at Cohota",
+            "Team Leader & Functional Developer",
             R.drawable.avt_nhien_deptrai,urlNhien))
-        coderModelList.add(CoderModel("Khai Hoan",
-            "SE faculty\n Published 2 apps on Play Store",
+        coderModelList.add(CoderModel("Hoan Le",
+            "Database & Functional Developer",
             R.drawable.hoanle,urlHoan))
         coderModelList.add(CoderModel("Hien Tran",
-            "SE faculty\n Academic scholarship at 2nd semester",
+            "UI Designer & Functional Developer",
             R.drawable.hien_bede,urlHien))
         coderAdapter = CoderAdapter(applicationContext , coderModelList)
         viewpager.adapter = coderAdapter

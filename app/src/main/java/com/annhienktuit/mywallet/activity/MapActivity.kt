@@ -93,6 +93,7 @@ class MapActivity : AppCompatActivity() {
                     android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
                 ), 101
             )
+            toast("Location not allowed by system!")
             return
         } else {
 
@@ -106,12 +107,14 @@ class MapActivity : AppCompatActivity() {
                 convertLocation() //convert latitude to address
                 openMap()
             } else {
+                toast("Location not allowed!")
                 Log.e("location: ", "Magic 2")
                 magicError = true
 
             }
         }
         task.addOnFailureListener {
+            toast("Location not allowed!")
             Log.e("location: ","Failed to process location")
             magicError = true
         }
