@@ -115,7 +115,6 @@ class InterestRateActivity : AppCompatActivity() {
     // Kiểm tra người dùng đã nhập đầy đủ các fields hay chưa
     private fun checkProperties(): Boolean{
         if(rootMoney == -1L || interestRate == -1.0 || period == -1 || interestType == "null" || timeType == "null"){
-            toast("Please fill in all field")
             return false
         }
         return true
