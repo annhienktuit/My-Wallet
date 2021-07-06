@@ -47,13 +47,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-
-//val acct = GoogleSignIn.getLastSignedInAccount(this@MainActivity);
-//if (acct != null) {
-//    fullName = acct.getDisplayName()
-//    val personEmail = acct.getEmail()
-//    val personId = acct.getId()
-//}
 class MainActivity : AppCompatActivity() {
     //----------------------------------------------------------
     val user: FirebaseUser? = FirebaseUtils.firebaseAuth.currentUser

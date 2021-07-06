@@ -123,7 +123,7 @@ class AllMonthDetailReport : AppCompatActivity() {
                 pie.legend().title().enabled(true)
 
                 pie.legend().title()
-                    .text("Retail channels")
+                    .text("See below")
                     .padding(0.0, 0.0, 10.0, 0.0)
 
                 pie.legend()
@@ -192,7 +192,7 @@ class AllMonthDetailReport : AppCompatActivity() {
 
                 pie.legend().title().enabled(true)
                 pie.legend().title()
-                    .text("Retail channels")
+                    .text("See below")
                     .padding(0.0, 0.0, 10.0, 0.0)
 
                 pie.legend()
