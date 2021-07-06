@@ -8,51 +8,53 @@
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
         android:elevation="8dp"
+        app:cardCornerRadius="10dp"
         app:cardElevation="4dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="7dp"
-            android:paddingBottom="7dp"
-            >
+            android:paddingBottom="7dp">
             <ImageView
+                android:layout_gravity="center_vertical"
                 android:layout_margin="10dp"
                 android:layout_width="46dp"
                 android:layout_height="42dp"
-                android:src="@drawable/ic_bag_1"
-                />
+                android:src="@drawable/ic_bag_1" />
             <RelativeLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/nameProduct1"
-                    android:layout_margin="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="iPhone 11 Promax"
                     android:fontFamily="@font/gotham_bold"
                     android:textSize="16sp"
                     android:textColor="#2F2543"/>
+
                 <TextView
-                    android:layout_margin="10dp"
                     android:id="@+id/priceProduct1"
-                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/nameProduct1"
+                    android:layout_alignParentRight="true"
                     android:fontFamily="@font/gotham_bold"
                     android:padding="2dp"
-                    android:textSize="14sp"
+                    android:text="32,000,000 VND"
                     android:textColor="#2F2543"
-                    android:text="32,000,000 VND"/>
+                    android:textSize="14sp" />
                 <ProgressBar
                     android:id="@+id/progressSaving1"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
-                    android:layout_below="@+id/nameProduct1"
+                    android:layout_below="@+id/priceProduct1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
