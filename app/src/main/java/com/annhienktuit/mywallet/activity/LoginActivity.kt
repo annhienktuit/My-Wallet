@@ -211,6 +211,9 @@ class LoginActivity : AppCompatActivity() {
                 if (input.text.toString().trim().isEmpty()) {
                     input.error = "${input.hint} is required"
                 }
+                else if(!isEmailFormat()) {
+                    toast(getString(R.string.warning_email_format))
+                }
             }
         }
     }

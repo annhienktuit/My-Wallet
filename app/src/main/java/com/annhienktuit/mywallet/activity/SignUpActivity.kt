@@ -15,7 +15,10 @@ import com.annhienktuit.mywallet.utils.FirebaseInstance
 import com.annhienktuit.mywallet.utils.FirebaseUtils
 import com.annhienktuit.mywallet.utils.FirebaseUtils.firebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.actionCodeSettings
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.edtEmail
 import kotlinx.android.synthetic.main.activity_login.edtPassword
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -123,6 +126,10 @@ class SignUpActivity : AppCompatActivity() {
                             .getInstance("https://my-wallet-80ed7-default-rtdb.asia-southeast1.firebasedatabase.app/")
                             .getReference("datas")
                         val user: FirebaseUser? = firebaseAuth.currentUser
+                        if (user != null) {
+                            user.sendEmailVerification()
+                        }
+                        Thread.sleep(15000)
                         ref.child(user!!.uid).child("name").setValue(edtLastName.text.toString() + " " + edtFirstName.text.toString())
                         ref.child(user.uid).child("limits").child("total").setValue(0)
                         ref.child(user.uid).child("savings").child("total").setValue(0)
