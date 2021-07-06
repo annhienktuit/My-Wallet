@@ -79,10 +79,9 @@ class SignUpActivity : AppCompatActivity() {
     private fun notEmpty(): Boolean = edtEmail.text.toString().trim().isNotEmpty() &&
             edtPassword.text.toString().trim().isNotEmpty() &&
             edtConfirmPassword.text.toString().trim().isNotEmpty()
-    // skip for easier testing
-//            &&
-//            edtFirstName.text.toString().trim().isNotEmpty() &&
-//            edtLastName.text.toString().trim().isNotEmpty()
+            &&
+            edtFirstName.text.toString().trim().isNotEmpty() &&
+            edtLastName.text.toString().trim().isNotEmpty()
 
     private fun isEmailFormat():Boolean = edtEmail.text.matches(emailPattern.toRegex())
 
