@@ -120,12 +120,6 @@ class AllMonthDetailReport : AppCompatActivity() {
 
                 pie.labels().position("outside")
 
-                pie.legend().title().enabled(true)
-
-                pie.legend().title()
-                    .text("See below")
-                    .padding(0.0, 0.0, 10.0, 0.0)
-
                 pie.legend()
                     .position("center-bottom")
                     .itemsLayout(LegendLayout.HORIZONTAL)
@@ -189,11 +183,6 @@ class AllMonthDetailReport : AppCompatActivity() {
                 pie.title("Current Month Expense")
 
                 pie.labels().position("outside")
-
-                pie.legend().title().enabled(true)
-                pie.legend().title()
-                    .text("See below")
-                    .padding(0.0, 0.0, 10.0, 0.0)
 
                 pie.legend()
                     .position("center-bottom")
